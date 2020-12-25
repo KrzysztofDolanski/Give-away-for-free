@@ -24,7 +24,6 @@ public class ConfirmationToken {
     @JoinColumn(name = "user_id")
     private ApiUser apiUser;
 
-
     public ConfirmationToken(ApiUser apiUser) {
         this.apiUser = apiUser;
         this.createdDate = LocalDate.now();
