@@ -2,6 +2,8 @@ package com.example.gaff.api_user;
 
 import com.example.gaff.exceptions.NoUsernameException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,18 +13,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import java.text.MessageFormat;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ApiUserService implements UserDetailsService {
+@Slf4j
+public class ApiUserService implements UserDetailsService, MailService {
 
     private final ApiUserRepository apiUserRepository;
     private final ApiUserMapping apiUserMapping;
-    final PasswordEncoder passwordEncoder;
+
+    final ConfirmationTokenRepository confirmationTokenRepository;
     final ConfirmationTokenService confirmationTokenService;
-    final EmailService emailService;
+    MailService mailService;
+    final GmailService gmailService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -34,13 +40,16 @@ public class ApiUserService implements UserDetailsService {
         }
     }
 
-    public void signUpUser(ApiUserDto apiUserDto) {
-        final String encryptedPassword = passwordEncoder.encode(apiUserDto.getPassword());
+    public void signUpUser(ApiUserDto apiUserDto) throws MessagingException {
+        final String encryptedPassword = bCryptPasswordEncoder().encode(apiUserDto.getPassword());
         apiUserDto.setPassword(encryptedPassword);
         ApiUser apiUser = apiUserMapping.mapToApiUser(apiUserDto);
         apiUserRepository.save(apiUser);
         ConfirmationToken confirmationToken = new ConfirmationToken(apiUser);
-        confirmationTokenService.saveConfirmationToken(confirmationToken);
+        confirmationTokenRepository.save(confirmationToken);
+        log.info(confirmationToken.toString());
+        sendConfirmationEmail(apiUserDto.getEmail(),confirmationToken.getConfirmationToken());
+//        confirmationTokenService.saveConfirmationToken(confirmationToken);
     }
 
     public void confirmUser(ConfirmationToken confirmationToken) {
@@ -50,14 +59,22 @@ public class ApiUserService implements UserDetailsService {
         confirmationTokenService.deleteConfirmationToken(confirmationToken.getId());
     }
 
-    public void sendConfirmationEmail(String userEmail, String token){
-        final SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(userEmail);
-        mailMessage.setFrom("dolanskicwiczeniajava@gmail.com");
-        mailMessage.setSubject("GIVE AWAY FOR FREE confirmation email");
-        mailMessage.setText("plese click to below link to active your account\n"
-                + "http://localhost:8080/sign-up/confirm?token="+token);
-        emailService.sendEmail(mailMessage);
+    public void sendConfirmationEmail(String userEmail, String token) throws MessagingException {
+        String subject = "GIVE AWAY FOR FREE confirmation email";
+        String content = "Please click to below link to active your account http://localhost:8080/sign-up/confirm?token="+token;
+        MailConfiguration mailConfiguration = new MailConfiguration();
+        Email email = new Email(userEmail, subject, content);
+        new GmailService(mailConfiguration).sendEmail(email);
+
     }
 
+
+    public PasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    public void sendEmail(Email email) {
+
+    }
 }

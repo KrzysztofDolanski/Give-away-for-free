@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 public class ApiUser implements UserDetails {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     private String username;
@@ -58,6 +59,8 @@ public class ApiUser implements UserDetails {
     @OneToMany
     private List<Booking> booking;
 
+    @OneToOne
+    ConfirmationToken confirmationToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -65,7 +68,7 @@ public class ApiUser implements UserDetails {
         return Collections.singletonList(simpleGrantedAuthority);
     }
 
-    public void setAuthorities(List<GrantedAuthority> authorities){
+    public void setAuthorities(List<GrantedAuthority> authorities) {
         this.authorities = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(";"));
