@@ -21,6 +21,7 @@ public class ApiUserMapping {
                 .article(apiUserDto.getArticle())
                 .booking(apiUserDto.getBooking())
                 .dateOfRegistration(apiUserDto.getDateOfRegistration())
+//                .confirmationToken(apiUserDto.getConfirmationToken())
                 .build();
     }
 
@@ -38,6 +39,7 @@ public class ApiUserMapping {
                 .article(apiUser.getArticle())
                 .booking(apiUser.getBooking())
                 .dateOfRegistration(apiUser.getDateOfRegistration())
+//                .confirmationToken(apiUser.getConfirmationToken())
                 .build();
     }
 

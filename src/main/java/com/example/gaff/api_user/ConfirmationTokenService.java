@@ -22,7 +22,6 @@ public class ConfirmationTokenService {
     }
 
     Optional<ConfirmationToken> findConfirmationTokenByToken(String token) {
-
         return confirmationTokenRepository.findConfirmationTokenByConfirmationToken(token);
     }
 
