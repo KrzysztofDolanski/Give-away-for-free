@@ -1,6 +1,5 @@
 package com.example.gaff.api_user;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -43,8 +43,6 @@ class ApiUserServiceTest {
         ConfirmationToken confirmationToken = new ConfirmationToken(apiUserDto);
         apiUserRepository.save(apiUserDto);
         confirmationTokenRepository.save(confirmationToken);
-//
-//        apiUserMapping.mapToApiUser(apiUserDto);
-//        apiUserService.signUpUser(apiUserDto);
+
     }
 }

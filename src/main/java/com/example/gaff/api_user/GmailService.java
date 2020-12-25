@@ -29,8 +29,6 @@ public class GmailService implements MailService {
             Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
-
         }
-
     }
 }

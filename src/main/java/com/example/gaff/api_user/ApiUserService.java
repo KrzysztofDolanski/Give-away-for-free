@@ -1,10 +1,7 @@
 package com.example.gaff.api_user;
 
-import com.example.gaff.exceptions.NoUsernameException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,7 +24,6 @@ public class ApiUserService implements UserDetailsService, MailService {
 
     final ConfirmationTokenRepository confirmationTokenRepository;
     final ConfirmationTokenService confirmationTokenService;
-    MailService mailService;
     final GmailService gmailService;
 
     @Override
@@ -47,9 +43,7 @@ public class ApiUserService implements UserDetailsService, MailService {
         apiUserRepository.save(apiUser);
         ConfirmationToken confirmationToken = new ConfirmationToken(apiUser);
         confirmationTokenRepository.save(confirmationToken);
-        log.info(confirmationToken.toString());
         sendConfirmationEmail(apiUserDto.getEmail(),confirmationToken.getConfirmationToken());
-//        confirmationTokenService.saveConfirmationToken(confirmationToken);
     }
 
     public void confirmUser(ConfirmationToken confirmationToken) {

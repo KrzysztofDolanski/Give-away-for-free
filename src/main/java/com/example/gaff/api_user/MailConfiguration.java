@@ -12,8 +12,6 @@ public class MailConfiguration {
     private Properties properties;
     private String username;
     private String password;
-//    private String email;
-
 
     public MailConfiguration() {
         prepareConfiguration();
@@ -23,13 +21,10 @@ public class MailConfiguration {
         properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "465");
-//        properties.put("mail.tls.port.enable","true");
         properties.put("mail.smtp.ssl.enable", "true");
         properties.put("mail.smtp.auth", "true");
         username = "christopher.dolanski@gmail.com";
         password = "Anahita77!";
-
-
     }
 
     public Session createSession(){
