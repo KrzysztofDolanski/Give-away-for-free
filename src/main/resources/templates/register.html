@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>Spring Boot User Authentication</title>
+</head>
+<body>
+<form role="form" th:action="@{/register}" method="post" th:object="${apiUserDto}">
+    <label>Name</label>
+    <input type="text" id="username" name="username" th:field="*{username}">
+
+    <label>Email</label>
+    <input type="text" id="email" name="email" th:field="*{email}">
+
+    <label>Password</label>
+    <input type="password" id="password" name="password" th:field="*{password}">
+
+    <label>Region</label>
+    <input th:type="text" id="region" name="region" th:field="*{region}">
+
+    <label>City</label>
+    <input th:type="text" id="city" name="city" th:field="*{city}">
+
+    <label>Street</label>
+    <input th:type="text" id="street" name="street" th:field="*{street}">
+
+    <label>Street number</label>
+    <input th:type="text" id="streetNo" name="streetNo" th:field="*{streetNo}">
+
+    <label>Zip code</label>
+    <input th:type="text" id="zipCode" name="zipCode" th:field="*{zipCode}">
+
+    <label>Logotype</label>
+    <input th:type="file" id="logotype" name="logotype" accept="imege/png, image/jpg, image/bmp" th:field="*{logotype}">
+
+    <p>
+    <img id="thumbnail" alt="Twoje logo"/>
+    </p>
+
+
+
+
+    <input type="submit">
+</form>
+</body>
+
+<script type="text/javascript">
+    $(document).ready(function (){
+        $('logotype').change(function(){
+            showImageThumbnail(this)
+        });
+    });
+
+    function showImageThumbnail(fileInput){
+        file = fileInput.files[0];
+        reader = new FileReader();
+
+        reader.onload = function(e) {
+            $('#thumbnail').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+</script>
+</html>

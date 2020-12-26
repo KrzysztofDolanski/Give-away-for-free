@@ -14,13 +14,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/sign-up/**", "/sign-in/**")
+                .antMatchers("/register/**", "/login/**", "/user/**", "/home/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/sign-in")
+                .loginPage("/login")
                 .permitAll();
     }
 }

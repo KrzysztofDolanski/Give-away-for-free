@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,10 +38,9 @@ public class ApiUser implements UserDetails {
     private String street;
     private String streetNo;
     private String zipCode;
-    private LocalDateTime dateOfRegistration;
+    private LocalDateTime dateOfRegistration = LocalDateTime.now();
     private boolean isActive;
     private byte[] logotype;
-    private String authorities;
 
     @Builder.Default
     private ApiUserRole userRole = ApiUserRole.USER;
@@ -66,11 +66,6 @@ public class ApiUser implements UserDetails {
         return Collections.singletonList(simpleGrantedAuthority);
     }
 
-    public void setAuthorities(List<GrantedAuthority> authorities) {
-        this.authorities = authorities.stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(";"));
-    }
 
     @Override
     public boolean isAccountNonExpired() {
