@@ -4,14 +4,14 @@
     <title>Spring Boot User Authentication</title>
 </head>
 <body>
-<form role="form" th:action="@{/sign-in}" th:method="post">
-    <lable>Email</lable>
+<form role="form" th:action="@{/user}" th:method="get">
+    <lable>Username</lable>
     <input type="text" id="username" name="username">
 
-    <lable>Password</lable>
-    <input type="password" id="password" name="password">
-
     <input type="submit">
+
+
+<!--    <p>lub <a th:href="@{/sign-up}">zarejestruj</a> </p>-->
 </form>
 </body>
 </html>

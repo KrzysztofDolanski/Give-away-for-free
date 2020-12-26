@@ -1,5 +1,6 @@
 package com.example.gaff.api_user;
 
+import com.example.gaff.article.Article;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.text.MessageFormat;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +29,12 @@ public class ApiUserService implements UserDetailsService, MailService {
     final GmailService gmailService;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        final ApiUser byEmail = apiUserRepository.findByEmail(email);
-        if (!byEmail.getUsername().isEmpty()) {
-            return byEmail;
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        final ApiUser byUsername = apiUserRepository.findByUsername(username);
+        if (!byUsername.getUsername().isEmpty()) {
+            return byUsername;
         } else {
-            throw new UsernameNotFoundException(MessageFormat.format("User with email {0} cannot be found. ", email));
+            throw new UsernameNotFoundException(MessageFormat.format("User with username {0} cannot be found. ", username));
         }
     }
 
@@ -53,9 +55,9 @@ public class ApiUserService implements UserDetailsService, MailService {
         confirmationTokenService.deleteConfirmationToken(confirmationToken.getId());
     }
 
-    public void sendConfirmationEmail(String userEmail, String token) throws MessagingException {
+    public void sendConfirmationEmail(String userEmail, String token) {
         String subject = "GIVE AWAY FOR FREE confirmation email";
-        String content = "Please click to below link to active your account http://localhost:8080/sign-up/confirm?token="+token;
+        String content = "Please click to below link to active your account http://localhost:8080/register/confirm?token="+token;
         MailConfiguration mailConfiguration = new MailConfiguration();
         Email email = new Email(userEmail, subject, content);
         new GmailService(mailConfiguration).sendEmail(email);
@@ -69,6 +71,14 @@ public class ApiUserService implements UserDetailsService, MailService {
 
     @Override
     public void sendEmail(Email email) {
+    }
 
+    public List<Article> showUserArticles(String username) {
+        ApiUser byUsername = apiUserRepository.findByUsername(username);
+        return byUsername.getArticle();
+    }
+
+    public ApiUser getUserByUsername(String username) {
+        return apiUserRepository.findByUsername(username);
     }
 }
