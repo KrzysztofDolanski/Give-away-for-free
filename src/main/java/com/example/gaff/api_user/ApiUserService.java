@@ -1,8 +1,10 @@
 package com.example.gaff.api_user;
 
 import com.example.gaff.article.Article;
+import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,7 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -38,14 +46,23 @@ public class ApiUserService implements UserDetailsService, MailService {
         }
     }
 
-    public void signUpUser(ApiUserDto apiUserDto) throws MessagingException {
+    public void signUpUser(ApiUserDto apiUserDto) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+        if ((apiUserRepository.findByUsername(apiUserDto.getUsername())) != null) {
+            throw new ApiUserAlreadyExistsException("User with this name already exist");
+        }
+
         final String encryptedPassword = bCryptPasswordEncoder().encode(apiUserDto.getPassword());
         apiUserDto.setPassword(encryptedPassword);
+//        File file = new File(Arrays.toString(apiUserDto.getLogotype()));
+//        byte[] bytes = Files.readAllBytes(file.toPath());
+//        apiUserDto.setLogotype(bytes);
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        apiUserDto.setDateOfRegistration(LocalDateTime.now().format(df));
         ApiUser apiUser = apiUserMapping.mapToApiUser(apiUserDto);
         apiUserRepository.save(apiUser);
         ConfirmationToken confirmationToken = new ConfirmationToken(apiUser);
         confirmationTokenRepository.save(confirmationToken);
-        sendConfirmationEmail(apiUserDto.getEmail(),confirmationToken.getConfirmationToken());
+        sendConfirmationEmail(apiUserDto.getEmail(), confirmationToken.getConfirmationToken());
     }
 
     public void confirmUser(ConfirmationToken confirmationToken) {
@@ -57,7 +74,7 @@ public class ApiUserService implements UserDetailsService, MailService {
 
     public void sendConfirmationEmail(String userEmail, String token) {
         String subject = "GIVE AWAY FOR FREE confirmation email";
-        String content = "Please click to below link to active your account http://localhost:8080/register/confirm?token="+token;
+        String content = "Please click to below link to active your account http://localhost:8080/register/confirm?token=" + token;
         MailConfiguration mailConfiguration = new MailConfiguration();
         Email email = new Email(userEmail, subject, content);
         new GmailService(mailConfiguration).sendEmail(email);

@@ -1,16 +1,15 @@
 package com.example.gaff.api_user;
 
+import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
-import java.sql.Blob;
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -19,6 +18,7 @@ public class ApiUserController {
 
     private final ApiUserService apiUserService;
     private final ConfirmationTokenService confirmationTokenService;
+    private final ApiUserMapping apiUserMapping;
 
 
     @GetMapping("/login")
@@ -32,12 +32,6 @@ public class ApiUserController {
         return "register";
     }
 
-
-    @PostMapping("/register")
-    String signUp(ApiUserDto apiUserDto) throws MessagingException {
-        apiUserService.signUpUser(apiUserDto);
-        return "redirect:/login";
-    }
 
     @GetMapping("register/confirm")
     String confirmMail(String token){
@@ -72,4 +66,10 @@ public class ApiUserController {
         return "user-edit";
     }
 
+
+    @PostMapping("/register")
+    String signUp(ApiUserDto apiUserDto, @RequestParam ("file") MultipartFile multipartFile) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+        apiUserService.signUpUser(apiUserDto);
+        return "redirect:/login";
+    }
 }

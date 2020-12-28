@@ -27,9 +27,9 @@ public class ApiUserDto {
     private String street;
     private String streetNo;
     private String zipCode;
-    private LocalDateTime dateOfRegistration;
+    private String dateOfRegistration;
     private boolean isActive;
-    private byte[] logotype;
+    private String logotype;
 
 
     @OneToMany
