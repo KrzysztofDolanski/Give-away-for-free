@@ -30,6 +30,7 @@ public class ApiUser implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(length = 512, nullable = false, unique = true)
     private String username;
     private String password;
     private String email;
@@ -38,9 +39,10 @@ public class ApiUser implements UserDetails {
     private String street;
     private String streetNo;
     private String zipCode;
-    private LocalDateTime dateOfRegistration = LocalDateTime.now();
+    private String dateOfRegistration;
     private boolean isActive;
-    private byte[] logotype;
+    @Column(length = 45, nullable = true)
+    private String logotype;
 
     @Builder.Default
     private ApiUserRole userRole = ApiUserRole.USER;
@@ -86,4 +88,6 @@ public class ApiUser implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
+
 }

@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Student list</title>
+
+
 </head>
 <body>
 
@@ -10,12 +12,14 @@
     User
 </h2>
 <div th:replace="fragments :: navigator"></div>
+
 <table>
     <th>Username</th>
     <th>Email</th>
     <th>Region</th>
     <th>Miasto</th>
-    <th></th>       <!--pusta na potem-->
+    <th>Logotyp</th>
+
 
     <tr th:action="@{/user}" th:object="${apiUser}" th:method="get">
         <td th:text="${apiUser.getUsername()}"></td>
@@ -23,9 +27,15 @@
         <td th:text="${apiUser.getRegion()}"></td>
         <td th:text="${apiUser.getCity()}"></td>
 
+<!--       <td th:media="${apiUser.getLogotype()}"></td>-->
+
+        <td>
+
+        <img th:size="200px" th:src="@{${apiUser.getLogotype()}}" />
+        </td>
         <td>
 <!--            <a th:href="@{'/user/edit' + ${user.getId()}}">  Edytuj </a>-->
-        </td>
+
 
     </tr>
 

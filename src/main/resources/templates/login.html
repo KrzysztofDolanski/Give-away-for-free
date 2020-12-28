@@ -2,19 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Spring Boot User Authentication</title>
+    <link th:href="@{./styles/bootstrap.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{./styles/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{./styles/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{./styles/js/propper.js}"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body>
-<form role="form" th:action="@{/login}" th:method="post">
-    <lable>Username</lable>
-    <input type="text" id="username" name="username">
 
-    <lable>Password</lable>
-    <input type="password" id="password" name="password">
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 mt-5">
+            <form role="form" th:action="@{/login}" th:method="post">
+                <div class="form-group">
+                    <p class="nav-item">
+                        <lable>Username</lable>
+                        <input type="text" id="username" name="username">
+                    </p >
+                    <p class="nav-item">
+                        <lable>Password</lable>
+                        <input type="password" id="password" name="password">
+                    </p>
+                    <input class="btn btn-primary" type="submit">
+                </div>
+                <p>lub <a th:href="@{/register}">zarejestruj</a></p>
 
-    <input type="submit">
-
-
-    <p>lub <a th:href="@{/register}">zarejestruj</a> </p>
-</form>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
