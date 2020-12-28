@@ -68,7 +68,7 @@ public class ApiUserController {
 
 
     @PostMapping("/register")
-    String signUp(ApiUserDto apiUserDto, @RequestParam ("file") MultipartFile multipartFile) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+    String signUp(ApiUserDto apiUserDto) throws MessagingException, IOException, ApiUserAlreadyExistsException {
         apiUserService.signUpUser(apiUserDto);
         return "redirect:/login";
     }
