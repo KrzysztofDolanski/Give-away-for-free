@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <title>Spring Boot User Authentication</title>
+    <link th:href="@{/styles/bootstrap.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/styles/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/styles/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/styles/js/propper.js}"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 mt-5">
+            <form role="form" th:action="@{/register}" method="post" th:object="${apiUserDto}" style="max-width:400px; margin: 0 auto">
+
+                <div class="form-group" th:width="25px">
+                    <p>
+                        <label>Name</label>
+                        <input type="text" id="username" name="username" th:field="*{username}">
+                    </p>
+                    <p>
+                        <label>Email</label>
+                        <input type="text" id="email" name="email" th:field="*{email}">
+                    </p>
+                    <p>
+                        <label>Password</label>
+                        <input type="password" id="password" name="password" th:field="*{password}">
+                    </p>
+                    <p>
+                        <label>Region</label>
+                        <input th:type="text" id="region" name="region" th:field="*{region}">
+                    </p>
+                    <p>
+                        <label>City</label>
+                        <input th:type="text" id="city" name="city" th:field="*{city}">
+                    </p>
+                    <p>
+                        <label>Street</label>
+                        <input th:type="text" id="street" name="street" th:field="*{street}">
+                    </p>
+                    <p>
+                        <label>Street number</label>
+                        <input th:type="text" id="streetNo" name="streetNo" th:field="*{streetNo}">
+                    </p>
+                    <p>
+                        <label>Zip code</label>
+                        <input th:type="text" id="zipCode" name="zipCode" th:field="*{zipCode}">
+                    </p>
+
+
+                    <p>
+                        <label>Logotype</label>
+                        <!--    <form th:action="@{/upload}" method="post" enctype="multipart/form-data"></form>-->
+
+                        <input th:type="file" id="logotype" name="logotype" accept="imege/png, image/jpeg">
+                    </p>
+                    <p>
+                        <img id="thumbnail" alt="yours logo"/>
+                    </p>
+                    <p>
+                        <input class="btn btn-primary" type="submit">
+                    </p>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#logotype').change(function () {
+            showImageThumbnail(this)
+        });
+    });
+
+    function showImageThumbnail(fileInput) {
+        file = fileInput.files[0];
+        reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#thumbnail').attr('src', e.target.result);
+        };
+        // reader.readAsBinaryString(file)
+        reader.readAsDataURL(file);
+    }
+</script>
+</body>
+</html>

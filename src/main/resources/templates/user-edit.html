@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student list</title>
+
+
+</head>
+<body>
+
+<h2>
+    User
+</h2>
+<div th:replace="fragments :: navigator"></div>
+
+<table>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Region</th>
+    <th>Miasto</th>
+    <th>Logotyp</th>
+
+
+    <tr th:action="@{/user}" th:object="${apiUser}" th:method="get">
+        <td th:text="${apiUser.getUsername()}"></td>
+        <td th:text="${apiUser.getEmail()}"></td>
+        <td th:text="${apiUser.getRegion()}"></td>
+        <td th:text="${apiUser.getCity()}"></td>
+
+<!--       <td th:media="${apiUser.getLogotype()}"></td>-->
+
+        <td>
+
+        <img id="logotype" name="logotype" th:size="200px" th:src="@{${apiUser.getLogotype()}}" />
+        </td>
+        <td>
+<!--            <a th:href="@{'/user/edit' + ${user.getId()}}">  Edytuj </a>-->
+
+
+    </tr>
+
+</table>
+</body>
+</html>
