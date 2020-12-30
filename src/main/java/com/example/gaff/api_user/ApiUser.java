@@ -3,6 +3,7 @@ package com.example.gaff.api_user;
 
 import com.example.gaff.article.Article;
 import com.example.gaff.booking.Booking;
+import com.example.gaff.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,8 +42,11 @@ public class ApiUser implements UserDetails {
     private String zipCode;
     private String dateOfRegistration;
     private boolean isActive;
-    @Column(length = 45, nullable = true)
-    private String logotype;
+
+    @Lob
+//    @Column(length = 45, nullable = true, columnDefinition = "LONGBLOB")
+    private byte[] logotype;
+
 
     @Builder.Default
     private ApiUserRole userRole = ApiUserRole.USER;

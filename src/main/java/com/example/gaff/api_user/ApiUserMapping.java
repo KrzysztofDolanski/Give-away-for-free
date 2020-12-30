@@ -1,9 +1,14 @@
 package com.example.gaff.api_user;
 
+import com.example.gaff.image.Image;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class ApiUserMapping {
+
 
 
     public ApiUser mapToApiUser(ApiUserDto apiUserDto) {

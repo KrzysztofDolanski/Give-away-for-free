@@ -1,68 +1,81 @@
 package com.example.gaff.api_user;
 
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
-import lombok.AllArgsConstructor;
+import com.example.gaff.image.Image;
+import com.example.gaff.image.ImageForm;
+import com.example.gaff.image.ImageRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Optional;
 
+@Slf4j
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ApiUserController {
 
+
     private final ApiUserService apiUserService;
+
     private final ConfirmationTokenService confirmationTokenService;
-    private final ApiUserMapping apiUserMapping;
+    private final ApiUserRepository apiUserRepository;
+
+    @Value("${uploadDir}")
+    private String uploadFolder;
 
 
     @GetMapping("/login")
-    String signUp(){
+    String signUp() {
         return "login";
     }
 
     @GetMapping("/register")
-    String signUpPage( ApiUserDto apiUserDto, Model model) {
+    String signUpPage(ApiUserDto apiUserDto, Model model) {
         model.addAttribute("apiUserDto", apiUserDto);
         return "register";
     }
 
 
     @GetMapping("register/confirm")
-    String confirmMail(String token){
+    String confirmMail(String token) {
         Optional<ConfirmationToken> confirmationTokenByToken = confirmationTokenService.findConfirmationTokenByToken(token);
         confirmationTokenByToken.ifPresent(apiUserService::confirmUser);
         return "redirect:/login";
     }
 
     @GetMapping("/home")
-    String home(){
+    String home() {
         return "home";
     }
 
-
-    /////////////////////////////////////
     @GetMapping("/user")
-    String userPage(String username, Model model) {
+    String userPage(String username, Model model, ModelMap modelMap) throws IOException {
         ApiUser apiUser = apiUserService.getUserByUsername(username);
         model.addAttribute("apiUser", apiUser);
+        modelMap.addAttribute("logotype", new ImageForm());
+        apiUserRepository.findById(1L).ifPresent(apiUserEntity -> modelMap.addAttribute("myimg", new String(Base64.getEncoder().encode(
+                apiUserEntity.getLogotype()), StandardCharsets.UTF_8)));
         return "user-edit";
     }
-//
-//    @GetMapping("/user/article")
-//    String showUserArticles(String username){
-//        apiUserService.showUserArticles(username);
-//        return "redirect:/home";
-//    }
 
     @RequestMapping(value = "apiUser", method = RequestMethod.GET)
-    public String user(String username, Model model) {
+    public String user(String username, Model model, ModelMap modelMap) {
         model.addAttribute("apiUser", apiUserService.getUserByUsername(username));
+
+        modelMap.addAttribute("logotype", new ImageForm());
+        apiUserRepository.findById(1L).ifPresent(apiUserEntity -> modelMap.addAttribute("myimg", new String(Base64.getEncoder().encode(
+                apiUserEntity.getLogotype()), StandardCharsets.UTF_8)));
+
         return "user-edit";
     }
 
@@ -72,4 +85,5 @@ public class ApiUserController {
         apiUserService.signUpUser(apiUserDto);
         return "redirect:/login";
     }
+
 }

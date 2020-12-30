@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Student list</title>
+    <title>User panel</title>
 
 
 </head>
@@ -11,6 +11,7 @@
 <h2>
     User
 </h2>
+
 <div th:replace="fragments :: navigator"></div>
 
 <table>
@@ -26,19 +27,14 @@
         <td th:text="${apiUser.getEmail()}"></td>
         <td th:text="${apiUser.getRegion()}"></td>
         <td th:text="${apiUser.getCity()}"></td>
-
-<!--       <td th:media="${apiUser.getLogotype()}"></td>-->
-
-        <td>
-
-        <img id="logotype" name="logotype" th:size="200px" th:src="@{${apiUser.getLogotype()}}" />
-        </td>
-        <td>
-<!--            <a th:href="@{'/user/edit' + ${user.getId()}}">  Edytuj </a>-->
-
-
     </tr>
 
 </table>
+
+
+<div th:if="${myimg}">
+    <img th:src="@{'data:image/png;base64,' + ${myimg}}" alt="notworking"/>
+</div>
+
 </body>
 </html>
