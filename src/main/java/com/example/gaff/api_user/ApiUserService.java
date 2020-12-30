@@ -4,7 +4,6 @@ import com.example.gaff.article.Article;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,13 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -53,13 +50,13 @@ public class ApiUserService implements UserDetailsService, MailService {
 
         final String encryptedPassword = bCryptPasswordEncoder().encode(apiUserDto.getPassword());
         apiUserDto.setPassword(encryptedPassword);
-//        File file = new File(Arrays.toString(apiUserDto.getLogotype()));
-//        byte[] bytes = Files.readAllBytes(file.toPath());
-//        apiUserDto.setLogotype(bytes);
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         apiUserDto.setDateOfRegistration(LocalDateTime.now().format(df));
         ApiUser apiUser = apiUserMapping.mapToApiUser(apiUserDto);
         apiUserRepository.save(apiUser);
+
+
+
         ConfirmationToken confirmationToken = new ConfirmationToken(apiUser);
         confirmationTokenRepository.save(confirmationToken);
         sendConfirmationEmail(apiUserDto.getEmail(), confirmationToken.getConfirmationToken());
@@ -98,4 +95,6 @@ public class ApiUserService implements UserDetailsService, MailService {
     public ApiUser getUserByUsername(String username) {
         return apiUserRepository.findByUsername(username);
     }
+
+
 }
