@@ -2,16 +2,15 @@ package com.example.gaff.api_user;
 
 import com.example.gaff.article.Article;
 import com.example.gaff.booking.Booking;
-import com.example.gaff.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -32,7 +31,9 @@ public class ApiUserDto {
     private String dateOfRegistration;
     private boolean isActive;
 
-    private byte[] logotype;
+
+    private List<MultipartFile> files = new ArrayList<MultipartFile>();
+
 
     @OneToMany
     private List<Article> article;
@@ -43,11 +44,5 @@ public class ApiUserDto {
     @OneToOne
     ConfirmationToken confirmationToken;
 
-//    @Transient
-//    public String getLogotype() {
-//        if (logotype == null || username == null) return null;
-//
-//        return "/user-photos/" + username + "/" + logotype;
-//    }
 }
 

@@ -1,10 +1,6 @@
 package com.example.gaff.api_user;
 
-import com.example.gaff.image.Image;
 import org.springframework.stereotype.Component;
-
-import java.util.Collections;
-import java.util.List;
 
 @Component
 public class ApiUserMapping {
@@ -21,7 +17,7 @@ public class ApiUserMapping {
                 .zipCode(apiUserDto.getZipCode())
                 .region(apiUserDto.getRegion())
                 .email(apiUserDto.getEmail())
-                .logotype(apiUserDto.getLogotype())
+                .files(apiUserDto.getFiles())
                 .article(apiUserDto.getArticle())
                 .booking(apiUserDto.getBooking())
                 .dateOfRegistration(apiUserDto.getDateOfRegistration())
@@ -39,7 +35,6 @@ public class ApiUserMapping {
                 .zipCode(apiUser.getZipCode())
                 .region(apiUser.getRegion())
                 .email(apiUser.getEmail())
-                .logotype(apiUser.getLogotype())
                 .article(apiUser.getArticle())
                 .booking(apiUser.getBooking())
                 .dateOfRegistration(apiUser.getDateOfRegistration())

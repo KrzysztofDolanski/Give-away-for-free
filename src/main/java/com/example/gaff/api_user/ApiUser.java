@@ -3,7 +3,6 @@ package com.example.gaff.api_user;
 
 import com.example.gaff.article.Article;
 import com.example.gaff.booking.Booking;
-import com.example.gaff.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,21 +10,21 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApiUser implements UserDetails {
+public class ApiUser implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,9 +42,14 @@ public class ApiUser implements UserDetails {
     private String dateOfRegistration;
     private boolean isActive;
 
-    @Lob
-//    @Column(length = 45, nullable = true, columnDefinition = "LONGBLOB")
-    private byte[] logotype;
+//    @Lob
+////    @Column(length = 45, nullable = true, columnDefinition = "LONGBLOB")
+//    private byte[] logotype;
+
+    @Transient
+    private List<MultipartFile> files = new ArrayList<MultipartFile>();
+    @Transient
+    private List<String> removeImages = new ArrayList<>();
 
 
     @Builder.Default

@@ -1,26 +1,32 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Registration</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+
 </head>
 <body>
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-4 mt-5">
-            <form role="form" th:action="@{/register}" method="post" th:object="${apiUserDto}"
-                  style="max-width:400px; margin: 0 auto">
-
-                <div class="form-group" th:width="25px">
-                    <div>
-                        <label>Name</label>
+        <hr class="col-md-12">
+        <h2> User form</h2>
+        <div class="alert alert-success alert-dismissible" th:if="${successmessage}">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong th:text="${successmessage}"></strong>
+        </div>
+        <div class="alert alert-danger alert-dismissible" th:if="${errormessage}">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong th:text="${errormessage}"></strong>
+        </div>
+        <form action="#" th:action="@{${isAdd}?'/save':'update'}" th:object="${user}" method="post"
+              enctype="multipart/form-data">
+            <div class="form-group">
                         <input type="text" id="username" name="username" th:field="*{username}" required="required">
                     <p id="error_username"></p>
                     </div>
@@ -61,31 +67,50 @@
                     <p id="error_zipcode"></p>
                     </div>
 
-<!--                    <input id="uploadimg" type="file" th:field="*{image}">-->
+            <div class="form-group">
+                <input type="file" class="form-control" id="files" placeholder="Upload files" th:field="*{files}" multiple="multiple">
+            </div>
 
-                    <div class="col-md-6 col-sm-6 contact-form1 form-group">
-                        <label class="col-form-label">Image</label>
-                        <input type="file" class="form-control" placeholder="" name="logotype" id="logotype" required="required">
-                        <p id="error_file"></p>
-                    </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" th:text="${isAdd}?'Save':'Update'"></button>
+            </div>
+        </form>
+
+<!--                    <div class="col-md-6 col-sm-6 contact-form1 form-group">-->
+<!--                        <label class="col-form-label">Image</label>-->
+<!--                        <input type="file" class="form-control" placeholder="" name="logotype" id="logotype" required="required">-->
+<!--                        <p id="error_file"></p>-->
+<!--                    </div>-->
 
 
+<!--&lt;!&ndash;                    <p>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <label>Logotype</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                        &lt;!&ndash;    <form th:action="@{/upload}" method="post" enctype="multipart/form-data"></form>&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;                        <input th:type="file" id="logotype" name="logotype" accept="imege/png, image/jpeg">&ndash;&gt;-->
+<!--&lt;!&ndash;                    </p>&ndash;&gt;-->
 <!--                    <p>-->
-<!--                        <label>Logotype</label>-->
-<!--                        &lt;!&ndash;    <form th:action="@{/upload}" method="post" enctype="multipart/form-data"></form>&ndash;&gt;-->
-
-<!--                        <input th:type="file" id="logotype" name="logotype" accept="imege/png, image/jpeg">-->
+<!--                        <img id="thumbnail" alt="yours logo"/>-->
 <!--                    </p>-->
-                    <p>
-                        <img id="thumbnail" alt="yours logo"/>
-                    </p>
-                    <p>
-                        <input name="submit" class="btn btn-primary" type="submit">
-                    </p>
-                </div>
+<!--                    <p>-->
+<!--                        <input name="submit" class="btn btn-primary" type="submit" th:name="saveuser">-->
+<!--                    </p>-->
+<!--                </div>-->
 
 
-            </form>
+<!--                <div class="col-md-8 mx-auto">-->
+<!--                    <h2>Upload File Example</h2>-->
+<!--                    <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>-->
+<!--                    <form method="post" th:action="@{/upload2}" enctype="multipart/form-data">-->
+<!--                        <div class="form-group">-->
+<!--                            <input type="file" name="file" class="form-control-file">-->
+<!--                        </div>-->
+<!--                        <button  type="submit" class="btn btn-primary" name="savefile">Upload File</button>-->
+<!--                    </form>-->
+<!--                </div>-->
+
+
+<!--            </form>-->
         </div>
     </div>
 </div>
