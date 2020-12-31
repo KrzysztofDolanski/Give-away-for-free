@@ -1,9 +1,7 @@
 package com.example.gaff.api_user;
 
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
-import com.example.gaff.image.Image;
-import com.example.gaff.image.ImageForm;
-import com.example.gaff.image.ImageRepository;
+import com.example.gaff.image.UserFiles;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,11 +10,14 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -35,13 +36,17 @@ public class ApiUserController {
 
 
     @GetMapping("/login")
-    String signUp() {
+    public String signUp() {
         return "login";
     }
 
-    @GetMapping("/register")
-    String signUpPage(ApiUserDto apiUserDto, Model model) {
-        model.addAttribute("apiUserDto", apiUserDto);
+    @GetMapping(value = "/register")
+    public String users(Model model){
+        List<ApiUser> users = apiUserService.getAllUsers();
+        model.addAttribute("users", users);
+        model.addAttribute("user", new ApiUser());
+        model.addAttribute("userFiles", new ArrayList<UserFiles>());
+        model.addAttribute("isAdd", true);
         return "register";
     }
 
@@ -54,36 +59,23 @@ public class ApiUserController {
     }
 
     @GetMapping("/home")
-    String home() {
+    public String home() {
         return "home";
     }
 
-    @GetMapping("/user")
-    String userPage(String username, Model model, ModelMap modelMap) throws IOException {
-        ApiUser apiUser = apiUserService.getUserByUsername(username);
-        model.addAttribute("apiUser", apiUser);
-        modelMap.addAttribute("logotype", new ImageForm());
-        apiUserRepository.findById(1L).ifPresent(apiUserEntity -> modelMap.addAttribute("myimg", new String(Base64.getEncoder().encode(
-                apiUserEntity.getLogotype()), StandardCharsets.UTF_8)));
-        return "user-edit";
-    }
 
-    @RequestMapping(value = "apiUser", method = RequestMethod.GET)
-    public String user(String username, Model model, ModelMap modelMap) {
-        model.addAttribute("apiUser", apiUserService.getUserByUsername(username));
-
-        modelMap.addAttribute("logotype", new ImageForm());
-        apiUserRepository.findById(1L).ifPresent(apiUserEntity -> modelMap.addAttribute("myimg", new String(Base64.getEncoder().encode(
-                apiUserEntity.getLogotype()), StandardCharsets.UTF_8)));
-
-        return "user-edit";
-    }
-
-
-    @PostMapping("/register")
-    String signUp(ApiUserDto apiUserDto) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+    @PostMapping("/save")
+    public String save(ApiUserDto apiUserDto, RedirectAttributes redirectAttributes, Model model) throws MessagingException, IOException, ApiUserAlreadyExistsException {
         apiUserService.signUpUser(apiUserDto);
-        return "redirect:/login";
-    }
 
+        if (apiUserDto != null) {
+            redirectAttributes.addFlashAttribute("successmessage", "User successful register");
+            return "redirect:/register";
+        } else {
+            model.addAttribute("errormessage", "User register faild");
+            model.addAttribute("user", apiUserDto);
+
+            return "redirect:/login";
+        }
+    }
 }
