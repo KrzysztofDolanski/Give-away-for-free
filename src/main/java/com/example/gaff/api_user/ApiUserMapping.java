@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 public class ApiUserMapping {
 
 
+
     public ApiUser mapToApiUser(ApiUserDto apiUserDto) {
         return ApiUser.builder()
                 .username(apiUserDto.getUsername())
@@ -16,7 +17,7 @@ public class ApiUserMapping {
                 .zipCode(apiUserDto.getZipCode())
                 .region(apiUserDto.getRegion())
                 .email(apiUserDto.getEmail())
-                .logotype(apiUserDto.getLogotype())
+                .files(apiUserDto.getFiles())
                 .article(apiUserDto.getArticle())
                 .booking(apiUserDto.getBooking())
                 .dateOfRegistration(apiUserDto.getDateOfRegistration())
@@ -34,7 +35,6 @@ public class ApiUserMapping {
                 .zipCode(apiUser.getZipCode())
                 .region(apiUser.getRegion())
                 .email(apiUser.getEmail())
-                .logotype(apiUser.getLogotype())
                 .article(apiUser.getArticle())
                 .booking(apiUser.getBooking())
                 .dateOfRegistration(apiUser.getDateOfRegistration())

@@ -2,9 +2,14 @@ package com.example.gaff.api_user;
 
 import com.example.gaff.article.Article;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
+import com.example.gaff.image.UploadPathImpl;
+import com.example.gaff.image.UploadPathService;
+import com.example.gaff.image.UserFileRepository;
+import com.example.gaff.image.UserFiles;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,15 +17,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -35,6 +40,8 @@ public class ApiUserService implements UserDetailsService, MailService {
     final ConfirmationTokenRepository confirmationTokenRepository;
     final ConfirmationTokenService confirmationTokenService;
     final GmailService gmailService;
+    final UploadPathService uploadPathService;
+    final UserFileRepository userFileRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -53,13 +60,36 @@ public class ApiUserService implements UserDetailsService, MailService {
 
         final String encryptedPassword = bCryptPasswordEncoder().encode(apiUserDto.getPassword());
         apiUserDto.setPassword(encryptedPassword);
-//        File file = new File(Arrays.toString(apiUserDto.getLogotype()));
-//        byte[] bytes = Files.readAllBytes(file.toPath());
-//        apiUserDto.setLogotype(bytes);
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         apiUserDto.setDateOfRegistration(LocalDateTime.now().format(df));
         ApiUser apiUser = apiUserMapping.mapToApiUser(apiUserDto);
+
+        if (apiUser.getFiles()!=null && apiUser.getFiles().size()>0){
+            for (MultipartFile file : apiUser.getFiles()){
+                String fileName = file.getOriginalFilename();
+                String modifiedFileName = FilenameUtils.getBaseName(fileName + "_" + System.currentTimeMillis()+"."+FilenameUtils.getExtension(fileName));
+                File storeFile = uploadPathService.getFilePath(modifiedFileName, "images");
+                if (storeFile!=null){
+                    try {
+                        FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+
+                UserFiles files = new UserFiles();
+                files.setFileExtension(FilenameUtils.getExtension(fileName));
+                files.setFileName(fileName);
+                files.setModifiedFilename(modifiedFileName);
+                files.setUser(apiUser);
+                userFileRepository.save(files);
+            }
+        }
+
         apiUserRepository.save(apiUser);
+
+
+
         ConfirmationToken confirmationToken = new ConfirmationToken(apiUser);
         confirmationTokenRepository.save(confirmationToken);
         sendConfirmationEmail(apiUserDto.getEmail(), confirmationToken.getConfirmationToken());
@@ -97,5 +127,10 @@ public class ApiUserService implements UserDetailsService, MailService {
 
     public ApiUser getUserByUsername(String username) {
         return apiUserRepository.findByUsername(username);
+    }
+
+
+    public List<ApiUser> getAllUsers() {
+        return apiUserRepository.findAll();
     }
 }
