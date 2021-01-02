@@ -7,16 +7,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,12 +26,12 @@ public class ApiUserController {
 
 
     private final ApiUserService apiUserService;
-
     private final ConfirmationTokenService confirmationTokenService;
-    private final ApiUserRepository apiUserRepository;
 
-    @Value("${uploadDir}")
-    private String uploadFolder;
+
+//
+//    @Value("${uploadDir}")
+//    private String uploadFolder;
 
 
     @GetMapping("/login")
@@ -65,17 +64,57 @@ public class ApiUserController {
 
 
     @PostMapping("/save")
-    public String save(ApiUserDto apiUserDto, RedirectAttributes redirectAttributes, Model model) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+    public String save(@ModelAttribute ApiUserDto apiUserDto, RedirectAttributes redirectAttributes, Model model) throws MessagingException, IOException, ApiUserAlreadyExistsException {
         apiUserService.signUpUser(apiUserDto);
+        ApiUser userByUsername = apiUserService.getUserByUsername(apiUserDto.getUsername());
 
-        if (apiUserDto != null) {
+        if (userByUsername != null) {
             redirectAttributes.addFlashAttribute("successmessage", "User successful register");
             return "redirect:/register";
         } else {
-            model.addAttribute("errormessage", "User register faild");
+            model.addAttribute("errormessage", "User register failed");
             model.addAttribute("user", apiUserDto);
-
-            return "redirect:/login";
+            return "user-edit";
         }
     }
+
+    @GetMapping("/user")
+    String userPage(String username, Model model) {
+        ApiUser apiUser = apiUserService.getUserByUsername(username);
+        model.addAttribute("apiUser", apiUser);
+        return "user-edit";
+    }
+
+    @GetMapping(value = "/edituser/{userId}")
+    public String editUser(@PathVariable Long userId, Model model){
+        ApiUserDto apiUserDto = apiUserService.findById(userId);
+
+        List<UserFiles> userFiles = apiUserService.findFilesByUserId(userId);
+        List<ApiUser> users = apiUserService.getAllUsers();
+        String fileName = userFiles.get(0).getModifiedFilename();
+
+        model.addAttribute("users", users);
+        model.addAttribute("user", apiUserDto);
+        model.addAttribute("userFiles", userFiles);
+        model.addAttribute("isAdd", false);
+        model.addAttribute("fileName", fileName);
+
+        return "view/user";
+    }
+
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute ApiUserDto apiUserDto, RedirectAttributes redirectAttributes, Model model) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+        ApiUserDto apiUserDto1 = apiUserService.update(apiUserDto);
+
+        if (apiUserDto1 != null) {
+            redirectAttributes.addFlashAttribute("successmessage", "User updated with success");
+            return "redirect:/register";
+        } else {
+            model.addAttribute("errormessage", "User update failed");
+            model.addAttribute("user", apiUserDto);
+            return "view/user";
+        }
+    }
+
 }

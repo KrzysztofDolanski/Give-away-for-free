@@ -4,6 +4,54 @@
     <meta charset="UTF-8">
     <title>User panel</title>
 
+    <link th:href="@{./css/bootstrap.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{./js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{./js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{./js/propper.js}"></script>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        .imagecontainer {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+            transition: .3s ease;
+            border-radius: 50%;
+        }
+
+        .imagecontainer:hover .overlay {
+            opacity: 1;
+        }
+
+        .icon {
+            color: white;
+            font-size: 40px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .fa-trash:hover {
+            color: red;
+        }
+    </style>
 
 </head>
 <body>
@@ -28,13 +76,50 @@
         <td th:text="${apiUser.getRegion()}"></td>
         <td th:text="${apiUser.getCity()}"></td>
     </tr>
-
 </table>
 
+<form action="#" th:action="@{${isAdd}?'/save':'update'}" th:object="${user}" method="get"
+      enctype="multipart/form-data">
+        <div class="form-group">
+            <span th:each="file, itrStat : ${userFiles}" class="imagecontainer" th:id="'imageIndex'+${itrStat.index}">
+                <img src="@{'/images/'+${file.modifiedFileName}}"
+                     style="width:80px; height:80px; border-radius:50%;margin-left:10px;" class="image"
+                     th:if="${file.fileExtension != 'xlsx' and file.fileExtension != 'pdf' and file.fileExtension != 'xls'}">
+                <img src="@{'/img/pdf.jpg'" style="width:80px; height:80px; border-radius:50%;margin-left:10px;"
+                     class="image" th:if="${file.fileExtension == 'pdf'}">
+                <img src="@{'/img/excel.jpg'" style="width:80px; height:80px; border-radius:50%;margin-left:10px;"
+                     class="image" th:if="${file.fileExtension == 'xls' or file.fileExtension == 'xlsx'}">
+                <span class="overlay">
+                    <a href="#" class="icon image-confirm-delete" title="image delete"
+                       th:attr="data-id=${itrStat.index}, data-name=${file.modifiedFilename}">
+                        <i class="fa fa-trash" style="color:deeppink;"></i>
+                    </a>
+                </span>
+            </span>
+            <!--        </div>-->
+            <!--        <td>-->
+            <!--            <a th:href="@{'/edituser/'+${user.id}}"><i class="fa fa-edit" style="font-size:21px"></i> </a>-->
+            <!--        </td>-->
+        </div>
+</form>
 
-<div th:if="${myimg}">
-    <img th:src="@{'data:image/png;base64,' + ${myimg}}" alt="notworking"/>
-</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    $(function(){
+        var images = [];
+        $('.image-confirm-delete').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var name = $(this).data('name');
+            images.push(name);
+            $('#removeImages').val(images);
+            $('#imageIndex' + id).hide();
+        });
+    });
+</script>
 
 </body>
 </html>

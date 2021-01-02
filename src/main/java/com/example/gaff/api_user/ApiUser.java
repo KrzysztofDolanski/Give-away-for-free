@@ -42,15 +42,12 @@ public class ApiUser implements UserDetails, Serializable {
     private String dateOfRegistration;
     private boolean isActive;
 
-//    @Lob
-////    @Column(length = 45, nullable = true, columnDefinition = "LONGBLOB")
-//    private byte[] logotype;
 
     @Transient
     private List<MultipartFile> files = new ArrayList<MultipartFile>();
+
     @Transient
     private List<String> removeImages = new ArrayList<>();
-
 
     @Builder.Default
     private ApiUserRole userRole = ApiUserRole.USER;
@@ -61,9 +58,9 @@ public class ApiUser implements UserDetails, Serializable {
     @Builder.Default
     private Boolean locked = false;
 
-
     @OneToMany
     private List<Article> article;
+
     @OneToMany
     private List<Booking> booking;
 
@@ -75,7 +72,6 @@ public class ApiUser implements UserDetails, Serializable {
         final SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(userRole.name());
         return Collections.singletonList(simpleGrantedAuthority);
     }
-
 
     @Override
     public boolean isAccountNonExpired() {
@@ -96,6 +92,5 @@ public class ApiUser implements UserDetails, Serializable {
     public boolean isEnabled() {
         return enabled;
     }
-
 
 }
