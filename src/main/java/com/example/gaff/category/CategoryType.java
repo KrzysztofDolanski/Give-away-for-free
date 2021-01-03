@@ -6,6 +6,7 @@ public enum CategoryType {
     CHILDREN_PRODUCTS("children products"),
     BEAUTY("beauty"),
     HOUSEHOLD_EQUIPMENT("household equipment"),
+    FOOD("food"),
     OTHER("other");
 
     private String typeOfCategory;
