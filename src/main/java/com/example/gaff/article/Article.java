@@ -23,7 +23,7 @@ public class Article {
     Long id;
     private String title;
     private String description;
-    private byte[] photo;
+    // private byte[] photo; *nice to have
     private ProductCondition productCondition;
     private boolean isAvailable;
     private Long noOfVisits;
