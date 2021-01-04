@@ -6,10 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApiUserDto {
-
 
     private String username;
     private String password;
@@ -28,16 +26,11 @@ public class ApiUserDto {
     private String streetNo;
     private String zipCode;
     private String dateOfRegistration;
-    private boolean isActive;
-    private String logotype;
 
-
-    @OneToMany
+    private List<MultipartFile> files = new ArrayList<MultipartFile>();
+    private List<String> removeImages = new ArrayList<>();
     private List<Article> article;
-    @OneToMany
     private List<Booking> booking;
-
-
-    @OneToOne
     ConfirmationToken confirmationToken;
 }
+
