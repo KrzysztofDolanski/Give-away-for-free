@@ -1,6 +1,8 @@
 package com.example.gaff.api_user;
 
+import com.example.gaff.article.Article;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
+import com.example.gaff.exceptions.NoUsernameException;
 import com.example.gaff.image.UserFiles;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -117,4 +119,16 @@ public class ApiUserController {
         }
     }
 
+    @GetMapping("user/articles")
+    public String showAllArticlesOfLoggedUser(String username, Model model){
+        ApiUser userByUsername = null;
+        try {
+            userByUsername = apiUserService.getUserByUsername(username);
+        } catch (NoUsernameException e){
+            e.getMessage();
+        }
+        List<Article> article = userByUsername.getArticle();
+        model.addAttribute("articles", article);
+        return "user-articles";
+    }
 }
