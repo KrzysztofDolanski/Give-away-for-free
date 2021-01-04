@@ -8,22 +8,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
 @Data
-@Entity
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Article {
+@Builder
+public class ArticleDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     private String title;
     private String description;
-    // private byte[] photo; *nice to have
     private ProductCondition productCondition;
     private boolean isAvailable;
     private Long noOfVisits;
