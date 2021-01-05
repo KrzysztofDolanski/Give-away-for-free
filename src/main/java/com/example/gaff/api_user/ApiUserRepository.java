@@ -12,5 +12,4 @@ public interface ApiUserRepository extends JpaRepository<ApiUser, Long> {
     ApiUser findByUsername(String username);
     ApiUser findByEmail(String email);
 
-
 }

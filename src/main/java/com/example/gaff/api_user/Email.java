@@ -21,7 +21,6 @@ public class Email {
         this.mailSubject = mailSubject;
         this.mailContent = mailContent;
         sent = false;
-
     }
 
     public String getMailAddress() {

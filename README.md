@@ -16,4 +16,7 @@ This application have following functionalities:
 - ordering things that user wanted to get
 - sending by users comments for transaction
 
+## Suggestions
+To display localisation on map use localhost:8080 that api key won't be blocked. 
+
 

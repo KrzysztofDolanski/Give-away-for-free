@@ -2,7 +2,6 @@ package com.example.gaff.api_user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -19,7 +18,6 @@ public class GmailService implements MailService {
 
     @Override
     public void sendEmail(Email email) {
-
         Session session = mailConfiguration.createSession();
         MimeMessage message = new MimeMessage(session);
         try {
