@@ -6,20 +6,22 @@ import org.springframework.stereotype.Component;
 public class ApiUserMapping {
 
 
+
     public ApiUser mapToApiUser(ApiUserDto apiUserDto) {
         return ApiUser.builder()
                 .username(apiUserDto.getUsername())
                 .password(apiUserDto.getPassword())
+                .email(apiUserDto.getEmail())
+                .region(apiUserDto.getRegion())
                 .city(apiUserDto.getCity())
                 .street(apiUserDto.getStreet())
                 .streetNo(apiUserDto.getStreetNo())
                 .zipCode(apiUserDto.getZipCode())
-                .region(apiUserDto.getRegion())
-                .email(apiUserDto.getEmail())
-                .logotype(apiUserDto.getLogotype())
+                .dateOfRegistration(apiUserDto.getDateOfRegistration())
+                .files(apiUserDto.getFiles())
+                .removeImages(apiUserDto.getRemoveImages())
                 .article(apiUserDto.getArticle())
                 .booking(apiUserDto.getBooking())
-                .dateOfRegistration(apiUserDto.getDateOfRegistration())
                 .confirmationToken(apiUserDto.getConfirmationToken())
                 .build();
     }
@@ -28,16 +30,17 @@ public class ApiUserMapping {
         return ApiUserDto.builder()
                 .username(apiUser.getUsername())
                 .password(apiUser.getPassword())
+                .email(apiUser.getEmail())
+                .region(apiUser.getRegion())
                 .city(apiUser.getCity())
                 .street(apiUser.getStreet())
                 .streetNo(apiUser.getStreetNo())
                 .zipCode(apiUser.getZipCode())
-                .region(apiUser.getRegion())
-                .email(apiUser.getEmail())
-                .logotype(apiUser.getLogotype())
+                .dateOfRegistration(apiUser.getDateOfRegistration())
+                .files(apiUser.getFiles())
+                .removeImages(apiUser.getRemoveImages())
                 .article(apiUser.getArticle())
                 .booking(apiUser.getBooking())
-                .dateOfRegistration(apiUser.getDateOfRegistration())
                 .confirmationToken(apiUser.getConfirmationToken())
                 .build();
     }
