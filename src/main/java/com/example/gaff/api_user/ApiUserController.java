@@ -1,5 +1,6 @@
 package com.example.gaff.api_user;
 
+import com.example.gaff.api_user.localisation.GoogleMapsClientProperties;
 import com.example.gaff.article.Article;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import com.example.gaff.exceptions.NoUsernameException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -29,7 +31,9 @@ public class ApiUserController {
 
     private final ApiUserService apiUserService;
     private final ConfirmationTokenService confirmationTokenService;
+    private final GoogleMapsClientProperties googleMapsClientProperties;
 
+    
 
 //
 //    @Value("${uploadDir}")
@@ -84,6 +88,11 @@ public class ApiUserController {
     String userPage(String username, Model model) {
         ApiUser apiUser = apiUserService.getUserByUsername(username);
         model.addAttribute("apiUser", apiUser);
+
+        String uriGoogle = apiUserService.createGoogleMapQuery(username);
+
+        model.addAttribute("uriGoogle", uriGoogle);
+
         return "user-edit";
     }
 
