@@ -1,7 +1,9 @@
 package com.example.gaff.api_user;
 
+import com.example.gaff.api_user.localisation.GoogleMapsClientProperties;
 import com.example.gaff.article.Article;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
+import com.example.gaff.exceptions.NoUsernameException;
 import com.example.gaff.image.UploadPathImpl;
 import com.example.gaff.image.UploadPathService;
 import com.example.gaff.image.UserFileRepository;
@@ -45,6 +47,11 @@ public class ApiUserService implements UserDetailsService, MailService {
     final UploadPathService uploadPathService;
     final UserFileRepository userFileRepository;
     final ServletContext servletContext;
+
+
+    private static final String API_URL = "https://www.google.com/maps/embed/v1/place?key=";
+    private static final String QUERY = "&q=";
+    private final GoogleMapsClientProperties googleMapsClientProperties;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -179,5 +186,12 @@ public class ApiUserService implements UserDetailsService, MailService {
             apiUserRepository.save(apiUser1);
         }
             return apiUserMapping.mapToApiUserDto(apiUser1);
+    }
+
+    public String createGoogleMapQuery(String username) throws NoUsernameException {
+        ApiUser byUsername = apiUserRepository.findByUsername(username);
+        if (byUsername.getUsername()!=null){
+        return API_URL+googleMapsClientProperties.getToken()+QUERY+byUsername.getCity()+","+byUsername.getStreet()+byUsername.getStreetNo();
+        } else throw new NoUsernameException("No username: " + username +" found");
     }
 }
