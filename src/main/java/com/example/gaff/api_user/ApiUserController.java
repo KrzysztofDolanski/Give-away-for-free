@@ -1,13 +1,11 @@
 package com.example.gaff.api_user;
 
-import com.example.gaff.api_user.localisation.GoogleMapsClientProperties;
 import com.example.gaff.article.Article;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import com.example.gaff.exceptions.NoUsernameException;
 import com.example.gaff.image.UserFiles;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -31,13 +28,6 @@ public class ApiUserController {
 
     private final ApiUserService apiUserService;
     private final ConfirmationTokenService confirmationTokenService;
-    private final GoogleMapsClientProperties googleMapsClientProperties;
-
-    
-
-//
-//    @Value("${uploadDir}")
-//    private String uploadFolder;
 
 
     @GetMapping("/login")

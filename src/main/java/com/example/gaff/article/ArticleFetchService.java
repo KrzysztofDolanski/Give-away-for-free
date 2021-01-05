@@ -12,7 +12,6 @@ public class ArticleFetchService {
     private final ArticleRepository articleRepository;
 
     List<Article> getAllArticle() {
-
         return articleRepository.findAll();
     }
 
@@ -24,6 +23,4 @@ public class ArticleFetchService {
         return articleRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("Not found location: " + id));
     }
-
-
 }

@@ -1,6 +1,5 @@
 package com.example.gaff.api_user;
 
-
 import org.springframework.stereotype.Component;
 
 import javax.mail.Session;

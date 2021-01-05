@@ -4,7 +4,6 @@ import com.example.gaff.api_user.localisation.GoogleMapsClientProperties;
 import com.example.gaff.article.Article;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import com.example.gaff.exceptions.NoUsernameException;
-import com.example.gaff.image.UploadPathImpl;
 import com.example.gaff.image.UploadPathService;
 import com.example.gaff.image.UserFileRepository;
 import com.example.gaff.image.UserFiles;
@@ -26,7 +25,6 @@ import javax.mail.MessagingException;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
-
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -67,13 +65,11 @@ public class ApiUserService implements UserDetailsService, MailService {
         if ((apiUserRepository.findByUsername(apiUserDto.getUsername())) != null) {
             throw new ApiUserAlreadyExistsException("User with this name already exist");
         }
-
         final String encryptedPassword = bCryptPasswordEncoder().encode(apiUserDto.getPassword());
         apiUserDto.setPassword(encryptedPassword);
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         apiUserDto.setDateOfRegistration(LocalDateTime.now().format(df));
         ApiUser apiUser = apiUserMapping.mapToApiUser(apiUserDto);
-
         if (apiUser.getFiles() != null && apiUser.getFiles().size() > 0) {
             for (MultipartFile file : apiUser.getFiles()) {
                 String fileName = file.getOriginalFilename();
@@ -86,7 +82,6 @@ public class ApiUserService implements UserDetailsService, MailService {
                         e.printStackTrace();
                     }
                 }
-
                 UserFiles files = new UserFiles();
                 files.setFileExtension(FilenameUtils.getExtension(fileName));
                 files.setFileName(fileName);
@@ -95,9 +90,7 @@ public class ApiUserService implements UserDetailsService, MailService {
                 userFileRepository.save(files);
             }
         }
-
         apiUserRepository.save(apiUser);
-
         ConfirmationToken confirmationToken = new ConfirmationToken(apiUser);
         confirmationTokenRepository.save(confirmationToken);
         sendConfirmationEmail(apiUserDto.getEmail(), confirmationToken.getConfirmationToken());
@@ -116,9 +109,7 @@ public class ApiUserService implements UserDetailsService, MailService {
         MailConfiguration mailConfiguration = new MailConfiguration();
         Email email = new Email(userEmail, subject, content);
         new GmailService(mailConfiguration).sendEmail(email);
-
     }
-
 
     public PasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -149,7 +140,6 @@ public class ApiUserService implements UserDetailsService, MailService {
     public List<UserFiles> findFilesByUserId(Long userId) {
         return userFileRepository.findUserFilesByUserId(userId);
     }
-
 
     public ApiUserDto update(ApiUserDto apiUserDto) {
         ApiUser apiUser1 = apiUserMapping.mapToApiUser(apiUserDto);
