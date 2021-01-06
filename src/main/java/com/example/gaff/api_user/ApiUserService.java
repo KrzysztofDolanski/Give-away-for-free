@@ -4,6 +4,7 @@ import com.example.gaff.api_user.localisation.GoogleMapsClientProperties;
 import com.example.gaff.article.Article;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import com.example.gaff.exceptions.NoUsernameException;
+import com.example.gaff.exceptions.UserIdNotFoundException;
 import com.example.gaff.image.UploadPathService;
 import com.example.gaff.image.UserFileRepository;
 import com.example.gaff.image.UserFiles;
@@ -58,6 +59,15 @@ public class ApiUserService implements UserDetailsService, MailService {
             return byUsername;
         } else {
             throw new UsernameNotFoundException(MessageFormat.format("User with username {0} cannot be found. ", username));
+        }
+    }
+
+    public UserDetails findUserById(Long id){
+        ApiUser apiUser = apiUserRepository.findById(id).orElseThrow();
+        if (!apiUser.getUsername().isEmpty()){
+            return apiUser;
+        } else {
+            throw new UserIdNotFoundException("Id: " + id +" cant reach any user");
         }
     }
 

@@ -49,6 +49,7 @@ public class ApiUser implements UserDetails, Serializable {
     @Transient
     private List<String> removeImages = new ArrayList<>();
 
+
     @Builder.Default
     private ApiUserRole userRole = ApiUserRole.USER;
 
