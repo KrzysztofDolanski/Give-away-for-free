@@ -1,5 +1,5 @@
 # give-away-for-free-app
-This app is for the community to reuse used items rather than throw them away.
+This app is for the community to reuse items rather than throw them away.
 
 ## Prerequisites
 Used technologies:
