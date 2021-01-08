@@ -1,41 +1,22 @@
 package com.example.gaff.booking;
 
-import com.example.gaff.article.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Component
-@RequiredArgsConstructor
-public class BookingService {
+public interface BookingService {
 
-    private final BookingRepository bookingRepository;
- //   private final ApiUserService apiUserService;
+    Page<Booking> getAllBookingPaged(int pageNum);
 
-    List<Booking> getAllBooking(){
-        return bookingRepository.findAll();
-    }
+    List<Booking> getAllBookings();
 
-    Booking findBookingById(Long id) {
-        return bookingRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("not found booking" + id));
-    }
+    Booking getBookingById(long bookingId);
 
+    Booking saveBooking(Booking booking);
 
+    void deleteBookingById(long bookingId);
 
-    // get reservation for logged user
-    //    // get reservation for logged user
-//    @Transactional
-//    public Optional<Booking> getBookingForLoggedUserById(long bookingId) {
-//
-//        return bookingRepository.findById(bookingId);
-//    }
-//
-//    //get all reservations for logger user
-//    @Transactional
-//    public Collection<Booking> getBookingForLoggedUser() {
-//        return bookingRepository.findAllById((ApiUserService.g))
-//    }
-
+    List<Booking> getAllBookingsByApiUserAndCollectionDateTime(LocalDate collectionDate);
 }

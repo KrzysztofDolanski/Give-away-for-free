@@ -8,6 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -17,19 +21,21 @@ public class BookingController {
 
     final ArticleFetchService articleFetchService;
     final ApiUserService apiUserService;
-    final BookingService bookingService;
+    final BookingServiceImpl bookingService;
 
     @GetMapping("/booking/new")
-    public String newBooking(Model model) {
+    public String showNewBookingPage(Model model) {
         model.addAttribute("booking", new Booking());
+        model.addAttribute("article", articleFetchService.getAllArticle());
+        model.addAttribute("apiUser", apiUserService.getAllUsers());
         return "newBooking";
     }
 
     @PostMapping("/booking/new")
     public String saveBooking(@ModelAttribute("booking") Booking booking, BindingResult bindingResult,
-                              @RequestParam("apiUser") long userId,
-                                //@RequestParam("collectionDateTime") LocalDateTime  collectionDateTime
-                              @RequestParam("article") long articleId, Model model) {
+//                              @RequestParam("apiUser") long userId,
+//                              @RequestParam("article") long articleId,
+                              @RequestParam("collectionDate") LocalDateTime collectionDT, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             model.addAttribute("booking", new Booking());
@@ -37,24 +43,77 @@ public class BookingController {
             model.addAttribute("apiUser", apiUserService.getAllUsers());
             return "newBooking";
         }
-        apiUserService.findById(userId);
-        articleFetchService.findArticleById(articleId);
+        booking.setArticle(articleFetchService.getAllArticle());
+        booking.setApiUsers(apiUserService.getAllUsers());
+        booking.setCollectionDateTime(collectionDT);
+        bookingService.saveBooking(booking);
 
-        // daty rezerwacji, odbipru, czas odbioru/
+        model.addAttribute("bookings", bookingService.getAllBookingPaged(0));
+        model.addAttribute("currentPage", 0);
+        return "bookings";
 
-        return "booking";
     }
 
-    @GetMapping("/bookingList")
-    public List<Booking> BookingList(){
-        return bookingService.getAllBooking();
+    @GetMapping("/booking/delete")
+    public String deleteBooking(@PathParam("bookingId") long bookingId, Model model) {
+        bookingService.deleteBookingById(bookingId);
+        model.addAttribute("bookings", bookingService.getAllBookingPaged(0));
+        model.addAttribute("currentPage", 0);
+        return "bookings";
+
     }
 
-    @DeleteMapping("/booking/delete")
-    public void deleteBookingById(@PathVariable Long bookingId) {
+    @GetMapping("/bookings")
+    public String showBookingList(@RequestParam(defaultValue = "0") int pageNo, Model model) {
+        model.addAttribute("bookings", bookingService.getAllBookingPaged(pageNo));
+        model.addAttribute("currentPage", pageNo);
+        return "bookings";
 
-        bookingService.findBookingById(bookingId);
     }
+
+//    @GetMapping("booking/search")
+//    public String showSearchBooking(Model model) {
+//        model.addAttribute("apiUsers", apiUserService.getAllUsers());
+//        model.addAttribute("bookings", null);
+//        return "searchBookings";
+//
+//    }
+
+    @PostMapping("/booking/search")
+    public String searchBooking (@RequestParam("collectionDateTime") String collectionDT, Model model) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate collectionTime = LocalDate.parse(collectionDT, dtf);
+
+        List<Booking> bookings = bookingService.getAllBookingsByApiUserAndCollectionDateTime(collectionTime);
+        if (bookings.isEmpty()) {
+            model.addAttribute("notFound");
+        }else {
+            model.addAttribute("bookings", bookings);
+        }
+
+        model.addAttribute("bookings", apiUserService.getAllUsers());
+        return "searchBooking";
+    }
+
+
+//
+//    @GetMapping("/bookingList")
+//    public List<Booking> BookingList(){
+//        return bookingService.getAllBooking();
+//    }
+//
+//    @DeleteMapping("/booking/delete")
+//    public void deleteBookingById(@PathVariable Long bookingId) {
+//
+//        bookingService.findBookingById(bookingId);
+//    }
+
+    //    @GetMapping("/booking/new")
+//    public String newBooking(Model model) {
+//        model.addAttribute("booking", new Booking());
+//        return "newBooking";
+//    }
+//
 
 
 }
