@@ -7,11 +7,20 @@
 <body>
 
 <div th:fragment="navigator">
-    <table>
 
+
+    <table style="margin-left: 600px">
         <tr>
             <td>
                 <a th:href="@{/user/edit}">Edytuj użytkownika</a>
+                <a th:href="@{/login}">Logowanie</a>
+                <a th:href="@{/home}">Wyszukaj użytkownika</a>
+                <form th:action="@{/user}" th:method="get">
+                <input type="text" id="username" name="username" value="Wpisz użytkownika">
+                <input type="submit">
+                </form>
+                <a th:href="@{/register}">Zarejstruj się</a>
+                <a th:href="@{/user/articles}">Twoje śmieci</a>
             </td>
 
         </tr>
@@ -19,4 +28,5 @@
 </div>
 
 </body>
+
 </html>

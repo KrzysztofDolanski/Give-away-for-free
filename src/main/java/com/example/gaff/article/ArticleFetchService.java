@@ -1,15 +1,27 @@
 package com.example.gaff.article;
 
 import com.example.gaff.article.exception.NotFoundException;
+import com.example.gaff.article.image.ArticleFileRepository;
+import com.example.gaff.article.image.ArticleFiles;
+import com.example.gaff.image.UploadPathService;
+import com.example.gaff.image.UserFiles;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class ArticleFetchService {
     private final ArticleRepository articleRepository;
+    private final ArticleMapper articleMapper;
+    private final UploadPathService uploadPathService;
+    private final ArticleFileRepository articleFileRepository;
 
     List<Article> getAllArticle() {
         return articleRepository.findAll();
@@ -23,4 +35,30 @@ public class ArticleFetchService {
         return articleRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("Not found location: " + id));
     }
+
+    public void saveArticle(ArticleDto articleDto){
+        Article article = articleMapper.mapToArticle(articleDto);
+        if (article.getFiles() != null && article.getFiles().size() > 0) {
+            for (MultipartFile file : article.getFiles()) {
+                String fileName = file.getOriginalFilename();
+                String modifiedFileName = FilenameUtils.getBaseName(fileName) + "_" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(fileName);
+                File storeFile = uploadPathService.getFilePath(modifiedFileName, "/images");
+                if (storeFile != null) {
+                    try {
+                        FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                ArticleFiles files = new ArticleFiles();
+                files.setFileExtension(FilenameUtils.getExtension(fileName));
+                files.setFileName(fileName);
+                files.setModifiedFilename(modifiedFileName);
+                files.setArticle(article);
+                articleFileRepository.save(files);
+            }
+        }
+        articleRepository.save(article);
+    }
+
 }
