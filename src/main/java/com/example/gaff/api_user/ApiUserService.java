@@ -62,14 +62,6 @@ public class ApiUserService implements UserDetailsService, MailService {
         }
     }
 
-    public UserDetails findUserById(Long id){
-        ApiUser apiUser = apiUserRepository.findById(id).orElseThrow();
-        if (!apiUser.getUsername().isEmpty()){
-            return apiUser;
-        } else {
-            throw new UserIdNotFoundException("Id: " + id +" cant reach any user");
-        }
-    }
 
     public void signUpUser(ApiUserDto apiUserDto) throws MessagingException, IOException, ApiUserAlreadyExistsException {
         if ((apiUserRepository.findByUsername(apiUserDto.getUsername())) != null) {

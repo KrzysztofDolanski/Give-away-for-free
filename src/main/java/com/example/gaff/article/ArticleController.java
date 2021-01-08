@@ -1,40 +1,93 @@
 package com.example.gaff.article;
 
+import com.example.gaff.api_user.ApiUser;
+import com.example.gaff.api_user.ApiUserDto;
+import com.example.gaff.api_user.ApiUserService;
+import com.example.gaff.article.image.ArticleFiles;
+import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
+import com.example.gaff.image.UserFiles;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @Log4j2
 public class ArticleController {
-    final ArticleFetchService articleFetchService;
-    final ArticleCreateService articleCreateService;
-    final ArticleMapper articleMapper;
+    private final ArticleFetchService articleFetchService;
+    private final ArticleCreateService articleCreateService;
+    private final ArticleMapper articleMapper;
+    private final ArticleFetchService articleService;
+    private final ApiUserService apiUserService;
+
+//    @GetMapping("/article")
+//    List<Article> getAllArticle() {
+//        return articleFetchService.getAllArticle();
+//    }
+//
+//    @GetMapping("/article/{title}")
+//    ArticleDto findArticleByTitle(String title) {
+//        Article article = articleFetchService.findArticleByTitle(title);
+//        return articleMapper.mapToArticleDto(article);
+//    }
+//
+//    @GetMapping("/article/{id}")
+//    ArticleDto findByArticleById(@PathVariable Long id ){
+//        Article article = articleFetchService.findArticleById(id);
+//        return articleMapper.mapToArticleDto(article);
+//    }
+//
+//    @PostMapping
+//    void addArticle() {
+//    }
+
+
+    @GetMapping(value = "/savearticle")
+    public String articles(Model model){
+        List<Article> allArticles = articleFetchService.getAllArticle();
+        model.addAttribute("articles", allArticles);
+        model.addAttribute("article", new Article());
+        model.addAttribute("articleFiles", new ArrayList<ArticleFiles>());
+        model.addAttribute("isAdd", true);
+        return "article/article";
+    }
+
+
+    @PostMapping("/save/article")
+    public String save(@ModelAttribute ArticleDto articleDto, RedirectAttributes redirectAttributes, Model model) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+        articleService.saveArticle(articleDto);
+        Article articleById = articleFetchService.findArticleById(articleDto.getId());
+
+        if (articleById != null) {
+            redirectAttributes.addFlashAttribute("successmessage", "Article successful saved");
+            return "redirect:/article/article";
+        } else {
+            model.addAttribute("errormessage", "Article saving failed");
+            model.addAttribute("article", articleDto);
+            return "article/article-edit";
+        }
+    }
 
     @GetMapping("/article")
-    List<Article> getAllArticle() {
-        return articleFetchService.getAllArticle();
+    String articlePage(Long id, Model model) {
+        Article articleById = articleFetchService.findArticleById(id);
+        model.addAttribute("article", articleById);
+        ApiUser user = articleById.getUser();
+        String username = user.getUsername();
+
+        String uriGoogle = apiUserService.createGoogleMapQuery(username);
+
+        model.addAttribute("uriGoogle", uriGoogle);
+
+        return "article/article-edit";
     }
 
-    @GetMapping("/article/{title}")
-    ArticleDto findArticleByTitle(String title) {
-        Article article = articleFetchService.findArticleByTitle(title);
-        return articleMapper.mapToArticleDto(article);
-    }
-
-    @GetMapping("/article/{id}")
-    ArticleDto findByArticleById(@PathVariable Long id ){
-        Article article = articleFetchService.findArticleById(id);
-        return articleMapper.mapToArticleDto(article);
-    }
-
-    @PostMapping
-    void addArticle() {
-    }
 }
