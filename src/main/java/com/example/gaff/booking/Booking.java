@@ -38,4 +38,7 @@ public class Booking {
     @OneToMany
     List<ApiUser> apiUsers = new ArrayList<>();
 
+    public void setArticle(List<Article> allArticle) {
+
+    }
 }
