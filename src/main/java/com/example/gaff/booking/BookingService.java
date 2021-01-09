@@ -3,7 +3,6 @@ package com.example.gaff.booking;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BookingService {
