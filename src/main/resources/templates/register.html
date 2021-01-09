@@ -130,12 +130,6 @@
                 <img th:src="@{'/images/'+${file.modifiedFilename}}"
                      style="width:80px; height:80px; border-radius: 50%; margin-left:10px;" class="image"
                      th:if="${file.fileExtension != 'xlsx' and file.fileExtension != 'pdf' and file.fileExtension != 'xls'}">
-                <img th:src="@{'C:\Users\dell\IdeaProjects\gaff\src\main\resources\static\img\pdf.jpg'}"
-                     style="width:80px; height:80px; border-radius: 50%; margin-left: 10px;"
-                     class="image" th:if="${file.fileExtension == 'pdf'}">
-                <img th:src="@{'C:\Users\dell\IdeaProjects\gaff\src\main\resources\static\img\excel.jpg'}"
-                     style="width:80px; height:80px; border-radius: 50%; margin-left:10px;"
-                     class="image" th:if="${file.fileExtension == 'xls' or file.fileExtension == 'xlsx'}">
                 <span class="overlay">
                     <a href="#" class="icon image-confirm-delete" title="image delete"
                        th:attr="data-id=${itrStat.index}, data-name=${file.modifiedFilename}">
@@ -163,10 +157,6 @@
     </form>
 
 </div>
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
     $(function () {
@@ -196,7 +186,6 @@
         reader.onload = function (e) {
             $('#thumbnail').attr('src', e.target.result);
         };
-        // reader.readAsBinaryString(file)
         reader.readAsDataURL(file);
     }
 </script>
