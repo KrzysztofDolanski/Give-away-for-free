@@ -21,7 +21,7 @@ import java.util.List;
 @Builder
 public class ArticleDto {
 
-    Long id;
+
     private String title;
     private String description;
     private ProductCondition productCondition;

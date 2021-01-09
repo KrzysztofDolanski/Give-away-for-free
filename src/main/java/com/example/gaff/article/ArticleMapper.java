@@ -7,7 +7,6 @@ public class ArticleMapper {
 
     ArticleDto mapToArticleDto(Article newArticle) {
         return ArticleDto.builder()
-                .id(newArticle.getId())
                 .title(newArticle.getTitle())
                 .description(newArticle.getDescription())
                 .productCondition(newArticle.getProductCondition())
@@ -23,7 +22,6 @@ public class ArticleMapper {
 
     public Article mapToArticle(ArticleDto articleDto) {
         return Article.builder()
-                .id(articleDto.getId())
                 .title(articleDto.getTitle())
                 .description(articleDto.getDescription())
                 .productCondition(articleDto.getProductCondition())

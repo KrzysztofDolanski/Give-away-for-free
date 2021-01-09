@@ -1,11 +1,9 @@
 package com.example.gaff.article;
 
-import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.api_user.ApiUserDto;
 import com.example.gaff.api_user.ApiUserService;
-import com.example.gaff.article.image.ArticleFiles;
+import com.example.gaff.image.ArticleFiles;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
-import com.example.gaff.image.UserFiles;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -23,7 +21,6 @@ import java.util.List;
 @Log4j2
 public class ArticleController {
     private final ArticleFetchService articleFetchService;
-    private final ArticleCreateService articleCreateService;
     private final ArticleMapper articleMapper;
     private final ArticleFetchService articleService;
     private final ApiUserService apiUserService;
@@ -50,7 +47,7 @@ public class ArticleController {
 //    }
 
 
-    @GetMapping(value = "/savearticle")
+    @GetMapping(value = "/save/article")
     public String articles(Model model){
         List<Article> allArticles = articleFetchService.getAllArticle();
         model.addAttribute("articles", allArticles);
@@ -61,12 +58,12 @@ public class ArticleController {
     }
 
 
-    @PostMapping("/save/article")
+    @PostMapping("/save/saveA")
     public String save(@ModelAttribute ArticleDto articleDto, RedirectAttributes redirectAttributes, Model model) throws MessagingException, IOException, ApiUserAlreadyExistsException {
         articleService.saveArticle(articleDto);
-        Article articleById = articleFetchService.findArticleById(articleDto.getId());
+        Article articleByTitle = articleFetchService.findArticleByTitle(articleDto.getTitle());
 
-        if (articleById != null) {
+        if (articleByTitle != null) {
             redirectAttributes.addFlashAttribute("successmessage", "Article successful saved");
             return "redirect:/article/article";
         } else {
@@ -80,14 +77,28 @@ public class ArticleController {
     String articlePage(Long id, Model model) {
         Article articleById = articleFetchService.findArticleById(id);
         model.addAttribute("article", articleById);
-        ApiUser user = articleById.getUser();
-        String username = user.getUsername();
-
-        String uriGoogle = apiUserService.createGoogleMapQuery(username);
-
-        model.addAttribute("uriGoogle", uriGoogle);
+//        ApiUser user = articleById.getUser();
+//        String username = user.getUsername();
+//
+//        String uriGoogle = apiUserService.createGoogleMapQuery(username);
+//
+//        model.addAttribute("uriGoogle", uriGoogle);
 
         return "article/article-edit";
+    }
+
+    @PostMapping("/updateA")
+    public String update(@ModelAttribute ArticleDto articleDto, RedirectAttributes redirectAttributes, Model model) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+//        ApiUserDto apiUserDto1 = apiUserService.update(articleDto);
+//
+//        if (apiUserDto1 != null) {
+//            redirectAttributes.addFlashAttribute("successmessage", "User updated with success");
+//            return "redirect:/register";
+//        } else {
+//            model.addAttribute("errormessage", "User update failed");
+            model.addAttribute("article", articleDto);
+            return "view/user";
+//        }
     }
 
 }
