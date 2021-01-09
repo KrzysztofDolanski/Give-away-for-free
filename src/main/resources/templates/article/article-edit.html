@@ -9,8 +9,8 @@
 <table>
     <th>Title</th>
     <th>Description</th>
-    <th>Condition</th>
-    <th>Is available?</th>
+<!--    <th>Condition</th>-->
+<!--    <th>Is available?</th>-->
     <th>Logotyp</th>
 
 
@@ -18,17 +18,17 @@
     <tr th:action="@{/article}" th:object="${article}" th:method="get">
         <td th:text="${article.getTitle()}"></td>
         <td th:text="${article.getDescription()}"></td>
-        <td th:text="${article.getCondition()}"></td>
-        <td th:text="${article.getIsAvailable()}"></td>
+<!--        <td th:text="${article.getCondition()}"></td>-->
+<!--        <td th:text="${article.getIsAvailable()}"></td>-->
 
-        <p>
-            <iframe
-                    width="600"
-                    height="450"
-                    frameborder="0" style="border:0"
-                    th:src= "${uriGoogle}" allowfullscreen>
-            </iframe>
-        </p>
+<!--        <p>-->
+<!--            <iframe-->
+<!--                    width="600"-->
+<!--                    height="450"-->
+<!--                    frameborder="0" style="border:0"-->
+<!--                    th:src= "${uriGoogle}" allowfullscreen>-->
+<!--            </iframe>-->
+<!--        </p>-->
     </tr>
 </table>
 

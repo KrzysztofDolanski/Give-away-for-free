@@ -1,4 +1,4 @@
-package com.example.gaff.article.exception;
+package com.example.gaff.exceptions;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

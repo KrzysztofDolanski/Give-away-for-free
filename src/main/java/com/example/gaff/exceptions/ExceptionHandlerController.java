@@ -1,4 +1,4 @@
-package com.example.gaff.article.exception;
+package com.example.gaff.exceptions;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
