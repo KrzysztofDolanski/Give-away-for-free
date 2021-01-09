@@ -17,7 +17,8 @@ public class ArticleFiles {
     private String fileName;
     private String modifiedFilename;
     private String fileExtension;
+
     @ManyToOne
-    @JoinColumn(name = "article_id")
+    @JoinColumn(name="article_id")
     private Article article;
 }

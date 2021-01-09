@@ -40,11 +40,17 @@ public class Article {
     private Booking booking;
 
     @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Category category;
 
     @Transient
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<MultipartFile> files = new ArrayList<MultipartFile>();
 
     @Transient
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<String> removeImages = new ArrayList<>();
 }
