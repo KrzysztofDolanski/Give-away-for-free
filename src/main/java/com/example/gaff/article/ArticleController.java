@@ -1,5 +1,6 @@
 package com.example.gaff.article;
 
+import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.api_user.ApiUserDto;
 import com.example.gaff.api_user.ApiUserService;
 import com.example.gaff.image.ArticleFiles;
@@ -58,31 +59,32 @@ public class ArticleController {
     }
 
 
-    @PostMapping("/save/saveA")
+    @PostMapping("save/saveA")
     public String save(@ModelAttribute ArticleDto articleDto, RedirectAttributes redirectAttributes, Model model) throws MessagingException, IOException, ApiUserAlreadyExistsException {
         articleService.saveArticle(articleDto);
         Article articleByTitle = articleFetchService.findArticleByTitle(articleDto.getTitle());
 
         if (articleByTitle != null) {
             redirectAttributes.addFlashAttribute("successmessage", "Article successful saved");
-            return "redirect:/article/article";
+            return "redirect:/save/article";
         } else {
             model.addAttribute("errormessage", "Article saving failed");
             model.addAttribute("article", articleDto);
-            return "article/article-edit";
+            return "save/article";
         }
     }
+
 
     @GetMapping("/article")
     String articlePage(Long id, Model model) {
         Article articleById = articleFetchService.findArticleById(id);
         model.addAttribute("article", articleById);
-//        ApiUser user = articleById.getUser();
-//        String username = user.getUsername();
-//
-//        String uriGoogle = apiUserService.createGoogleMapQuery(username);
-//
-//        model.addAttribute("uriGoogle", uriGoogle);
+        ApiUser user = articleById.getUser();
+        String username = user.getUsername();
+
+        String uriGoogle = apiUserService.createGoogleMapQuery(username);
+
+        model.addAttribute("uriGoogle", uriGoogle);
 
         return "article/article-edit";
     }

@@ -12,12 +12,13 @@ import javax.persistence.*;
 public class ArticleFiles {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String fileName;
     private String modifiedFilename;
     private String fileExtension;
+
     @ManyToOne
-    @JoinColumn(name = "article_id")
+    @JoinColumn(name="article_id")
     private Article article;
 }
