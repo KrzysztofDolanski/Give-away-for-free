@@ -5,6 +5,7 @@ import com.example.gaff.api_user.ApiUserService;
 import com.example.gaff.article.ArticleFetchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @Log4j2
 public class BookingController {
@@ -24,38 +25,39 @@ public class BookingController {
     final ApiUserService apiUserService;
     final BookingServiceImpl bookingService;
 
-    @GetMapping("/booking")
+    @GetMapping("/bookings")
     public String showNewBookingPage(Model model) {
         List<ApiUser> allUsers = apiUserService.getAllUsers();
         model.addAttribute("users", allUsers);
         model.addAttribute("booking", new Booking());
         model.addAttribute("article", articleFetchService.getAllArticle());
+        model.addAttribute("isAdd", false);
 //        model.addAttribute("apiUser", apiUserService.getAllUsers());
         return "booking/booking";
     }
 
-    @PostMapping("/booking")
-    public String saveBooking(@ModelAttribute("booking") Booking booking, BindingResult bindingResult,
-//                              @RequestParam("apiUser") long userId,
-//                              @RequestParam("article") long articleId,
-                              @RequestParam("collectionDate") LocalDateTime collectionDT, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
-            model.addAttribute("booking", new Booking());
-            model.addAttribute("article", articleFetchService.getAllArticle());
-            model.addAttribute("users", apiUserService.getAllUsers());
-            return "booking/booking";
-        }
-        booking.setArticle(articleFetchService.getAllArticle().get(0));
-        booking.setApiUsers(apiUserService.getAllUsers());
-        booking.setCollectionDateTime(collectionDT);
-        bookingService.saveBooking(booking);
-
-        model.addAttribute("bookings", bookingService.getAllBookingPaged(0));
-        model.addAttribute("currentPage", 0);
-        return "booking/booking";
-
-    }
+//    @PostMapping("/booking")
+//    public String saveBooking(@ModelAttribute("booking") Booking booking, BindingResult bindingResult,
+////                              @RequestParam("apiUser") long userId,
+////                              @RequestParam("article") long articleId,
+//                              @RequestParam("collectionDate") LocalDateTime collectionDT, Model model) {
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute("errors", bindingResult.getAllErrors());
+//            model.addAttribute("booking", new Booking());
+//            model.addAttribute("article", articleFetchService.getAllArticle());
+//            model.addAttribute("users", apiUserService.getAllUsers());
+//            return "booking/booking";
+//        }
+//        booking.setArticle(articleFetchService.getAllArticle().get(0));
+//        booking.setApiUsers(apiUserService.getAllUsers());
+//        booking.setCollectionDateTime(collectionDT);
+//        bookingService.saveBooking(booking);
+//
+//        model.addAttribute("bookings", bookingService.getAllBookingPaged(0));
+//        model.addAttribute("currentPage", 0);
+//        return "booking/booking";
+//
+//    }
 
     @GetMapping("/booking/delete")
     public String deleteBooking(@PathParam("bookingId") long bookingId, Model model) {
@@ -66,11 +68,17 @@ public class BookingController {
 
     }
 
-    @GetMapping("/bookings")
-    public String showBookingList(@RequestParam(defaultValue = "0") int pageNo, Model model) {
-        model.addAttribute("bookings", bookingService.getAllBookingPaged(pageNo));
-        model.addAttribute("currentPage", pageNo);
-        return "booking-List";
+    @RequestMapping(value = "booking", method = RequestMethod.GET)
+//    @GetMapping("/bookings")
+    public String showBookingList(
+//            @RequestParam(defaultValue = "0") int pageNo,
+            Model model) {
+//        model.addAttribute("bookings", bookingService.getAllBookingPaged(pageNo));
+//        model.addAttribute("currentPage", pageNo);
+        List<ApiUser> allUsers = apiUserService.getAllUsers();
+        model.addAttribute("users", allUsers);
+        model.addAttribute("isAdd", false);
+        return "booking/booking";
 
     }
 
