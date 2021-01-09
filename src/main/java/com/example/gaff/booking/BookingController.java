@@ -43,7 +43,7 @@ public class BookingController {
             model.addAttribute("apiUser", apiUserService.getAllUsers());
             return "newBooking";
         }
-        booking.setArticle(articleFetchService.getAllArticle());
+        booking.setArticle(articleFetchService.getAllArticle().get(0));
         booking.setApiUsers(apiUserService.getAllUsers());
         booking.setCollectionDateTime(collectionDT);
         bookingService.saveBooking(booking);
