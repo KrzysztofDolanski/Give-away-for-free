@@ -1,10 +1,11 @@
 package com.example.gaff.api_user;
 
+import com.example.gaff.article.Article;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
+import com.example.gaff.exceptions.NoUsernameException;
 import com.example.gaff.image.UserFiles;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +28,6 @@ public class ApiUserController {
 
     private final ApiUserService apiUserService;
     private final ConfirmationTokenService confirmationTokenService;
-
-
-//
-//    @Value("${uploadDir}")
-//    private String uploadFolder;
 
 
     @GetMapping("/login")
@@ -82,6 +78,11 @@ public class ApiUserController {
     String userPage(String username, Model model) {
         ApiUser apiUser = apiUserService.getUserByUsername(username);
         model.addAttribute("apiUser", apiUser);
+
+        String uriGoogle = apiUserService.createGoogleMapQuery(username);
+
+        model.addAttribute("uriGoogle", uriGoogle);
+
         return "user-edit";
     }
 
@@ -117,4 +118,16 @@ public class ApiUserController {
         }
     }
 
+    @GetMapping("user/articles")
+    public String showAllArticlesOfLoggedUser(String username, Model model){
+        ApiUser userByUsername = null;
+        try {
+            userByUsername = apiUserService.getUserByUsername(username);
+        } catch (NoUsernameException e){
+            e.getMessage();
+        }
+        List<Article> article = userByUsername.getArticle();
+        model.addAttribute("articles", article);
+        return "user-articles";
+    }
 }

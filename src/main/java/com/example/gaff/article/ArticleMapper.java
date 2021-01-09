@@ -16,6 +16,24 @@ public class ArticleMapper {
                 .user(newArticle.getUser())
                 .booking(newArticle.getBooking())
                 .category(newArticle.getCategory())
+                .files(newArticle.getFiles())
+                .removeImages(newArticle.getRemoveImages())
+                .build();
+    }
+
+    public Article mapToArticle(ArticleDto articleDto) {
+        return Article.builder()
+                .id(articleDto.getId())
+                .title(articleDto.getTitle())
+                .description(articleDto.getDescription())
+                .productCondition(articleDto.getProductCondition())
+                .noOfVisits(articleDto.getNoOfVisits())
+                .timeToPickup(articleDto.getTimeToPickup())
+                .user(articleDto.getUser())
+                .booking(articleDto.getBooking())
+                .category(articleDto.getCategory())
+                .files(articleDto.getFiles())
+                .removeImages(articleDto.getRemoveImages())
                 .build();
     }
 }

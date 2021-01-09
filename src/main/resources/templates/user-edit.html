@@ -60,7 +60,7 @@
     User
 </h2>
 
-<div th:replace="fragments :: navigator"></div>
+<span th:replace="fragments :: navigator"></span>
 
 <table>
     <th>Username</th>
@@ -75,6 +75,15 @@
         <td th:text="${apiUser.getEmail()}"></td>
         <td th:text="${apiUser.getRegion()}"></td>
         <td th:text="${apiUser.getCity()}"></td>
+
+        <p>
+            <iframe
+                    width="600"
+                    height="450"
+                    frameborder="0" style="border:0"
+                    th:src= "${uriGoogle}" allowfullscreen>
+            </iframe>
+        </p>
     </tr>
 </table>
 

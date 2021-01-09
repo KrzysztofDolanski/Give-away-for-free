@@ -22,6 +22,6 @@ public class Category {
     private String description;
     private byte[] logotype;
 
-    @OneToMany
-    private List<Article> article;
+//    @OneToMany
+//    private List<Article> article;
 }
