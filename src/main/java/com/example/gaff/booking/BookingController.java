@@ -1,5 +1,6 @@
 package com.example.gaff.booking;
 
+import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.api_user.ApiUserService;
 import com.example.gaff.article.ArticleFetchService;
 import lombok.RequiredArgsConstructor;
@@ -23,15 +24,17 @@ public class BookingController {
     final ApiUserService apiUserService;
     final BookingServiceImpl bookingService;
 
-    @GetMapping("/booking/new")
+    @GetMapping("/booking")
     public String showNewBookingPage(Model model) {
+        List<ApiUser> allUsers = apiUserService.getAllUsers();
+        model.addAttribute("users", allUsers);
         model.addAttribute("booking", new Booking());
         model.addAttribute("article", articleFetchService.getAllArticle());
-        model.addAttribute("apiUser", apiUserService.getAllUsers());
-        return "newBooking";
+//        model.addAttribute("apiUser", apiUserService.getAllUsers());
+        return "booking/booking";
     }
 
-    @PostMapping("/booking/new")
+    @PostMapping("/booking")
     public String saveBooking(@ModelAttribute("booking") Booking booking, BindingResult bindingResult,
 //                              @RequestParam("apiUser") long userId,
 //                              @RequestParam("article") long articleId,
@@ -40,8 +43,8 @@ public class BookingController {
             model.addAttribute("errors", bindingResult.getAllErrors());
             model.addAttribute("booking", new Booking());
             model.addAttribute("article", articleFetchService.getAllArticle());
-            model.addAttribute("apiUser", apiUserService.getAllUsers());
-            return "newBooking";
+            model.addAttribute("users", apiUserService.getAllUsers());
+            return "booking/booking";
         }
         booking.setArticle(articleFetchService.getAllArticle().get(0));
         booking.setApiUsers(apiUserService.getAllUsers());
@@ -50,7 +53,7 @@ public class BookingController {
 
         model.addAttribute("bookings", bookingService.getAllBookingPaged(0));
         model.addAttribute("currentPage", 0);
-        return "bookings";
+        return "booking/booking";
 
     }
 
@@ -67,7 +70,7 @@ public class BookingController {
     public String showBookingList(@RequestParam(defaultValue = "0") int pageNo, Model model) {
         model.addAttribute("bookings", bookingService.getAllBookingPaged(pageNo));
         model.addAttribute("currentPage", pageNo);
-        return "bookings";
+        return "booking-List";
 
     }
 
@@ -92,8 +95,14 @@ public class BookingController {
         }
 
         model.addAttribute("bookings", apiUserService.getAllUsers());
-        return "searchBooking";
+        return "search-booking";
     }
+//    @GetMapping("booking")
+//    public String showBookingPage(Model model) {
+//        model.addAttribute("apiUser", apiUserService.getAllUsers());
+//        return "booking";
+//    }
+
 
 
 //
