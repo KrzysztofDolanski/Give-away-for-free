@@ -6,12 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,12 +23,22 @@ import java.util.List;
 public class Booking {
 
     @Id
-    Long id;
+    @GeneratedValue
+    Long bookingId;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate bookingDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime collectionDateTime;
 
     @OneToOne
     private Article article;
+
     @OneToMany
-    private List<ApiUser> user;
-    private LocalDateTime timeToPickup;
+    List<ApiUser> apiUsers = new ArrayList<>();
+
+    public void setArticle(List<Article> allArticle) {
+
+    }
 }
