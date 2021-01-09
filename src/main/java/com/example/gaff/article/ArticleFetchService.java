@@ -1,8 +1,12 @@
 package com.example.gaff.article;
 
 import com.example.gaff.article.exception.NotFoundException;
+import com.example.gaff.article.image.ArticleFileRepository;
+import com.example.gaff.article.image.ArticleFiles;
+import com.example.gaff.image.UploadPathService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,9 +21,7 @@ public class ArticleFetchService {
     private final UploadPathService uploadPathService;
     private final ArticleFileRepository articleFileRepository;
 
-    List<Article> getAllArticle() {
     public List<Article> getAllArticle() {
-
         return articleRepository.findAll();
     }
 
@@ -32,7 +34,7 @@ public class ArticleFetchService {
                 orElseThrow(() -> new NotFoundException("Not found location: " + id));
     }
 
-    public void saveArticle(ArticleDto articleDto){
+    public void saveArticle(ArticleDto articleDto) {
         Article article = articleMapper.mapToArticle(articleDto);
         if (article.getFiles() != null && article.getFiles().size() > 0) {
             for (MultipartFile file : article.getFiles()) {
@@ -56,6 +58,5 @@ public class ArticleFetchService {
         }
         articleRepository.save(article);
     }
-    }
-
 }
+
