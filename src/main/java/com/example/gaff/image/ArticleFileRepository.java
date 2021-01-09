@@ -1,4 +1,4 @@
-package com.example.gaff.article.image;
+package com.example.gaff.image;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

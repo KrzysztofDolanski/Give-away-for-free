@@ -1,4 +1,4 @@
-package com.example.gaff.article.image;
+package com.example.gaff.image;
 
 import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.article.Article;
@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class ArticleFiles {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fileName;
     private String modifiedFilename;
