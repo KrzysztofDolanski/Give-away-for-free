@@ -1,5 +1,6 @@
 package com.example.gaff.article;
 
+import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.exceptions.NotFoundException;
 import com.example.gaff.image.ArticleFileRepository;
 import com.example.gaff.image.ArticleFiles;
@@ -7,6 +8,8 @@ import com.example.gaff.image.UploadPathService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,6 +41,12 @@ public class ArticleFetchService {
 
     public void saveArticle(ArticleDto articleDto){
         Article article = articleMapper.mapToArticle(articleDto);
+
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        Object credentials = authentication.getCredentials();
+//        article.setUser((ApiUser) credentials);
+
+        articleRepository.save(article);
         if (article.getFiles() != null && article.getFiles().size() > 0) {
             for (MultipartFile file : article.getFiles()) {
                 String fileName = file.getOriginalFilename();
@@ -54,12 +63,11 @@ public class ArticleFetchService {
                 files.setFileExtension(FilenameUtils.getExtension(fileName));
                 files.setFileName(fileName);
                 files.setModifiedFilename(modifiedFileName);
-//                files.setArticle(article);
+                files.setArticle(article);
 
                 articleFileRepository.save(files);
             }
         }
-        articleRepository.save(article);
     }
     }
 
