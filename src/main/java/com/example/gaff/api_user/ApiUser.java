@@ -3,10 +3,7 @@ package com.example.gaff.api_user;
 
 import com.example.gaff.article.Article;
 import com.example.gaff.booking.Booking;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -60,9 +57,13 @@ public class ApiUser implements UserDetails, Serializable {
     private Boolean locked = false;
 
     @OneToMany
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Article> article;
 
     @OneToMany
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Booking> booking;
 
     @OneToOne

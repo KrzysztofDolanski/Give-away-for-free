@@ -2,10 +2,7 @@ package com.example.gaff.booking;
 
 import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.article.Article;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -33,12 +30,13 @@ public class Booking {
     private LocalDateTime collectionDateTime;
 
     @OneToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Article article;
 
     @OneToMany
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     List<ApiUser> apiUsers = new ArrayList<>();
 
-    public void setArticle(List<Article> allArticle) {
-
-    }
 }
