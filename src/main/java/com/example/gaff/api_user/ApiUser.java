@@ -61,6 +61,7 @@ public class ApiUser implements UserDetails, Serializable {
     @EqualsAndHashCode.Exclude
     private List<Article> article;
 
+
     @OneToMany
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
