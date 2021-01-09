@@ -57,7 +57,7 @@ public class ArticleFetchService {
                         FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                   }
                 }
                 ArticleFiles files = new ArticleFiles();
                 files.setFileExtension(FilenameUtils.getExtension(fileName));
