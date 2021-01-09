@@ -21,15 +21,15 @@ public class ArticleFetchService {
     private final UploadPathService uploadPathService;
     private final ArticleFileRepository articleFileRepository;
 
-    List<Article> getAllArticle() {
+    public List<Article> getAllArticle() {
         return articleRepository.findAll();
     }
 
-    Article findArticleByTitle(String title) {
+    public Article findArticleByTitle(String title) {
         return articleRepository.findByTitle(title);
     }
 
-    Article findArticleById(Long id) {
+    public Article findArticleById(Long id) {
         return articleRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("Not found location: " + id));
     }
