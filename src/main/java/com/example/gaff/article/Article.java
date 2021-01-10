@@ -4,6 +4,7 @@ import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.booking.Booking;
 import com.example.gaff.category.Category;
 import lombok.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Transactional
 public class Article {
 
     @Id

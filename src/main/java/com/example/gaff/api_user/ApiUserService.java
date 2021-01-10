@@ -5,9 +5,7 @@ import com.example.gaff.article.Article;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import com.example.gaff.exceptions.NoUsernameException;
 import com.example.gaff.exceptions.UserIdNotFoundException;
-import com.example.gaff.image.UploadPathService;
-import com.example.gaff.image.UserFileRepository;
-import com.example.gaff.image.UserFiles;
+import com.example.gaff.image.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -31,6 +29,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,12 +39,13 @@ public class ApiUserService implements UserDetailsService, MailService {
 
     private final ApiUserRepository apiUserRepository;
     private final ApiUserMapping apiUserMapping;
-    final ConfirmationTokenRepository confirmationTokenRepository;
-    final ConfirmationTokenService confirmationTokenService;
-    final GmailService gmailService;
-    final UploadPathService uploadPathService;
-    final UserFileRepository userFileRepository;
-    final ServletContext servletContext;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final ConfirmationTokenService confirmationTokenService;
+    private final GmailService gmailService;
+    private final UploadPathService uploadPathService;
+    private final UserFileRepository userFileRepository;
+    private final ServletContext servletContext;
+    private final UserFilesMapper userFilesMapper;
 
 
     private static final String API_URL = "https://www.google.com/maps/embed/v1/place?key=";
@@ -56,7 +56,7 @@ public class ApiUserService implements UserDetailsService, MailService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final ApiUser byUsername = apiUserRepository.findByUsername(username);
         if (!byUsername.getUsername().isEmpty()) {
-            return byUsername;
+            return new org.springframework.security.core.userdetails.User(byUsername.getUsername(), byUsername.getPassword(), byUsername.getAuthorities());
         } else {
             throw new UsernameNotFoundException(MessageFormat.format("User with username {0} cannot be found. ", username));
         }
@@ -126,12 +126,13 @@ public class ApiUserService implements UserDetailsService, MailService {
         return byUsername.getArticle();
     }
 
-    public ApiUser getUserByUsername(String username) {
-        return apiUserRepository.findByUsername(username);
+    public ApiUserDto getUserByUsername(String username) {
+        return apiUserMapping.mapToApiUserDto(apiUserRepository.findByUsername(username));
     }
 
-    public List<ApiUser> getAllUsers() {
-        return apiUserRepository.findAll();
+    public List<ApiUserDto> getAllUsers() {
+        List<ApiUser> all = apiUserRepository.findAll();
+        return apiUserMapping.mapToApiUserDtoList(all);
     }
 
     public ApiUserDto findById(Long userId) {
@@ -139,8 +140,9 @@ public class ApiUserService implements UserDetailsService, MailService {
         return byId.map(apiUserMapping::mapToApiUserDto).orElse(null);
     }
 
-    public List<UserFiles> findFilesByUserId(Long userId) {
-        return userFileRepository.findUserFilesByUserId(userId);
+    public List<UserFilesDto> findFilesByUserId(Long userId) {
+        List<UserFiles> userFilesByUserId = userFileRepository.findUserFilesByUserId(userId);
+        return userFilesByUserId.stream().map(userFilesMapper::mapToUserFilesDto).collect(Collectors.toList());
     }
 
     public ApiUserDto update(ApiUserDto apiUserDto) {

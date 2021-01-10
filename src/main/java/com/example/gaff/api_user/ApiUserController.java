@@ -1,9 +1,11 @@
 package com.example.gaff.api_user;
 
 import com.example.gaff.article.Article;
+import com.example.gaff.article.ArticleDto;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import com.example.gaff.exceptions.NoUsernameException;
 import com.example.gaff.image.UserFiles;
+import com.example.gaff.image.UserFilesDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -28,23 +30,21 @@ public class ApiUserController {
 
     private final ApiUserService apiUserService;
     private final ConfirmationTokenService confirmationTokenService;
-
-
+    
     @GetMapping("/login")
     public String signUp() {
         return "login";
     }
 
     @GetMapping(value = "/register")
-    public String users(Model model){
-        List<ApiUser> users = apiUserService.getAllUsers();
+    public String users(Model model) {
+        List<ApiUserDto> users = apiUserService.getAllUsers();
         model.addAttribute("users", users);
-        model.addAttribute("user", new ApiUser());
+        model.addAttribute("user", new ApiUserDto());
         model.addAttribute("userFiles", new ArrayList<UserFiles>());
         model.addAttribute("isAdd", true);
         return "register";
     }
-
 
     @GetMapping("register/confirm")
     String confirmMail(String token) {
@@ -62,7 +62,7 @@ public class ApiUserController {
     @PostMapping("/save")
     public String save(@ModelAttribute ApiUserDto apiUserDto, RedirectAttributes redirectAttributes, Model model) throws MessagingException, IOException, ApiUserAlreadyExistsException {
         apiUserService.signUpUser(apiUserDto);
-        ApiUser userByUsername = apiUserService.getUserByUsername(apiUserDto.getUsername());
+        ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserDto.getUsername());
 
         if (userByUsername != null) {
             redirectAttributes.addFlashAttribute("successmessage", "User successful register");
@@ -76,7 +76,7 @@ public class ApiUserController {
 
     @GetMapping("/user")
     String userPage(String username, Model model) {
-        ApiUser apiUser = apiUserService.getUserByUsername(username);
+        ApiUserDto apiUser = apiUserService.getUserByUsername(username);
         model.addAttribute("apiUser", apiUser);
 
         String uriGoogle = apiUserService.createGoogleMapQuery(username);
@@ -87,11 +87,12 @@ public class ApiUserController {
     }
 
     @GetMapping(value = "/edituser/{userId}")
-    public String editUser(@PathVariable Long userId, Model model){
+    public String editUser(@PathVariable Long userId, Model model) {
+
         ApiUserDto apiUserDto = apiUserService.findById(userId);
 
-        List<UserFiles> userFiles = apiUserService.findFilesByUserId(userId);
-        List<ApiUser> users = apiUserService.getAllUsers();
+        List<UserFilesDto> userFiles = apiUserService.findFilesByUserId(userId);
+        List<ApiUserDto> users = apiUserService.getAllUsers();
         String fileName = userFiles.get(0).getModifiedFilename();
 
         model.addAttribute("users", users);
@@ -119,14 +120,15 @@ public class ApiUserController {
     }
 
     @GetMapping("user/articles")
-    public String showAllArticlesOfLoggedUser(String username, Model model){
-        ApiUser userByUsername = null;
+    public String showAllArticlesOfLoggedUser(String username, Model model) {
+        ApiUserDto userByUsername = null;
         try {
             userByUsername = apiUserService.getUserByUsername(username);
-        } catch (NoUsernameException e){
+        } catch (NoUsernameException e) {
             e.getMessage();
         }
-        List<Article> article = userByUsername.getArticle();
+        assert userByUsername != null;
+        List<ArticleDto> article = userByUsername.getArticle();
         model.addAttribute("articles", article);
         return "user-articles";
     }

@@ -1,12 +1,15 @@
 package com.example.gaff.image;
 
 import com.example.gaff.api_user.ApiUser;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
+@Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table (name = "user_files")
 public class UserFiles {
 
@@ -18,5 +21,7 @@ public class UserFiles {
     private String fileExtension;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private ApiUser user;
 }

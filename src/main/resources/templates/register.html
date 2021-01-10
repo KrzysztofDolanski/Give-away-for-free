@@ -149,7 +149,10 @@
 
         <div class="form-group">
             <button type="submit" class="btn btn-primary" th:text="${isAdd}?'Save':'Update'"></button>
+            <span> Already registered? <a href="/" th:href="@{/login}">Login here</a> </span>
         </div>
+
+
 
         <td>
             <a th:href="@{'/edituser/'+${user.id}}"><i class="fa fa-edit" style="font-size:21px"></i> </a>

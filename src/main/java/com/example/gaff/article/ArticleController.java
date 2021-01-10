@@ -39,7 +39,7 @@ public class ArticleController {
 //
 //    @GetMapping("/article/{id}")
 //    ArticleDto findByArticleById(@PathVariable Long id ){
-//        Article article = articleFetchService.findArticleById(id);
+//          Article article = articleFetchService.findArticleById(id);
 //        return articleMapper.mapToArticleDto(article);
 //    }
 //
@@ -51,6 +51,7 @@ public class ArticleController {
     @GetMapping(value = "/save/article")
     public String articles(Model model){
         List<Article> allArticles = articleFetchService.getAllArticle();
+
         model.addAttribute("articles", allArticles);
         model.addAttribute("article", new Article());
         model.addAttribute("articleFiles", new ArrayList<ArticleFiles>());

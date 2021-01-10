@@ -2,12 +2,15 @@ package com.example.gaff.image;
 
 import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.article.Article;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
+@Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table (name = "article_files")
 public class ArticleFiles {
 
@@ -20,5 +23,7 @@ public class ArticleFiles {
 
     @ManyToOne
     @JoinColumn(name="article_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Article article;
 }
