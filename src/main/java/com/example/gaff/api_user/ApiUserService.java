@@ -62,6 +62,9 @@ public class ApiUserService implements UserDetailsService, MailService {
         }
     }
 
+    @Override
+    public void sendEmail(Email email) {
+    }
 
     public void signUpUser(ApiUserDto apiUserDto) throws MessagingException, IOException, ApiUserAlreadyExistsException {
         if ((apiUserRepository.findByUsername(apiUserDto.getUsername())) != null) {
@@ -115,10 +118,6 @@ public class ApiUserService implements UserDetailsService, MailService {
 
     public PasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    public void sendEmail(Email email) {
     }
 
     public List<Article> showUserArticles(String username) {
@@ -179,13 +178,13 @@ public class ApiUserService implements UserDetailsService, MailService {
             }
             apiUserRepository.save(apiUser1);
         }
-            return apiUserMapping.mapToApiUserDto(apiUser1);
+        return apiUserMapping.mapToApiUserDto(apiUser1);
     }
 
     public String createGoogleMapQuery(String username) throws NoUsernameException {
         ApiUser byUsername = apiUserRepository.findByUsername(username);
-        if (byUsername.getUsername()!=null){
-        return API_URL+googleMapsClientProperties.getToken()+QUERY+byUsername.getCity()+","+byUsername.getStreet()+byUsername.getStreetNo();
-        } else throw new NoUsernameException("No username: " + username +" found");
+        if (byUsername.getUsername() != null) {
+            return API_URL + googleMapsClientProperties.getToken() + QUERY + byUsername.getCity() + "," + byUsername.getStreet() + byUsername.getStreetNo();
+        } else throw new NoUsernameException("No username: " + username + " found");
     }
 }

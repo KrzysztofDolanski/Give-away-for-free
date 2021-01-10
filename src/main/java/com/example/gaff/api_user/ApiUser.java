@@ -48,7 +48,7 @@ public class ApiUser implements UserDetails, Serializable {
 
 
     @Builder.Default
-    private ApiUserRole userRole = ApiUserRole.ADMIN;
+    private ApiUserRole userRole = ApiUserRole.USER;
 
     @Builder.Default
     private Boolean enabled = false;
