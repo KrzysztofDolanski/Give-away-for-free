@@ -19,15 +19,26 @@
             <form role="form" th:action="@{/login}" th:method="post">
                 <div class="form-group">
                     <p class="nav-item">
-                        <lable>Username</lable>
+                        <label>Username</label>
                         <input type="text" id="username" name="username">
                     </p >
                     <p class="nav-item">
-                        <lable>Password</lable>
+                        <label>Password</label>
                         <input type="password" id="password" name="password">
                     </p>
-                    <input class="btn btn-primary" type="submit">
+                    <input class="btn btn-primary" type="submit" name="login-submit" id="login-submit">
+
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger">Invalid username or password</div>
+                    </div>
+
+                    <div th:if="${param.logout}">
+                        <div class="alert alert-info">You have been logged out.</div>
+                    </div>
+
                 </div>
+
+
                 <p>lub <a th:href="@{/register}">zarejestruj</a></p>
 
                 <a th:href="@{/home}">Home</a>

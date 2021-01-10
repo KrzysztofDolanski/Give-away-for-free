@@ -2,10 +2,13 @@ package com.example.gaff.article;
 
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class ArticleMapper {
 
-    ArticleDto mapToArticleDto(Article newArticle) {
+    public ArticleDto mapToArticleDto(Article newArticle) {
         return ArticleDto.builder()
                 .title(newArticle.getTitle())
                 .description(newArticle.getDescription())
@@ -33,5 +36,13 @@ public class ArticleMapper {
                 .files(articleDto.getFiles())
                 .removeImages(articleDto.getRemoveImages())
                 .build();
+    }
+
+    public List<ArticleDto> mapToArticleDtoList(List<Article> articles){
+        return articles.stream().map(this::mapToArticleDto).collect(Collectors.toList());
+    }
+
+    public List<Article> mapToArticleList(List<ArticleDto> article) {
+        return article.stream().map(this::mapToArticle).collect(Collectors.toList());
     }
 }

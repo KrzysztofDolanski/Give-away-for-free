@@ -1,6 +1,7 @@
 package com.example.gaff.booking;
 
 import com.example.gaff.api_user.ApiUser;
+import com.example.gaff.api_user.ApiUserDto;
 import com.example.gaff.api_user.ApiUserService;
 import com.example.gaff.article.ArticleFetchService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,8 @@ public class BookingController {
 
     @GetMapping("/bookings")
     public String showNewBookingPage(Model model) {
-        List<ApiUser> allUsers = apiUserService.getAllUsers();
-        model.addAttribute("users", allUsers);
+        List<ApiUserDto> users = apiUserService.getAllUsers();
+        model.addAttribute("users", users);
         model.addAttribute("booking", new Booking());
         model.addAttribute("article", articleFetchService.getAllArticle());
         model.addAttribute("isAdd", false);
@@ -75,7 +76,7 @@ public class BookingController {
             Model model) {
 //        model.addAttribute("bookings", bookingService.getAllBookingPaged(pageNo));
 //        model.addAttribute("currentPage", pageNo);
-        List<ApiUser> allUsers = apiUserService.getAllUsers();
+        List<ApiUserDto> allUsers = apiUserService.getAllUsers();
         model.addAttribute("users", allUsers);
         model.addAttribute("isAdd", false);
         return "booking/booking";
