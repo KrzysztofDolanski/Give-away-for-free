@@ -22,7 +22,7 @@ public class BookingController {
 
     final ArticleFetchService articleFetchService;
     final ApiUserService apiUserService;
-    final BookingServiceImpl bookingService;
+    final BookingService bookingService;
 
     @GetMapping("/booking")
     public String showNewBookingPage(Model model) {
@@ -31,7 +31,7 @@ public class BookingController {
         model.addAttribute("booking", new Booking());
         model.addAttribute("article", articleFetchService.getAllArticle());
 //        model.addAttribute("apiUser", apiUserService.getAllUsers());
-        return "booking/booking";
+        return "booking-show";
     }
 
     @PostMapping("/booking")
@@ -44,7 +44,7 @@ public class BookingController {
             model.addAttribute("booking", new Booking());
             model.addAttribute("article", articleFetchService.getAllArticle());
             model.addAttribute("users", apiUserService.getAllUsers());
-            return "booking/booking";
+            return "booking-save";
         }
         booking.setArticle(articleFetchService.getAllArticle().get(0));
         booking.setApiUsers(apiUserService.getAllUsers());
@@ -53,7 +53,7 @@ public class BookingController {
 
         model.addAttribute("bookings", bookingService.getAllBookingPaged(0));
         model.addAttribute("currentPage", 0);
-        return "booking/booking";
+        return "booking-save";
 
     }
 
@@ -62,7 +62,7 @@ public class BookingController {
         bookingService.deleteBookingById(bookingId);
         model.addAttribute("bookings", bookingService.getAllBookingPaged(0));
         model.addAttribute("currentPage", 0);
-        return "bookings";
+        return "booking-delete";
 
     }
 
@@ -70,22 +70,16 @@ public class BookingController {
     public String showBookingList(@RequestParam(defaultValue = "0") int pageNo, Model model) {
         model.addAttribute("bookings", bookingService.getAllBookingPaged(pageNo));
         model.addAttribute("currentPage", pageNo);
-        return "booking-List";
+        return "booking-list";
 
     }
-
-//    @GetMapping("booking/search")
-//    public String showSearchBooking(Model model) {
-//        model.addAttribute("apiUsers", apiUserService.getAllUsers());
-//        model.addAttribute("bookings", null);
-//        return "searchBookings";
-//
-//    }
 
     @PostMapping("/booking/search")
     public String searchBooking (@RequestParam("collectionDateTime") String collectionDT, Model model) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate collectionTime = LocalDate.parse(collectionDT, dtf);
+
+        model.addAttribute("bookings", apiUserService.getAllUsers());
 
         List<Booking> bookings = bookingService.getAllBookingsByApiUserAndCollectionDateTime(collectionTime);
         if (bookings.isEmpty()) {
@@ -95,20 +89,26 @@ public class BookingController {
         }
 
         model.addAttribute("bookings", apiUserService.getAllUsers());
-        return "search-booking";
+        return "booking-search";
     }
-//    @GetMapping("booking")
+
+//    @GetMapping("/booking/list")
+//    public List<Booking> BookingList(){
+//        return bookingService.getAllBookings();
+//    }
+
+    //    @GetMapping("booking/search")
+//    public String showSearchBooking(Model model) {
+//        model.addAttribute("apiUsers", apiUserService.getAllUsers());
+//        model.addAttribute("bookings", null);
+//        return "search-bookings";
+//
+//    }
+
+    //    @GetMapping("booking")
 //    public String showBookingPage(Model model) {
 //        model.addAttribute("apiUser", apiUserService.getAllUsers());
 //        return "booking";
-//    }
-
-
-
-//
-//    @GetMapping("/bookingList")
-//    public List<Booking> BookingList(){
-//        return bookingService.getAllBooking();
 //    }
 //
 //    @DeleteMapping("/booking/delete")
@@ -120,7 +120,7 @@ public class BookingController {
     //    @GetMapping("/booking/new")
 //    public String newBooking(Model model) {
 //        model.addAttribute("booking", new Booking());
-//        return "newBooking";
+//        return "new-booking";
 //    }
 //
 
