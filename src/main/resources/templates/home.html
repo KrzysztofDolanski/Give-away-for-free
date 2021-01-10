@@ -4,6 +4,9 @@
     <title>Spring Boot User Authentication</title>
 </head>
 <body>
+
+<div class="center-block" th:replace="fragments :: navigator"></div>
+
 <form role="form" th:action="@{/user}" th:method="get">
     <lable>Username</lable>
     <input type="text" id="username" name="username">
