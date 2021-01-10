@@ -23,7 +23,7 @@ public class MailConfiguration {
         properties.put("mail.smtp.ssl.enable", "true");
         properties.put("mail.smtp.auth", "true");
         username = "christopher.dolanski@gmail.com";
-        password =
+        password = "";
     }
 
     public Session createSession(){
