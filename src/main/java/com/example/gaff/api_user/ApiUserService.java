@@ -22,8 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -69,6 +71,7 @@ public class ApiUserService implements UserDetailsService, MailService {
     public void signUpUser(ApiUserDto apiUserDto) throws MessagingException, IOException, ApiUserAlreadyExistsException {
         if ((apiUserRepository.findByUsername(apiUserDto.getUsername())) != null) {
             throw new ApiUserAlreadyExistsException("User with this name already exist");
+
         }
         final String encryptedPassword = bCryptPasswordEncoder().encode(apiUserDto.getPassword());
         apiUserDto.setPassword(encryptedPassword);
@@ -186,5 +189,15 @@ public class ApiUserService implements UserDetailsService, MailService {
         if (byUsername.getUsername() != null) {
             return API_URL + googleMapsClientProperties.getToken() + QUERY + byUsername.getCity() + "," + byUsername.getStreet() + byUsername.getStreetNo();
         } else throw new NoUsernameException("No username: " + username + " found");
+    }
+
+    public String currentUsername(HttpServletRequest request) {
+        Principal principal = request.getUserPrincipal();
+        return principal.getName();
+    }
+
+    public void saveUser(ApiUserDto userByUsername) {
+        ApiUser apiUser = apiUserMapping.mapToApiUser(userByUsername);
+        apiUserRepository.save(apiUser);
     }
 }

@@ -1,18 +1,14 @@
 package com.example.gaff.booking;
 
-import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.api_user.ApiUserDto;
 import com.example.gaff.api_user.ApiUserService;
-import com.example.gaff.article.ArticleFetchService;
+import com.example.gaff.article.ArticleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -20,7 +16,7 @@ import java.util.List;
 @Log4j2
 public class BookingController {
 
-    final ArticleFetchService articleFetchService;
+    final ArticleService articleService;
     final ApiUserService apiUserService;
     final BookingService bookingService;
 
@@ -28,8 +24,8 @@ public class BookingController {
     public String showNewBookingPage(Model model) {
         List<ApiUserDto> users = apiUserService.getAllUsers();
         model.addAttribute("users", users);
-        model.addAttribute("booking", new Booking());
-        model.addAttribute("article", articleFetchService.getAllArticle());
+        model.addAttribute("booking", new BookingDto());
+        model.addAttribute("article", articleService.getAllArticle());
         model.addAttribute("isAdd", false);
 //        model.addAttribute("apiUser", apiUserService.getAllUsers());
         return "booking/booking";
@@ -58,28 +54,28 @@ public class BookingController {
 //
 //    }
 
-    @GetMapping("/booking/delete")
-    public String deleteBooking(@PathParam("bookingId") long bookingId, Model model) {
-        bookingService.deleteBookingById(bookingId);
-        model.addAttribute("bookings", bookingService.getAllBookingPaged(0));
-        model.addAttribute("currentPage", 0);
-        return "bookings";
+//    @GetMapping("/booking/delete")
+//    public String deleteBooking(@PathParam("bookingId") long bookingId, Model model) {
+//        bookingService.deleteBookingById(bookingId);
+//        model.addAttribute("bookings", bookingService.getAllBookingPaged(0));
+//        model.addAttribute("currentPage", 0);
+//        return "bookings";
+//
+//    }
 
-    }
-
-    @RequestMapping(value = "booking", method = RequestMethod.GET)
-//    @GetMapping("/bookings")
-    public String showBookingList(
-//            @RequestParam(defaultValue = "0") int pageNo,
-            Model model) {
-//        model.addAttribute("bookings", bookingService.getAllBookingPaged(pageNo));
-//        model.addAttribute("currentPage", pageNo);
-        List<ApiUserDto> allUsers = apiUserService.getAllUsers();
-        model.addAttribute("users", allUsers);
-        model.addAttribute("isAdd", false);
-        return "booking/booking";
-
-    }
+//    @RequestMapping(value = "booking", method = RequestMethod.GET)
+////    @GetMapping("/bookings")
+//    public String showBookingList(
+////            @RequestParam(defaultValue = "0") int pageNo,
+//            Model model) {
+////        model.addAttribute("bookings", bookingService.getAllBookingPaged(pageNo));
+////        model.addAttribute("currentPage", pageNo);
+//        List<ApiUserDto> allUsers = apiUserService.getAllUsers();
+//        model.addAttribute("users", allUsers);
+//        model.addAttribute("isAdd", false);
+//        return "booking/booking";
+//
+//    }
 
 //    @GetMapping("booking/search")
 //    public String showSearchBooking(Model model) {
@@ -89,21 +85,21 @@ public class BookingController {
 //
 //    }
 
-    @PostMapping("/booking/search")
-    public String searchBooking (@RequestParam("collectionDateTime") String collectionDT, Model model) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate collectionTime = LocalDate.parse(collectionDT, dtf);
-
-        List<Booking> bookings = bookingService.getAllBookingsByApiUserAndCollectionDateTime(collectionTime);
-        if (bookings.isEmpty()) {
-            model.addAttribute("notFound");
-        }else {
-            model.addAttribute("bookings", bookings);
-        }
-
-        model.addAttribute("bookings", apiUserService.getAllUsers());
-        return "search-booking";
-    }
+//    @PostMapping("/booking/search")
+//    public String searchBooking (@RequestParam("collectionDateTime") String collectionDT, Model model) {
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDate collectionTime = LocalDate.parse(collectionDT, dtf);
+//
+//        List<Booking> bookings = bookingService.getAllBookingsByApiUserAndCollectionDateTime(collectionTime);
+//        if (bookings.isEmpty()) {
+//            model.addAttribute("notFound");
+//        }else {
+//            model.addAttribute("bookings", bookings);
+//        }
+//
+//        model.addAttribute("bookings", apiUserService.getAllUsers());
+//        return "search-booking";
+//    }
 //    @GetMapping("booking")
 //    public String showBookingPage(Model model) {
 //        model.addAttribute("apiUser", apiUserService.getAllUsers());
