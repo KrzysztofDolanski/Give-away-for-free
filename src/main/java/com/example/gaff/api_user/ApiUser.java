@@ -56,9 +56,7 @@ public class ApiUser implements UserDetails, Serializable {
     @Builder.Default
     private Boolean locked = false;
 
-    @OneToMany
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
+    @Transient
     private List<Article> article;
 
 

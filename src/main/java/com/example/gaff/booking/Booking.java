@@ -34,9 +34,14 @@ public class Booking {
     @EqualsAndHashCode.Exclude
     private Article article;
 
-    @OneToMany
+    @OneToOne
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    List<ApiUser> apiUsers = new ArrayList<>();
+    private ApiUser buyer;
 
+
+    @OneToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private ApiUser seller;
 }

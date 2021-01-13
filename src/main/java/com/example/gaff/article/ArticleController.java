@@ -1,10 +1,9 @@
 package com.example.gaff.article;
 
-import com.example.gaff.api_user.ApiUser;
-import com.example.gaff.api_user.ApiUserDto;
+import com.example.gaff.api_user.ApiUserMapping;
 import com.example.gaff.api_user.ApiUserService;
-import com.example.gaff.image.ArticleFiles;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
+import com.example.gaff.image.ArticleFilesDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +21,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class ArticleController {
-    private final ArticleFetchService articleFetchService;
+    private final ArticleService articleService;
     private final ArticleMapper articleMapper;
-    private final ArticleFetchService articleService;
+
     private final ApiUserService apiUserService;
+    private final ApiUserMapping apiUserMapping;
 
 //    @GetMapping("/article")
 //    List<Article> getAllArticle() {
@@ -50,20 +51,21 @@ public class ArticleController {
 
     @GetMapping(value = "/save/article")
     public String articles(Model model){
-        List<Article> allArticles = articleFetchService.getAllArticle();
+        List<ArticleDto> allArticles = articleService.getAllArticle();
 
         model.addAttribute("articles", allArticles);
-        model.addAttribute("article", new Article());
-        model.addAttribute("articleFiles", new ArrayList<ArticleFiles>());
+        model.addAttribute("article", new ArticleDto());
+        model.addAttribute("articleFiles", new ArrayList<ArticleFilesDto>());
         model.addAttribute("isAdd", true);
         return "article/article";
     }
 
 
     @PostMapping("save/saveA")
-    public String save(@ModelAttribute ArticleDto articleDto, RedirectAttributes redirectAttributes, Model model) throws MessagingException, IOException, ApiUserAlreadyExistsException {
-        articleService.saveArticle(articleDto);
-        Article articleByTitle = articleFetchService.findArticleByTitle(articleDto.getTitle());
+    public String save(@ModelAttribute ArticleDto articleDto, RedirectAttributes redirectAttributes, Model model, HttpServletRequest request) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+
+        articleService.saveArticle(articleDto, request);
+        ArticleDto articleByTitle = articleService.findArticleByTitle(articleDto.getTitle());
 
         if (articleByTitle != null) {
             redirectAttributes.addFlashAttribute("successmessage", "Article successful saved");
@@ -78,10 +80,9 @@ public class ArticleController {
 
     @GetMapping("/article")
     String articlePage(Long id, Model model) {
-        Article articleById = articleFetchService.findArticleById(id);
+        ArticleDto articleById = articleService.findArticleById(id);
         model.addAttribute("article", articleById);
-        ApiUser user = articleById.getUser();
-        String username = user.getUsername();
+        String username = articleById.getUser().getUsername();
 
         String uriGoogle = apiUserService.createGoogleMapQuery(username);
 

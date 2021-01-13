@@ -6,17 +6,19 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.servlet.http.HttpServletRequest;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-class ArticleFetchServiceTest {
+class ArticleServiceTest {
 
     @Autowired
     ArticleRepository articleRepository;
 
     @Autowired
-    ArticleFetchService articleFetchService;
+    ArticleService articleService;
 
     @Autowired
     ArticleMapper articleMapper;
@@ -28,10 +30,11 @@ class ArticleFetchServiceTest {
         article.setTitle("Aasdas");
         ArticleDto articleDto = new ArticleDto();
         articleDto.setTitle("aaa");
+        HttpServletRequest request = null;
         //when
         articleRepository.save(article);
         articleMapper.mapToArticle(articleDto);
-        articleFetchService.saveArticle(articleDto);
+        articleService.saveArticle(articleDto, request);
         Article aasdas = articleRepository.findByTitle("Aasdas");
         //then
         assertEquals(aasdas.getTitle(), article.getTitle());

@@ -30,7 +30,7 @@ public class Article {
     private Long noOfVisits;
     private LocalDateTime timeToPickup;
 
-    @ManyToOne
+    @ManyToOne//(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

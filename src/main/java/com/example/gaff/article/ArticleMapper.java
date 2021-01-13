@@ -1,15 +1,21 @@
 package com.example.gaff.article;
 
+import com.example.gaff.api_user.ApiUserMapping;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+
 public class ArticleMapper {
+
+
 
     public ArticleDto mapToArticleDto(Article newArticle) {
         return ArticleDto.builder()
+                .id(newArticle.getId())
                 .title(newArticle.getTitle())
                 .description(newArticle.getDescription())
                 .productCondition(newArticle.getProductCondition())

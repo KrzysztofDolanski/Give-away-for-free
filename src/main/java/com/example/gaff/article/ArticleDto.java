@@ -22,6 +22,7 @@ import java.util.List;
 public class ArticleDto {
 
 
+    Long id;
     private String title;
     private String description;
     private ProductCondition productCondition;
@@ -31,8 +32,10 @@ public class ArticleDto {
 
     @ManyToOne
     private ApiUser user;
+
     @OneToOne
     private Booking booking;
+
     @ManyToOne
     private Category category;
 
