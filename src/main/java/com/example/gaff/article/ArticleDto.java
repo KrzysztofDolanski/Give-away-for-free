@@ -29,9 +29,12 @@ public class ArticleDto {
     private boolean isAvailable;
     private Long noOfVisits;
     private LocalDateTime timeToPickup;
+//
+//    @ManyToOne
+//    private ApiUser user;
 
-    @ManyToOne
-    private ApiUser user;
+    Long userId;
+
 
     @OneToOne
     private Booking booking;

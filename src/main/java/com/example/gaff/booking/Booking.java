@@ -20,8 +20,8 @@ import java.util.List;
 public class Booking {
 
     @Id
-    @GeneratedValue
-    Long bookingId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate bookingDate;
@@ -29,19 +29,9 @@ public class Booking {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime collectionDateTime;
 
-    @OneToOne
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Article article;
+    private Long articleId;
 
-    @OneToOne
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private ApiUser buyer;
+    private Long buyerId;
 
-
-    @OneToOne
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private ApiUser seller;
+    private Long sellerId;
 }

@@ -82,11 +82,11 @@ public class ArticleController {
     String articlePage(Long id, Model model) {
         ArticleDto articleById = articleService.findArticleById(id);
         model.addAttribute("article", articleById);
-        String username = articleById.getUser().getUsername();
+//        String username = articleById.getUser().getUsername();
 
-        String uriGoogle = apiUserService.createGoogleMapQuery(username);
+//        String uriGoogle = apiUserService.createGoogleMapQuery(username);
 
-        model.addAttribute("uriGoogle", uriGoogle);
+//        model.addAttribute("uriGoogle", uriGoogle);
 
         return "article/article-edit";
     }

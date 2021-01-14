@@ -21,7 +21,7 @@ import java.util.List;
 public class Article {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String title;
     private String description;
@@ -30,11 +30,15 @@ public class Article {
     private Long noOfVisits;
     private LocalDateTime timeToPickup;
 
-    @ManyToOne//(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private ApiUser user;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+//    @ToString.Exclude
+//    @EqualsAndHashCode.Exclude
+//    private ApiUser user;
+
+
+    Long userId;
+
 
     @OneToOne
     @ToString.Exclude

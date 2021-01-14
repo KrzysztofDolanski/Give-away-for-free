@@ -1,6 +1,5 @@
 package com.example.gaff.article;
 
-import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.api_user.ApiUserDto;
 import com.example.gaff.api_user.ApiUserMapping;
 import com.example.gaff.api_user.ApiUserService;
@@ -11,16 +10,12 @@ import com.example.gaff.image.UploadPathService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -33,6 +28,8 @@ public class ArticleService {
     private final ArticleFileRepository articleFileRepository;
     private final ApiUserMapping apiUserMapping;
     private final ApiUserService apiUserService;
+
+
 
     public List<ArticleDto> getAllArticle() {
         return articleMapper.mapToArticleDtoList(articleRepository.findAll());
@@ -51,20 +48,17 @@ public class ArticleService {
 
         ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserService.currentUsername(request));
 
-        apiUserService.saveUser(userByUsername);
-
-        articleDto.setUser(apiUserMapping.mapToApiUser(userByUsername));
-
-
         Article article = articleMapper.mapToArticle(articleDto);
 
-
         articleRepository.save(article);
+        article.setUserId(userByUsername.getId());
+
+//        articlesUserService.saveArticlesUsersEntity(article);
+//        apiUserService.saveUser(userByUsername);
 
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //        Object credentials = authentication.getCredentials();
 //        article.setUser((ApiUser) credentials);
-
 
         if (article.getFiles() != null && article.getFiles().size() > 0) {
             for (MultipartFile file : article.getFiles()) {

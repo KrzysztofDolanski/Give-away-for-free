@@ -2,23 +2,32 @@ package com.example.gaff.booking;
 
 import com.example.gaff.api_user.ApiUserDto;
 import com.example.gaff.api_user.ApiUserService;
+import com.example.gaff.article.ArticleDto;
+import com.example.gaff.article.ArticleMapper;
 import com.example.gaff.article.ArticleService;
+import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@Log4j2
+
 public class BookingController {
 
-    final ArticleService articleService;
-    final ApiUserService apiUserService;
-    final BookingService bookingService;
+    private final ArticleService articleService;
+    private final ApiUserService apiUserService;
+    private final BookingService bookingService;
+    private final ArticleMapper articleMapper;
 
     @GetMapping("/bookings")
     public String showNewBookingPage(Model model) {
@@ -27,9 +36,34 @@ public class BookingController {
         model.addAttribute("booking", new BookingDto());
         model.addAttribute("article", articleService.getAllArticle());
         model.addAttribute("isAdd", false);
-//        model.addAttribute("apiUser", apiUserService.getAllUsers());
         return "booking/booking";
     }
+
+    @GetMapping("/save/booking/{id}")
+    public String save(@PathVariable Long id, RedirectAttributes redirectAttributes, HttpServletRequest request) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+
+
+        //zamienić articleId na Article oraz wyciągnąć sellerId
+        //zrobić maksymalnie jedno bookowanie
+
+        BookingDto bookingDto = new BookingDto();
+
+        ArticleDto articleById = articleService.findArticleById(id);
+
+        bookingDto.setArticleId(id);
+
+        bookingService.saveBooking(bookingDto, request);
+
+        Booking bookingById = bookingService.findBookingById(1l);
+
+        if (bookingById != null) {
+            redirectAttributes.addFlashAttribute("successmessage", "Booking successful saved");
+            return "redirect:/bookings";
+        } else {
+//            model.addAttribute("errormessage", "Booking saving failed");
+//            model.addAttribute("booking", bookingDto);
+            return "save/booking";
+        }
 
 //    @PostMapping("/booking")
 //    public String saveBooking(@ModelAttribute("booking") Booking booking, BindingResult bindingResult,
@@ -52,12 +86,15 @@ public class BookingController {
 //        model.addAttribute("currentPage", 0);
 //        return "booking/booking";
 //
-//    }
-
-//    @GetMapping("/booking/delete")
-//    public String deleteBooking(@PathParam("bookingId") long bookingId, Model model) {
-//        bookingService.deleteBookingById(bookingId);
-//        model.addAttribute("bookings", bookingService.getAllBookingPaged(0));
+    }
+//
+//    @GetMapping("/save/booking")
+//    public String deleteBooking(@PathParam("id") Long id, BookingDto bookingDto, Model model, HttpServletRequest request) {
+//        ArticleDto articleById = articleService.findArticleById(id);
+//        bookingDto.setArticleId(articleById.getId());
+//
+//        bookingService.saveBooking(bookingDto, request);
+//
 //        model.addAttribute("currentPage", 0);
 //        return "bookings";
 //
@@ -107,7 +144,6 @@ public class BookingController {
 //    }
 
 
-
 //
 //    @GetMapping("/bookingList")
 //    public List<Booking> BookingList(){
@@ -120,7 +156,7 @@ public class BookingController {
 //        bookingService.findBookingById(bookingId);
 //    }
 
-    //    @GetMapping("/booking/new")
+        //    @GetMapping("/booking/new")
 //    public String newBooking(Model model) {
 //        model.addAttribute("booking", new Booking());
 //        return "newBooking";
@@ -128,4 +164,5 @@ public class BookingController {
 //
 
 
-}
+    }
+

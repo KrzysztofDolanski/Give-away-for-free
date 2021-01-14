@@ -57,10 +57,14 @@ public class ApiUser implements UserDetails, Serializable {
     private Boolean locked = false;
 
     @Transient
+    @OneToMany(cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Article> article;
 
 
     @OneToMany
+    @Transient
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<Booking> booking;
