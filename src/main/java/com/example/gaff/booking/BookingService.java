@@ -1,58 +1,54 @@
 package com.example.gaff.booking;
 
+import com.example.gaff.api_user.ApiUserDto;
+import com.example.gaff.api_user.ApiUserMapping;
+import com.example.gaff.api_user.ApiUserService;
+import com.example.gaff.exceptions.BookingNotFoundException;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Component;
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.util.UUID;
 
-import java.time.LocalDate;
-import java.util.List;
-
-@Component
+@Service
+@Data
+@RequiredArgsConstructor
 public class BookingService {
 
     private final BookingRepository bookingRepository;
 
-    public BookingService(BookingRepository bookingRepository){
-        this.bookingRepository = bookingRepository;
-    }
+    private final BookingMapping bookingMapping;
+    private final ApiUserService apiUserService;
+    private final ApiUserMapping apiUserMapping;
 
-    public Page<Booking> getAllBookingPaged(int pageNum) {
-        return bookingRepository.findAll(PageRequest.of(pageNum,5, Sort.by("ApiUser")));
-    }
 
-    public List<Booking> getAllBookings() {
-        return bookingRepository.findAll();
-    }
 
-    public Booking getBookingById(long bookingId) {
-        return bookingRepository.findById(bookingId).orElse(null);
-    }
+    public Booking saveBooking(BookingDto bookingDto, HttpServletRequest request) {
+        ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserService.currentUsername(request));
 
-    public Booking saveBooking(Booking booking) {
+        BookingDto build = BookingDto.builder()
+                .id(generateUniqueId())
+                .articleId(bookingDto.getArticleId())
+                .sellerId(bookingDto.getSellerId())
+                .buyerId(userByUsername.getId()).build();
+
+        bookingDto.setId(generateUniqueId());
+        
+        bookingDto.setBuyerId(userByUsername.getId());
+
+        Booking booking = bookingMapping.mapToBooking(build);
         return bookingRepository.save(booking);
     }
 
-    public void deleteBookingById(long bookingId) {
-        bookingRepository.deleteById(bookingId);
+
+    Booking findBookingById(Long id) {
+        return bookingRepository.findById(id)
+                .orElseThrow(() -> new BookingNotFoundException("not found booking" + id));
     }
 
-    public List<Booking> getAllBookingsByApiUserAndCollectionDateTime(LocalDate collectionDate) {
-        return null;
-    }
-
-    }
-
-
-    //   private final ApiUserService apiUserService;
-
-//
-//    Booking findBookingById(Long id) {
-//        return bookingRepository.findById(id)
-//                .orElseThrow(() -> new NotFoundException("not found booking" + id));
-//    }
 
 
 
@@ -71,3 +67,20 @@ public class BookingService {
 //    }
 
 
+    private Long generateUniqueId()
+    {
+        long val = -1;
+        do
+        {
+            final UUID uid = UUID.randomUUID();
+            final ByteBuffer buffer = ByteBuffer.wrap(new byte[16]);
+            buffer.putLong(uid.getLeastSignificantBits());
+            buffer.putLong(uid.getMostSignificantBits());
+            final BigInteger bi = new BigInteger(buffer.array());
+            val = bi.longValue();
+        }
+
+        while (val < 0);
+        return val;
+    }
+}

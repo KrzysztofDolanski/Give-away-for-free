@@ -2,11 +2,9 @@ package com.example.gaff.booking;
 
 import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.article.Article;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import javax.persistence.OneToOne;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,10 +15,14 @@ import java.util.List;
 @Builder
 public class BookingDto {
 
+    Long id;
     private LocalDate bookingDate;
     private LocalDate collectionDate;
     private LocalDateTime collectionTime;
 
-    private List<Article> article;
-    private List<ApiUser> apiUsers;
+    private Long articleId;
+
+    private Long sellerId;
+
+    private Long buyerId;
 }
