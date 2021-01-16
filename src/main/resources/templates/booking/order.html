@@ -41,6 +41,7 @@
                     <th>User Id</th>
                     <th>Title</th>
                     <th>Description</th>
+                    <th>Picture</th>
                     <th>Hire</th>
                 </tr>
                 </thead>
@@ -60,10 +61,13 @@
                 </tbody>
             </table>
             <p class="text-center">
-                <img id="images" th:src="@{'\images\\'+ ${fileName}}" alt="photo" style="width: 150px;height: 120px;">
+                <tr th:each="file : ${files}">
+                <td> <img id="images" th:src="@{'\images\\'+ ${file.modifiedFilename}}" alt="photo" style="width: 150px;height: 120px;" >
+                <img id="thumbnail" alt="article img"/>
+                </td>
+                </tr>
             </p>
             <p>
-                <img id="thumbnail" alt="yours logo"/>
             </p>
         </div>
     </div>

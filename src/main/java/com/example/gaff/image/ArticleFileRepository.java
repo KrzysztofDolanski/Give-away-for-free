@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface ArticleFileRepository extends JpaRepository<ArticleFiles, Long>
     @Query("delete from ArticleFiles as f where f.article.id = ?1 and f.modifiedFilename in(?2)")
     void deleteArticleFilesByArticleIdAndFileName(Long id, List<String> removeImages);
 
+
+    List<ArticleFiles> findArticleFilesByArticleId(Long id);
 }
