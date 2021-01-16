@@ -6,6 +6,8 @@ import com.example.gaff.article.ArticleDto;
 import com.example.gaff.article.ArticleMapper;
 import com.example.gaff.article.ArticleService;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
+import com.example.gaff.image.ArticleFiles;
+import com.example.gaff.image.ArticleFilesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,8 @@ public class BookingController {
     private final ArticleService articleService;
     private final ApiUserService apiUserService;
     private final BookingService bookingService;
+    private final ArticleFilesService articleFilesService;
+
 
     @GetMapping("/bookings")
     public String showNewBookingPage(Model model) {
@@ -42,9 +46,13 @@ public class BookingController {
     @GetMapping("/order")
     public String showBookingPage(Model model, HttpServletRequest request){
         List<ApiUserDto> users = apiUserService.getAllUsers();
+        List<ArticleDto> allAvailableArticlesExceptLoggedUser = articleService.getAllAvailableArticlesExceptLoggedUser(request);
+        List<ArticleFiles> allFiles = articleFilesService.getAllFiles();
+
         model.addAttribute("users", users);
         model.addAttribute("booking", new BookingDto());
-        model.addAttribute("article", articleService.getAllAvailableArticlesExceptLoggedUser(request));
+        model.addAttribute("files", allFiles);
+        model.addAttribute("article", allAvailableArticlesExceptLoggedUser);
         model.addAttribute("isAdd", false);
         return "booking/order";
     }
