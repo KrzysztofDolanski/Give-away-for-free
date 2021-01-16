@@ -27,36 +27,30 @@ public class BookingController {
     private final ArticleService articleService;
     private final ApiUserService apiUserService;
     private final BookingService bookingService;
-    private final ArticleMapper articleMapper;
 
     @GetMapping("/bookings")
     public String showNewBookingPage(Model model) {
         List<ApiUserDto> users = apiUserService.getAllUsers();
         model.addAttribute("users", users);
         model.addAttribute("booking", new BookingDto());
-        model.addAttribute("article", articleService.getAllArticle());
+        model.addAttribute("article", articleService.getAllAvailableArticles());
         model.addAttribute("isAdd", false);
         return "booking/booking";
     }
 
     @GetMapping("/save/booking/{id}")
-    public String save(@PathVariable Long id, RedirectAttributes redirectAttributes, HttpServletRequest request) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+    public String save(@PathVariable Long id, RedirectAttributes redirectAttributes, HttpServletRequest request)
+            throws ApiUserAlreadyExistsException {
 
-
-        //zamienić articleId na Article oraz wyciągnąć sellerId
-        //zrobić maksymalnie jedno bookowanie
+        //todo zamienić articleId na Article oraz wyciągnąć sellerId
+        //todo zrobić maksymalnie jedno bookowanie
 
         BookingDto bookingDto = new BookingDto();
-
-        ArticleDto articleById = articleService.findArticleById(id);
-
         bookingDto.setArticleId(id);
-
         bookingService.saveBooking(bookingDto, request);
+        BookingDto bookingDto1 = bookingService.findBookingByArticleId(id);
 
-        Booking bookingById = bookingService.findBookingById(1l);
-
-        if (bookingById != null) {
+        if (bookingDto1 != null) {
             redirectAttributes.addFlashAttribute("successmessage", "Booking successful saved");
             return "redirect:/bookings";
         } else {

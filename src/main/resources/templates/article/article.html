@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
-<link th:href="@{./css/bootstrap.css}" rel="stylesheet"/>
-<script type="text/javascript" th:src="@{./js/bootstrap.js}"></script>
-<script type="text/javascript" th:src="@{./js/jquery.js}"></script>
-<script type="text/javascript" th:src="@{./js/propper.js}"></script>
 
 <head>
     <meta charset="UTF-8">
+
+    <link th:rel="stylesheet" th:href="@{assets/bootstrap-select-1.13.9/dist/css/bootstrap-select.css}"/>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+
+    <link th:href="@{./css/bootstrap.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{./js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{./js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{./js/propper.js}"></script>
+
+
     <title>Save Article</title>
     <style>
         .imagecontainer {
@@ -61,12 +65,7 @@
 </head>
 <body>
 
-<div class="container-fluid">
-    <div class="row">
-        <hr class="col-md-12">
-        <h2> Article form</h2>
-    </div>
-
+<div>
     <div class="alert alert-success alert-dismissible" th:if="${successmessage}">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong th:text="${successmessage}"></strong>
@@ -76,34 +75,57 @@
         <strong th:text="${errormessage}"></strong>
     </div>
 
-    <form action="#" th:action="@{${isAdd}?'saveA':'updateA'}" th:object="${article}" method="post"
-          enctype="multipart/form-data">
-
-        <div class="form-group">
-            <label>Title</label>
-            <input type="text" id="title" name="title" th:field="*{title}" required="required">
-            <p id="error_title"></p>
+    <div class="container-fluid">
+        <div class="row">
+            <hr class="col-md-12">
+            <h2>Add what you wanted to give away</h2>
         </div>
-        <div>
-            <label>Description</label>
-            <textarea type="text" cols="50" rows="30" id="description" name="description" th:field="*{description}" required="required">
+
+
+        <form action="#" th:action="@{${isAdd}?'saveA':'updateA'}" th:object="${article}" method="post"
+              enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="title" name="title" th:field="*{title}" required="required">
+                <p id="error_title"></p>
+            </div>
+            <div>
+                <label>Description</label>
+                <textarea type="text" cols="50" rows="30" id="description" name="description" th:field="*{description}"
+                          required="required">
             <p id="error_description"></p>
             </textarea>
-        </div>
+            </div>
 
-<!--        <div>-->
-<!--            <label>Condition</label>-->
-<!--            <input type="productCondition" id="productCondition" name="productCondition" th:field="*{productCondition}" required="required">-->
-<!--            <p id="error_productCondition"></p>-->
-<!--        </div>-->
 
-        <div class="form-group">
-            <input type="file" class="form-control" id="files" placeholder="Upload files" th:field="*{files}"
-                   multiple="multiple">
-        </div>
+            <div class="form-group">
+                <label for="productCondition">Select Product Condition</label>
+                <select class="form-control custom-select" th:field="*{productCondition}" id="productCondition"
+                        multiple>
 
-        <div class="form-group">
-            <span th:each="file, itrStat : ${articleFiles}" class="imagecontainer" th:id="'imageIndex'+${itrStat.index}">
+                    <option th:each="productCondition : ${T(com.example.gaff.article.ProductCondition).values()}"
+                            th:value="${productCondition}"
+                            th:text="${productCondition}">dip
+                    </option>
+
+                </select>
+            </div>
+
+            <!--        <div>-->
+            <!--            <label>Condition</label>-->
+            <!--            <input type="productCondition" id="productCondition" name="productCondition" th:field="*{productCondition}" required="required">-->
+            <!--            <p id="error_productCondition"></p>-->
+            <!--        </div>-->
+
+            <div class="form-group">
+                <input type="file" class="form-control" id="files" placeholder="Upload files" th:field="*{files}"
+                       multiple="multiple">
+            </div>
+
+            <div class="form-group">
+            <span th:each="file, itrStat : ${articleFiles}" class="imagecontainer"
+                  th:id="'imageIndex'+${itrStat.index}">
                 <img th:src="@{'/images/'+${file.modifiedFilename}}"
                      style="width:80px; height:80px; border-radius: 50%; margin-left:10px;" class="image"
                      th:if="${file.fileExtension != 'xlsx' and file.fileExtension != 'pdf' and file.fileExtension != 'xls'}">
@@ -116,29 +138,32 @@
 
                 </span>
             </span>
-        </div>
+            </div>
 
-        <input type="hidden" class="form-control" th:field="*{removeImages}" id="removeImages">
-        <input type="hidden" class="form-control" th:field="*{id}">
+            <input type="hidden" class="form-control" th:field="*{removeImages}" id="removeImages">
+            <input type="hidden" class="form-control" th:field="*{id}">
 
-        <p class="">
-            <img class="rightIframe" id="thumbnail" alt="Article pictures" style="size: 20%; width: 20%; height: 20%"/>
-        </p>
+            <p class="">
+                <img class="rightIframe" id="thumbnail" alt="Article pictures"
+                     style="size: 20%; width: 20%; height: 20%"/>
+            </p>
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary" th:text="${isAdd}?'Save':'Update'"></button>
-        </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" th:text="${isAdd}?'Save':'Update'"></button>
+            </div>
 
-<!--        <td>-->
-<!--            <a th:href="@{'/editarticle/'+${article.id}}"><i class="fa fa-edit" style="font-size:21px"></i> </a>-->
-<!--        </td>-->
-    </form>
-
+            <!--        <td>-->
+            <!--            <a th:href="@{'/editarticle/'+${article.id}}"><i class="fa fa-edit" style="font-size:21px"></i> </a>-->
+            <!--        </td>-->
+        </form>
+    </div>
 </div>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
 
 <script type="text/javascript">
     $(function () {
@@ -168,7 +193,6 @@
         reader.onload = function (e) {
             $('#thumbnail').attr('src', e.target.result);
         };
-        // reader.readAsBinaryString(file)
         reader.readAsDataURL(file);
     }
 </script>

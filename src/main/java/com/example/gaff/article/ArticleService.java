@@ -17,6 +17,7 @@ import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +34,10 @@ public class ArticleService {
 
     public List<ArticleDto> getAllArticle() {
         return articleMapper.mapToArticleDtoList(articleRepository.findAll());
+    }
+
+    public List<ArticleDto> getAllAvailableArticles(){
+        return articleMapper.mapToArticleDtoList(articleRepository.getAllAvailableArticles());
     }
 
     public ArticleDto findArticleByTitle(String title) {
@@ -84,4 +89,10 @@ public class ArticleService {
     }
     }
 
+
+    public void availabilityOfArticle(Long articleId) {
+        Article article = articleRepository.findById(articleId).orElseThrow();
+        article.setAvailable(false);
+        articleRepository.save(article);
+    }
 }
