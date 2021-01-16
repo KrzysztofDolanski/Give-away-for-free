@@ -2,6 +2,10 @@ package com.example.gaff.booking;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class BookingMapping {
 
@@ -21,5 +25,9 @@ public class BookingMapping {
                 .articleId(booking.getArticleId())
                 .buyerId(booking.getBuyerId())
                 .sellerId(booking.getSellerId()).build();
+    }
+
+    public List<BookingDto> mapToBookingDtoList(List<Booking> bookingsByUsername) {
+        return bookingsByUsername.stream().map(this::mapToBookingDto).collect(Collectors.toList());
     }
 }

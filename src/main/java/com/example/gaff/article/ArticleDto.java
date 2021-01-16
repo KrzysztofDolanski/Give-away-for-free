@@ -28,7 +28,7 @@ public class ArticleDto {
     private ProductCondition productCondition;
     private boolean isAvailable;
     private Long noOfVisits;
-    private LocalDateTime timeToPickup;
+    private String dateOfOffer;
 //
 //    @ManyToOne
 //    private ApiUser user;

@@ -3,6 +3,8 @@ package com.example.gaff.booking;
 import com.example.gaff.api_user.ApiUserDto;
 import com.example.gaff.api_user.ApiUserMapping;
 import com.example.gaff.api_user.ApiUserService;
+import com.example.gaff.article.ArticleDto;
+import com.example.gaff.article.ArticleService;
 import com.example.gaff.exceptions.BookingNotFoundException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -23,21 +26,34 @@ public class BookingService {
     private final BookingMapping bookingMapping;
     private final ApiUserService apiUserService;
     private final ApiUserMapping apiUserMapping;
+    private final ArticleService articleService;
 
 
 
     public Booking saveBooking(BookingDto bookingDto, HttpServletRequest request) {
         ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserService.currentUsername(request));
 
+        ArticleDto articleById = articleService.findArticleById(bookingDto.getArticleId());
+        Long userId = articleById.getUserId();
+
         BookingDto build = BookingDto.builder()
                 .id(generateUniqueId())
                 .articleId(bookingDto.getArticleId())
-                .sellerId(bookingDto.getSellerId())
+                .sellerId(userId)
                 .buyerId(userByUsername.getId()).build();
 
+
+        //todo zrobić wyświetlanie nie swoich artykułów
+        //todo zrobić zamianę available na false
+//        ArticleDto articleById = articleService.findArticleById(bookingDto.getArticleId());
+//        articleById.setAvailable(false);
+//        articleService.saveArticle(articleById,request);
+
+
+        articleService.availabilityOfArticle(build.getArticleId());
+
+        build.setBuyerId(userByUsername.getId());
         bookingDto.setId(generateUniqueId());
-        
-        bookingDto.setBuyerId(userByUsername.getId());
 
         Booking booking = bookingMapping.mapToBooking(build);
         return bookingRepository.save(booking);
@@ -82,5 +98,21 @@ public class BookingService {
 
         while (val < 0);
         return val;
+    }
+
+    public List<BookingDto> getLoggedUserBookingsSeller(ApiUserDto userByUsername) {
+
+        Long id = userByUsername.getId();
+        return bookingMapping.mapToBookingDtoList(bookingRepository.getBookingsBySellerId(id));
+
+    }
+
+    public List<BookingDto> getLoggedUserBookingsBuyer(ApiUserDto userByUsername) {
+        Long id = userByUsername.getId();
+        return bookingMapping.mapToBookingDtoList(bookingRepository.getBookingsByBuyerId(id));
+    }
+
+    public BookingDto findBookingByArticleId(Long id) {
+        return bookingMapping.mapToBookingDto(bookingRepository.findBookingByArticleId(id));
     }
 }

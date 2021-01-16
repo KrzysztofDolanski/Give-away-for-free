@@ -26,9 +26,10 @@ public class Article {
     private String title;
     private String description;
     private ProductCondition productCondition;
-    private boolean isAvailable;
+    @Builder.Default
+    private boolean isAvailable = true;
     private Long noOfVisits;
-    private LocalDateTime timeToPickup;
+    private String dateOfOffer;
 
 //    @ManyToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "user_id")
