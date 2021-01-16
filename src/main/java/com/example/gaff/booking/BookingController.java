@@ -38,6 +38,17 @@ public class BookingController {
         return "booking/booking";
     }
 
+
+    @GetMapping("/order")
+    public String showBookingPage(Model model, HttpServletRequest request){
+        List<ApiUserDto> users = apiUserService.getAllUsers();
+        model.addAttribute("users", users);
+        model.addAttribute("booking", new BookingDto());
+        model.addAttribute("article", articleService.getAllAvailableArticlesExceptLoggedUser(request));
+        model.addAttribute("isAdd", false);
+        return "booking/order";
+    }
+
     @GetMapping("/save/booking/{id}")
     public String save(@PathVariable Long id, RedirectAttributes redirectAttributes, HttpServletRequest request)
             throws ApiUserAlreadyExistsException {

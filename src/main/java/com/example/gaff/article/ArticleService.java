@@ -10,6 +10,7 @@ import com.example.gaff.image.UploadPathService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.hibernate.mapping.Collection;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -31,14 +34,24 @@ public class ArticleService {
     private final ApiUserService apiUserService;
 
 
-
     public List<ArticleDto> getAllArticle() {
         return articleMapper.mapToArticleDtoList(articleRepository.findAll());
     }
 
-    public List<ArticleDto> getAllAvailableArticles(){
+    public List<ArticleDto> getAllAvailableArticles() {
         return articleMapper.mapToArticleDtoList(articleRepository.getAllAvailableArticles());
     }
+
+    public List<ArticleDto> getAllAvailableArticlesExceptLoggedUser(HttpServletRequest request) {
+        ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserService.currentUsername(request));
+
+        Stream<ArticleDto> articleDtoStream = articleMapper.mapToArticleDtoList(articleRepository.getAllAvailableArticles())
+                .stream()
+                .filter(articleDto -> !articleDto.userId.equals(userByUsername.getId()));
+        return articleDtoStream.collect(Collectors.toList());
+
+    }
+
 
     public ArticleDto findArticleByTitle(String title) {
         return articleMapper.mapToArticleDto(articleRepository.findByTitle(title));
@@ -49,7 +62,7 @@ public class ArticleService {
                 orElseThrow(() -> new NotFoundException("Not found location: " + id)));
     }
 
-    public void saveArticle(ArticleDto articleDto, HttpServletRequest request){
+    public void saveArticle(ArticleDto articleDto, HttpServletRequest request) {
 
         ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserService.currentUsername(request));
 
@@ -75,7 +88,7 @@ public class ArticleService {
                         FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
                     } catch (Exception e) {
                         e.printStackTrace();
-                   }
+                    }
                 }
                 ArticleFiles files = new ArticleFiles();
                 files.setFileExtension(FilenameUtils.getExtension(fileName));
