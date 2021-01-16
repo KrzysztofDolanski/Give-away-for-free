@@ -6,18 +6,26 @@ import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import com.example.gaff.exceptions.NoUsernameException;
 import com.example.gaff.image.UserFiles;
 import com.example.gaff.image.UserFilesDto;
+import com.example.gaff.img.Image;
+import com.example.gaff.img.ImageForm;
+import com.example.gaff.img.ImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +37,7 @@ public class ApiUserController {
 
     private final ApiUserService apiUserService;
     private final ConfirmationTokenService confirmationTokenService;
+    private final ImageService imageService;
 
     @GetMapping("/login")
     public String signUp() {
@@ -36,12 +45,16 @@ public class ApiUserController {
     }
 
     @GetMapping(value = "/register")
-    public String users(Model model) {
+    public String users(Model model, ModelMap modelMap) {
         List<ApiUserDto> users = apiUserService.getAllUsers();
         model.addAttribute("users", users);
         model.addAttribute("user", new ApiUserDto());
         model.addAttribute("userFiles", new ArrayList<UserFiles>());
         model.addAttribute("isAdd", true);
+        modelMap.addAttribute("imageForm", new ImageForm());
+
+        imageService.findById(1L).ifPresent(image -> modelMap.addAttribute("myimg", new String(Base64.getEncoder().encode(
+                image.getImg()), StandardCharsets.UTF_8)));
         return "register";
     }
 
@@ -59,9 +72,13 @@ public class ApiUserController {
 
 
     @PostMapping("/save")
-    public String save(@ModelAttribute ApiUserDto apiUserDto, RedirectAttributes redirectAttributes, Model model) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+    public String save(@ModelAttribute ApiUserDto apiUserDto, RedirectAttributes redirectAttributes, Model model, @ModelAttribute("imageForm") ImageForm imageForm, @AuthenticationPrincipal Authentication authentication) throws MessagingException, IOException, ApiUserAlreadyExistsException {
         apiUserService.signUpUser(apiUserDto);
         ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserDto.getUsername());
+
+        Long id = userByUsername.getId();
+        Image img = imageService.save(new Image(null, imageForm.getImage().getBytes(), id));
+
 
         if (userByUsername != null) {
             redirectAttributes.addFlashAttribute("successmessage", "User successful register");

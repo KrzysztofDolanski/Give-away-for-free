@@ -78,26 +78,26 @@ public class ApiUserService implements UserDetailsService, MailService {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         apiUserDto.setDateOfRegistration(LocalDateTime.now().format(df));
         ApiUser apiUser = apiUserMapping.mapToApiUser(apiUserDto);
-        if (apiUser.getFiles() != null && apiUser.getFiles().size() > 0) {
-            for (MultipartFile file : apiUser.getFiles()) {
-                String fileName = file.getOriginalFilename();
-                String modifiedFileName = FilenameUtils.getBaseName(fileName) + "_" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(fileName);
-                File storeFile = uploadPathService.getFilePath(modifiedFileName, "/images");
-                if (storeFile != null) {
-                    try {
-                        FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                UserFiles files = new UserFiles();
-                files.setFileExtension(FilenameUtils.getExtension(fileName));
-                files.setFileName(fileName);
-                files.setModifiedFilename(modifiedFileName);
-                files.setUser(apiUser);
-                userFileRepository.save(files);
-            }
-        }
+//        if (apiUser.getFiles() != null && apiUser.getFiles().size() > 0) {
+//            for (MultipartFile file : apiUser.getFiles()) {
+//                String fileName = file.getOriginalFilename();
+//                String modifiedFileName = FilenameUtils.getBaseName(fileName) + "_" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(fileName);
+//                File storeFile = uploadPathService.getFilePath(modifiedFileName, "/images");
+//                if (storeFile != null) {
+//                    try {
+//                        FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                UserFiles files = new UserFiles();
+//                files.setFileExtension(FilenameUtils.getExtension(fileName));
+//                files.setFileName(fileName);
+//                files.setModifiedFilename(modifiedFileName);
+//                files.setUser(apiUser);
+//                userFileRepository.save(files);
+//            }
+//        }
         apiUserRepository.save(apiUser);
         ConfirmationToken confirmationToken = new ConfirmationToken(apiUser);
         confirmationTokenRepository.save(confirmationToken);
