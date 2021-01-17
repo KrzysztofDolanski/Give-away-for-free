@@ -3,6 +3,7 @@ package com.example.gaff.article;
 import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.booking.Booking;
 import com.example.gaff.category.Category;
+import com.example.gaff.img.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,6 +43,10 @@ public class ArticleDto {
     @ManyToOne
     private Category category;
 
-    private List<MultipartFile> files = new ArrayList<MultipartFile>();
-    private List<String> removeImages = new ArrayList<>();
+
+    private List<Image> image;
+
+    //
+//    private List<MultipartFile> files = new ArrayList<MultipartFile>();
+//    private List<String> removeImages = new ArrayList<>();
 }

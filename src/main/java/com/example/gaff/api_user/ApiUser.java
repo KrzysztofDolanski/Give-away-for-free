@@ -3,6 +3,7 @@ package com.example.gaff.api_user;
 
 import com.example.gaff.article.Article;
 import com.example.gaff.booking.Booking;
+import com.example.gaff.img.Image;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,12 +40,17 @@ public class ApiUser implements UserDetails, Serializable {
     private String dateOfRegistration;
     private boolean isActive;
 
+    @Lob
+    private byte[] img;
 
-    @Transient
-    private List<MultipartFile> files = new ArrayList<MultipartFile>();
 
-    @Transient
-    private List<String> removeImages = new ArrayList<>();
+//    @OneToOne
+//    private Image image;
+//    @Transient
+//    private List<MultipartFile> files = new ArrayList<MultipartFile>();
+//
+//    @Transient
+//    private List<String> removeImages = new ArrayList<>();
 
 
     @Builder.Default

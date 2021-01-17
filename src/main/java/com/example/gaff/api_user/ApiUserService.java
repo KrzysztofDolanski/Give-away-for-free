@@ -29,6 +29,7 @@ import java.security.Principal;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,7 +69,7 @@ public class ApiUserService implements UserDetailsService, MailService {
     public void sendEmail(Email email) {
     }
 
-    public void signUpUser(ApiUserDto apiUserDto) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+    public void signUpUser(ApiUserDto apiUserDto, byte[] multipartFile) throws MessagingException, IOException, ApiUserAlreadyExistsException {
         if ((apiUserRepository.findByUsername(apiUserDto.getUsername())) != null) {
             throw new ApiUserAlreadyExistsException("User with this name already exist");
 
@@ -77,27 +78,14 @@ public class ApiUserService implements UserDetailsService, MailService {
         apiUserDto.setPassword(encryptedPassword);
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         apiUserDto.setDateOfRegistration(LocalDateTime.now().format(df));
+
+//        new String(Base64.getDecoder().decode(apiUserDto.getImage()));
+        System.err.println(multipartFile.toString());
+        apiUserDto.setImg(multipartFile);
+
+
         ApiUser apiUser = apiUserMapping.mapToApiUser(apiUserDto);
-//        if (apiUser.getFiles() != null && apiUser.getFiles().size() > 0) {
-//            for (MultipartFile file : apiUser.getFiles()) {
-//                String fileName = file.getOriginalFilename();
-//                String modifiedFileName = FilenameUtils.getBaseName(fileName) + "_" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(fileName);
-//                File storeFile = uploadPathService.getFilePath(modifiedFileName, "/images");
-//                if (storeFile != null) {
-//                    try {
-//                        FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                UserFiles files = new UserFiles();
-//                files.setFileExtension(FilenameUtils.getExtension(fileName));
-//                files.setFileName(fileName);
-//                files.setModifiedFilename(modifiedFileName);
-//                files.setUser(apiUser);
-//                userFileRepository.save(files);
-//            }
-//        }
+
         apiUserRepository.save(apiUser);
         ConfirmationToken confirmationToken = new ConfirmationToken(apiUser);
         confirmationTokenRepository.save(confirmationToken);
@@ -149,38 +137,38 @@ public class ApiUserService implements UserDetailsService, MailService {
 
     public ApiUserDto update(ApiUserDto apiUserDto) {
         ApiUser apiUser1 = apiUserMapping.mapToApiUser(apiUserDto);
-        if (apiUser1 != null && apiUser1.getRemoveImages() != null && apiUser1.getRemoveImages().size() > 0) {
-            userFileRepository.deleteUserFilesByUserIdAndFileName(apiUser1.getId(), apiUser1.getRemoveImages());
-            for (String file : apiUser1.getRemoveImages()) {
-                File dbFile = new File(servletContext.getRealPath("/images/" + File.separator + file));
-                if (dbFile.exists()) {
-                    dbFile.delete();
-                }
-            }
-        }
-        if (apiUser1 != null && apiUser1.getFiles().size() > 0) {
-            for (MultipartFile file : apiUser1.getFiles()) {
-                if (file != null && StringUtils.hasText(file.getOriginalFilename())) {
-                    String fileName = file.getOriginalFilename();
-                    String modifiedFileName = FilenameUtils.getBaseName(fileName) + "_" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(fileName);
-                    File storeFile = uploadPathService.getFilePath(modifiedFileName, "images");
-                    if (storeFile != null) {
-                        try {
-                            FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    UserFiles files = new UserFiles();
-                    files.setFileExtension(FilenameUtils.getExtension(fileName));
-                    files.setFileName(fileName);
-                    files.setModifiedFilename(modifiedFileName);
-                    files.setUser(apiUser1);
-                    userFileRepository.save(files);
-                }
-            }
+//        if (apiUser1 != null && apiUser1.getRemoveImages() != null && apiUser1.getRemoveImages().size() > 0) {
+//            userFileRepository.deleteUserFilesByUserIdAndFileName(apiUser1.getId(), apiUser1.getRemoveImages());
+//            for (String file : apiUser1.getRemoveImages()) {
+//                File dbFile = new File(servletContext.getRealPath("/images/" + File.separator + file));
+//                if (dbFile.exists()) {
+//                    dbFile.delete();
+//                }
+//            }
+//        }
+//        if (apiUser1 != null && apiUser1.getFiles().size() > 0) {
+//            for (MultipartFile file : apiUser1.getFiles()) {
+//                if (file != null && StringUtils.hasText(file.getOriginalFilename())) {
+//                    String fileName = file.getOriginalFilename();
+//                    String modifiedFileName = FilenameUtils.getBaseName(fileName) + "_" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(fileName);
+//                    File storeFile = uploadPathService.getFilePath(modifiedFileName, "images");
+//                    if (storeFile != null) {
+//                        try {
+//                            FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    UserFiles files = new UserFiles();
+//                    files.setFileExtension(FilenameUtils.getExtension(fileName));
+//                    files.setFileName(fileName);
+//                    files.setModifiedFilename(modifiedFileName);
+//                    files.setUser(apiUser1);
+//                    userFileRepository.save(files);
+//                }
+//            }
             apiUserRepository.save(apiUser1);
-        }
+//        }
         return apiUserMapping.mapToApiUserDto(apiUser1);
     }
 
@@ -200,4 +188,5 @@ public class ApiUserService implements UserDetailsService, MailService {
         ApiUser apiUser = apiUserMapping.mapToApiUser(userByUsername);
         apiUserRepository.save(apiUser);
     }
+
 }

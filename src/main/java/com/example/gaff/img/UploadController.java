@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
 
 @Controller
 
@@ -27,18 +30,32 @@ public class UploadController {
 
     @GetMapping
     public String showUploadForm(ModelMap modelMap) {
-        modelMap.addAttribute("imageForm", new ImageForm());
-        imageService.findById(1L).ifPresent(imageEntity -> modelMap.addAttribute("myimg", new String(Base64.getEncoder().encode(
-                imageEntity.getImg()), StandardCharsets.UTF_8)));
+
+        ImageForm imageForm = new ImageForm();
+
+        modelMap.addAttribute("imageForm", imageForm);
+
+
+//        imageService.findById(1l).ifPresent(imageEntity ->
+//                modelMap.addAttribute("myimg", new String(Base64.getEncoder().encode(
+//                imageEntity.getImg()), StandardCharsets.UTF_8)));
         return "register";
     }
 
+
+
     @PostMapping
-    public String handleImageActiveUser(@ModelAttribute("imageForm") ImageForm imageForm, @AuthenticationPrincipal Authentication authentication) throws IOException {
+    public String handleImageActiveUser(@ModelAttribute("imageForm") ImageForm imageForm,
+                                        @AuthenticationPrincipal Authentication authentication,
+                                        ModelMap modelMap) throws IOException {
         String name = authentication.getName();
         ApiUserDto userByUsername = apiUserService.getUserByUsername(name);
         Long id = userByUsername.getId();
-        Image img = imageService.save(new Image(null, imageForm.getImage().getBytes(), id));
+        LocalDate localDate = LocalDate.now();
+        LocalDate savedDate = localDate;
+        Image img = imageService.save(new Image(null, imageForm.getImage().getBytes(), localDate, null, null));
+        List<ImageDto> imageDto = imageService.findAll();
+        modelMap.addAttribute("image", imageDto);
         return "register";
     }
 }

@@ -3,12 +3,15 @@ package com.example.gaff.api_user;
 import com.example.gaff.article.Article;
 import com.example.gaff.article.ArticleDto;
 import com.example.gaff.booking.Booking;
+import com.example.gaff.img.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -36,8 +39,14 @@ public class ApiUserDto {
     private String zipCode;
     private String dateOfRegistration;
 
-    private List<MultipartFile> files = new ArrayList<MultipartFile>();
-    private List<String> removeImages = new ArrayList<>();
+    @Lob
+    private byte[] img;
+
+
+//    private Image image;
+
+//    private List<MultipartFile> files = new ArrayList<MultipartFile>();
+//    private List<String> removeImages = new ArrayList<>();
 
     private List<ArticleDto> article;
     private List<Booking> booking;

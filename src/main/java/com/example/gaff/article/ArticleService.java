@@ -7,6 +7,9 @@ import com.example.gaff.exceptions.NotFoundException;
 import com.example.gaff.image.ArticleFileRepository;
 import com.example.gaff.image.ArticleFiles;
 import com.example.gaff.image.UploadPathService;
+import com.example.gaff.img.Image;
+import com.example.gaff.img.ImageForm;
+import com.example.gaff.img.ImageRepositoty;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -17,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +36,7 @@ public class ArticleService {
     private final ArticleFileRepository articleFileRepository;
     private final ApiUserMapping apiUserMapping;
     private final ApiUserService apiUserService;
+    private final ImageRepositoty imageRepositoty;
 
 
     public List<ArticleDto> getAllArticle() {
@@ -78,25 +83,15 @@ public class ArticleService {
 //        Object credentials = authentication.getCredentials();
 //        article.setUser((ApiUser) credentials);
 
-        if (article.getFiles() != null && article.getFiles().size() > 0) {
-            for (MultipartFile file : article.getFiles()) {
-                String fileName = file.getOriginalFilename();
-                String modifiedFileName = FilenameUtils.getBaseName(fileName) + "_" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(fileName);
-                File storeFile = uploadPathService.getFilePath(modifiedFileName, "/images");
-                if (storeFile != null) {
-                    try {
-                        FileUtils.writeByteArrayToFile(storeFile, file.getBytes());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                ArticleFiles files = new ArticleFiles();
-                files.setFileExtension(FilenameUtils.getExtension(fileName));
-                files.setFileName(fileName);
-                files.setModifiedFilename(modifiedFileName);
+        if (article.getImage() != null && article.getImage().size() > 0) {
+            for (Image file : article.getImage()) {
+
+                Image files = new Image();
+                files.setImg(file.getImg());
+                files.setCreatedDate(LocalDate.now());
                 files.setArticle(article);
 
-                articleFileRepository.save(files);
+                imageRepositoty.save(files);
             }
         }
     }

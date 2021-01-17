@@ -4,6 +4,10 @@ import com.example.gaff.api_user.ApiUserMapping;
 import com.example.gaff.api_user.ApiUserService;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import com.example.gaff.image.ArticleFilesDto;
+import com.example.gaff.img.Image;
+import com.example.gaff.img.ImageDto;
+import com.example.gaff.img.ImageForm;
+import com.example.gaff.img.ImageRepositoty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -14,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +31,7 @@ public class ArticleController {
 
     private final ApiUserService apiUserService;
     private final ApiUserMapping apiUserMapping;
+    private final ImageRepositoty imageRepositoty;
 
 //    @GetMapping("/article")
 //    List<Article> getAllArticle() {
@@ -55,17 +61,28 @@ public class ArticleController {
 
         model.addAttribute("articles", allArticles);
         model.addAttribute("article", new ArticleDto());
-        model.addAttribute("articleFiles", new ArrayList<ArticleFilesDto>());
+        model.addAttribute("imageForm", new ImageForm());
         model.addAttribute("isAdd", true);
         return "article/article";
     }
 
 
+
     @PostMapping("save/saveA")
-    public String save(@ModelAttribute ArticleDto articleDto, RedirectAttributes redirectAttributes, Model model, HttpServletRequest request) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+    public String save(@ModelAttribute ArticleDto articleDto, @ModelAttribute("imageForm") ImageForm imageForm, RedirectAttributes redirectAttributes, Model model, HttpServletRequest request) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+
+        Image img = imageRepositoty.save(
+                new Image(null, imageForm.getImage().getBytes(),
+                        LocalDate.now(),
+                        null,
+                        articleMapper.mapToArticle(articleDto)));
+
+        articleDto.setImage(List.of(img));
 
         articleService.saveArticle(articleDto, request);
         ArticleDto articleByTitle = articleService.findArticleByTitle(articleDto.getTitle());
+
+
 
         if (articleByTitle != null) {
             redirectAttributes.addFlashAttribute("successmessage", "Article successful saved");
