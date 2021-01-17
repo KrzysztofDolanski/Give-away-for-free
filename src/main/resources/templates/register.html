@@ -123,51 +123,63 @@
             <p id="error_zipcode"></p>
         </div>
 
-        <div class="form-group">
-            <input type="file" class="form-control" id="files" placeholder="Upload files" th:field="*{files}"
-                   multiple="multiple">
+        <div>
+            <label for="uploadimg">Logo</label>
+        <input id="uploadimg" type="file" th:name="file">
+            <p id="error_img"></p>
         </div>
-
-        <div class="form-group">
-            <span th:each="file, itrStat : ${userFiles}" class="imagecontainer" th:id="'imageIndex'+${itrStat.index}">
-                <img th:src="@{'/images/'+${file.modifiedFilename}}"
-                     style="width:80px; height:80px; border-radius: 50%; margin-left:10px;" class="image"
-                     th:if="${file.fileExtension != 'xlsx' and file.fileExtension != 'pdf' and file.fileExtension != 'xls'}">
-                <span class="overlay">
-                    <a href="#" class="icon image-confirm-delete" title="image delete"
-                       th:attr="data-id=${itrStat.index}, data-name=${file.modifiedFilename}">
-                        <i class="fa fa-trash" style="color:deeppink;"></i>
-                    </a>
-
-                </span>
-            </span>
-        </div>
-
-        <input type="hidden" class="form-control" th:field="*{removeImages}" id="removeImages">
-        <input type="hidden" class="form-control" th:field="*{id}">
-
-        <p class="">
-            <img class="rightIframe" id="thumbnail" alt="yours logo" style="size:20%; width: 20%; height: 20%"/>
-        </p>
-
-<!--        -->
-
-        <div th:if="${myimg}">
-            <img th:src="@{'data:image/png;base64,' + ${myimg}}" alt="notworking">
-        </div>
-
-        <form th:object="${imageForm}" th:action="@{/upload}" method="post" enctype="multipart/form-data">
-
-            <label for="uploadimg">UPLOAD</label>
-            <input id="uploadimg" type="file" th:field="*{image}">
-            <button type="submit">UPLOAD</button>
-        </form>
-<!--        -->
 
         <div class="form-group">
             <button type="submit" class="btn btn-primary" th:text="${isAdd}?'Save':'Update'"></button>
             <span> Already registered? <a href="/" th:href="@{/login}">Login here</a> </span>
         </div>
+
+
+
+
+<!--        <div class="form-group">-->
+<!--            <input type="file" class="form-control" id="files" placeholder="Upload files" th:field="*{files}"-->
+<!--                   multiple="multiple">-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <span th:each="file, itrStat : ${userFiles}" class="imagecontainer" th:id="'imageIndex'+${itrStat.index}">-->
+<!--                <img th:src="@{'/images/'+${file.modifiedFilename}}"-->
+<!--                     style="width:80px; height:80px; border-radius: 50%; margin-left:10px;" class="image"-->
+<!--                     th:if="${file.fileExtension != 'xlsx' and file.fileExtension != 'pdf' and file.fileExtension != 'xls'}">-->
+<!--                <span class="overlay">-->
+<!--                    <a href="#" class="icon image-confirm-delete" title="image delete"-->
+<!--                       th:attr="data-id=${itrStat.index}, data-name=${file.modifiedFilename}">-->
+<!--                        <i class="fa fa-trash" style="color:deeppink;"></i>-->
+<!--                    </a>-->
+
+<!--                </span>-->
+<!--            </span>-->
+<!--        </div>-->
+
+<!--        <input type="hidden" class="form-control" th:field="*{removeImages}" id="removeImages">-->
+<!--        <input type="hidden" class="form-control" th:field="*{id}">-->
+
+<!--        <p class="">-->
+<!--            <img class="rightIframe" id="thumbnail" alt="yours logo" style="size:20%; width: 20%; height: 20%"/>-->
+<!--        </p>-->
+
+<!--        -->
+
+<!--        <tr th:each="images : ${image}">-->
+
+<!--            <td><img th:src="@{'data:image/png;base64,' + ${images}}" alt="notworking" style="width: 150px;height: 120px;">-->
+<!--        </td>-->
+
+<!--        <form th:object="${image}" th:action="@{/upload}" method="post" enctype="multipart/form-data">-->
+
+<!--            <label for="uploadimg">UPLOAD</label>-->
+<!--            <input id="uploadimg" type="file" th:field="*{images}">-->
+<!--            <button type="submit">UPLOAD</button>-->
+<!--        </form>-->
+<!--        -->
+
+
 
 
 

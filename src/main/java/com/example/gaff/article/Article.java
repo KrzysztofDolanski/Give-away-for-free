@@ -3,6 +3,7 @@ package com.example.gaff.article;
 import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.booking.Booking;
 import com.example.gaff.category.Category;
+import com.example.gaff.img.Image;
 import lombok.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,13 +52,17 @@ public class Article {
     @EqualsAndHashCode.Exclude
     private Category category;
 
-    @Transient
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<MultipartFile> files = new ArrayList<MultipartFile>();
 
-    @Transient
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<String> removeImages = new ArrayList<>();
+    @OneToMany
+    private List<Image> image;
+
+//    @Transient
+//    @ToString.Exclude
+//    @EqualsAndHashCode.Exclude
+//    private List<MultipartFile> files = new ArrayList<MultipartFile>();
+//
+//    @Transient
+//    @ToString.Exclude
+//    @EqualsAndHashCode.Exclude
+//    private List<String> removeImages = new ArrayList<>();
 }

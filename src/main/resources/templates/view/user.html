@@ -48,17 +48,23 @@
             </div>
 
             <div class="form-group">
-                <input type="file" class="form-control" id="files" placeholder="Upload files" th:field="*{files}"
+                <input type="file" class="form-control" id="files" placeholder="Upload files" th:field="*{img}"
                        multiple="multiple">
             </div>
 
-<!--            żeby pokazywało wszytskie pliki - zmienić userFiles (bez get(0))-->
-            <div class="form-group">
-                <span th:each="file, itrStat : ${userFiles.get(0)}" class="imagecontainer" th:id="'imageindex'+${itrStat.index}">
-                    <img th:src="@{'/images/'+${fileName}}" style="width: 150px;height: 120px;" class="image">
-                </span>
 
-            </div>
+<!--            żeby pokazywało wszytskie pliki - zmienić userFiles (bez get(0))-->
+<!--            <div class="form-group">-->
+<!--                <span th:each="file, itrStat : ${images.get(0)}" class="imagecontainer" th:id="'imageindex'+${itrStat.index}">-->
+<!--                    <img th:src="@{'/images/'+${fileName}}" style="width: 150px;height: 120px;" class="image">-->
+<!--                </span>-->
+
+<!--                <span>-->
+<!--                <div th:if="${images}">-->
+<!--                    <img th:src="@{'data:image/png;base64,' + ${images}}" alt="notworking">-->
+<!--                </div>-->
+<!--                </span>-->
+<!--            </div>-->
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" th:text="${isAdd}?'Save':'Update'"></button>
@@ -76,6 +82,7 @@
                         <th>Username</th>
                         <th>Email</th>
                         <th>Region</th>
+                        <th>Logo</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -84,6 +91,9 @@
                         <td th:text="${user.username}"></td>
                         <td th:text="${user.email}"></td>
                         <td th:text="${user.region}"></td>
+                        <td th:each="image : ${images.get((user.id)-1)}">
+                        <img th:src="@{'data:image/png;base64,' + ${image}}" alt="notworking">
+                        </td>
                         <td>
                             <a th:href="@{'/edituser/'+${user.id}}"><i class="fa fa-edit" style="font-size:21px"></i>
                             </a>
@@ -94,12 +104,12 @@
                     </tr>
                     </tbody>
                 </table>
-                <p class="text-center">
-                <img id="images" th:src="@{'\images\\'+ ${fileName}}" alt="photo" style="width: 150px;height: 120px;">
-                </p>
-                <p>
-                    <img id="thumbnail" alt="yours logo"/>
-                </p>
+<!--                <p class="text-center">-->
+<!--                <img id="images" th:src="@{'\images\\'+ ${fileName}}" alt="photo" style="width: 150px;height: 120px;">-->
+<!--                </p>-->
+<!--                <p>-->
+<!--                    <img id="thumbnail" alt="yours logo"/>-->
+<!--                </p>-->
             </div>
         </div>
     </div>

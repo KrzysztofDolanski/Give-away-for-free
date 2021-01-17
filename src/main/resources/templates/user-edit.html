@@ -76,6 +76,7 @@
         <td th:text="${apiUser.getRegion()}"></td>
         <td th:text="${apiUser.getCity()}"></td>
 
+
         <p>
             <iframe
                     width="600"
@@ -89,27 +90,7 @@
 
 <form action="#" th:action="@{${isAdd}?'/save':'update'}" th:object="${user}" method="get"
       enctype="multipart/form-data">
-        <div class="form-group">
-            <span th:each="file, itrStat : ${userFiles}" class="imagecontainer" th:id="'imageIndex'+${itrStat.index}">
-                <img src="@{'/images/'+${file.modifiedFileName}}"
-                     style="width:80px; height:80px; border-radius:50%;margin-left:10px;" class="image"
-                     th:if="${file.fileExtension != 'xlsx' and file.fileExtension != 'pdf' and file.fileExtension != 'xls'}">
-                <img src="@{'/img/pdf.jpg'" style="width:80px; height:80px; border-radius:50%;margin-left:10px;"
-                     class="image" th:if="${file.fileExtension == 'pdf'}">
-                <img src="@{'/img/excel.jpg'" style="width:80px; height:80px; border-radius:50%;margin-left:10px;"
-                     class="image" th:if="${file.fileExtension == 'xls' or file.fileExtension == 'xlsx'}">
-                <span class="overlay">
-                    <a href="#" class="icon image-confirm-delete" title="image delete"
-                       th:attr="data-id=${itrStat.index}, data-name=${file.modifiedFilename}">
-                        <i class="fa fa-trash" style="color:deeppink;"></i>
-                    </a>
-                </span>
-            </span>
-            <!--        </div>-->
-            <!--        <td>-->
-            <!--            <a th:href="@{'/edituser/'+${user.id}}"><i class="fa fa-edit" style="font-size:21px"></i> </a>-->
-            <!--        </td>-->
-        </div>
+
 </form>
 
 

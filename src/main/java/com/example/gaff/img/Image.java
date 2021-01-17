@@ -1,16 +1,18 @@
 package com.example.gaff.img;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.gaff.api_user.ApiUser;
+import com.example.gaff.article.Article;
+import lombok.*;
 
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Image {
 
 
@@ -21,7 +23,21 @@ public class Image {
     @Lob
     private byte[] img;
 
-    private Long userId;
+    private LocalDate createdDate;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private ApiUser user;
+
+
+    @ManyToOne
+    @JoinColumn(name="article_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Article article;
 
 }
 
