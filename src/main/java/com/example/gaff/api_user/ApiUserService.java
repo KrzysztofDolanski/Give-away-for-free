@@ -80,7 +80,7 @@ public class ApiUserService implements UserDetailsService, MailService {
         apiUserDto.setDateOfRegistration(LocalDateTime.now().format(df));
 
 //        new String(Base64.getDecoder().decode(apiUserDto.getImage()));
-        System.err.println(multipartFile.toString());
+
         apiUserDto.setImg(multipartFile);
 
 

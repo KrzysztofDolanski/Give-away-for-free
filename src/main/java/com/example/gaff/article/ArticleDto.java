@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
@@ -43,8 +44,8 @@ public class ArticleDto {
     @ManyToOne
     private Category category;
 
-
-    private List<Image> image;
+    @Lob
+    private byte[] img;
 
     //
 //    private List<MultipartFile> files = new ArrayList<MultipartFile>();

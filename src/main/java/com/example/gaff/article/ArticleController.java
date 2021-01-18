@@ -13,6 +13,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
@@ -32,6 +33,7 @@ public class ArticleController {
     private final ApiUserService apiUserService;
     private final ApiUserMapping apiUserMapping;
     private final ImageRepositoty imageRepositoty;
+    private MultipartFile multipartFile;
 
 //    @GetMapping("/article")
 //    List<Article> getAllArticle() {
@@ -61,7 +63,8 @@ public class ArticleController {
 
         model.addAttribute("articles", allArticles);
         model.addAttribute("article", new ArticleDto());
-        model.addAttribute("imageForm", new ImageForm());
+
+        model.addAttribute("image", multipartFile);
         model.addAttribute("isAdd", true);
         return "article/article";
     }
@@ -69,19 +72,10 @@ public class ArticleController {
 
 
     @PostMapping("save/saveA")
-    public String save(@ModelAttribute ArticleDto articleDto, @ModelAttribute("imageForm") ImageForm imageForm, RedirectAttributes redirectAttributes, Model model, HttpServletRequest request) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+    public String save(@ModelAttribute ArticleDto articleDto, RedirectAttributes redirectAttributes, Model model, HttpServletRequest request, @RequestParam("image") MultipartFile multipartFile) throws MessagingException, IOException, ApiUserAlreadyExistsException {
 
-        Image img = imageRepositoty.save(
-                new Image(null, imageForm.getImage().getBytes(),
-                        LocalDate.now(),
-                        null,
-                        articleMapper.mapToArticle(articleDto)));
-
-        articleDto.setImage(List.of(img));
-
-        articleService.saveArticle(articleDto, request);
+        articleService.saveArticle(articleDto, request, multipartFile.getBytes());
         ArticleDto articleByTitle = articleService.findArticleByTitle(articleDto.getTitle());
-
 
 
         if (articleByTitle != null) {

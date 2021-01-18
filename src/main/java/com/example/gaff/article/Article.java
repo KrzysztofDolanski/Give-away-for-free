@@ -53,8 +53,8 @@ public class Article {
     private Category category;
 
 
-    @OneToMany
-    private List<Image> image;
+    @Lob
+    private byte[] img;
 
 //    @Transient
 //    @ToString.Exclude

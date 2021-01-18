@@ -112,22 +112,28 @@
                 </select>
             </div>
 
+            <div>
+                <label for="uploadimg">Logo</label>
+                <input id="uploadimg" type="file" th:name="image">
+                <p id="error_img"></p>
+            </div>
+
             <!--        <div>-->
             <!--            <label>Condition</label>-->
             <!--            <input type="productCondition" id="productCondition" name="productCondition" th:field="*{productCondition}" required="required">-->
             <!--            <p id="error_productCondition"></p>-->
             <!--        </div>-->
 
-            <div th:if="${myimg}">
-                <img th:src="@{'data:image/png;base64,' + ${myimg}}" alt="notworking">
-            </div>
+<!--            <div th:if="${myimg}">-->
+<!--                <img th:src="@{'data:image/png;base64,' + ${myimg}}" alt="notworking">-->
+<!--            </div>-->
 
-            <form th:object="${imageForm}" th:action="@{/upload}" method="post" enctype="multipart/form-data">
+<!--            <form th:object="${imageForm}" th:action="@{/upload}" method="post" enctype="multipart/form-data">-->
 
-                <label for="uploadimg">UPLOAD</label>
-                <input id="uploadimg" type="file" th:field="*{image}">
-                <button type="submit">UPLOAD</button>
-            </form>
+<!--                <label for="uploadimg">UPLOAD</label>-->
+<!--                <input id="uploadimg" type="file" th:field="*{image}">-->
+<!--                <button type="submit">UPLOAD</button>-->
+<!--            </form>-->
 
 <!--            <input type="hidden" class="form-control" th:field="*{removeImages}" id="removeImages">-->
 <!--            <input type="hidden" class="form-control" th:field="*{id}">-->

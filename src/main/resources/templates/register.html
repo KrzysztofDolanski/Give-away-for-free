@@ -125,7 +125,7 @@
 
         <div>
             <label for="uploadimg">Logo</label>
-        <input id="uploadimg" type="file" th:name="file">
+        <input id="uploadimg" type="file" th:name="image">
             <p id="error_img"></p>
         </div>
 
@@ -135,7 +135,7 @@
         </div>
 
 
-
+        <img th:src="@{'data:image/png;base64,' + ${actualImage}}" alt="notworking">
 
 <!--        <div class="form-group">-->
 <!--            <input type="file" class="form-control" id="files" placeholder="Upload files" th:field="*{files}"-->
@@ -171,13 +171,7 @@
 <!--            <td><img th:src="@{'data:image/png;base64,' + ${images}}" alt="notworking" style="width: 150px;height: 120px;">-->
 <!--        </td>-->
 
-<!--        <form th:object="${image}" th:action="@{/upload}" method="post" enctype="multipart/form-data">-->
 
-<!--            <label for="uploadimg">UPLOAD</label>-->
-<!--            <input id="uploadimg" type="file" th:field="*{images}">-->
-<!--            <button type="submit">UPLOAD</button>-->
-<!--        </form>-->
-<!--        -->
 
 
 

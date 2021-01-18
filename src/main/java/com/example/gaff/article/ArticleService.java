@@ -67,9 +67,11 @@ public class ArticleService {
                 orElseThrow(() -> new NotFoundException("Not found location: " + id)));
     }
 
-    public void saveArticle(ArticleDto articleDto, HttpServletRequest request) {
+    public void saveArticle(ArticleDto articleDto, HttpServletRequest request, byte[] multipartFile) {
 
         ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserService.currentUsername(request));
+
+        articleDto.setImg(multipartFile);
 
         Article article = articleMapper.mapToArticle(articleDto);
 
@@ -83,17 +85,7 @@ public class ArticleService {
 //        Object credentials = authentication.getCredentials();
 //        article.setUser((ApiUser) credentials);
 
-        if (article.getImage() != null && article.getImage().size() > 0) {
-            for (Image file : article.getImage()) {
 
-                Image files = new Image();
-                files.setImg(file.getImg());
-                files.setCreatedDate(LocalDate.now());
-                files.setArticle(article);
-
-                imageRepositoty.save(files);
-            }
-        }
     }
     }
 
