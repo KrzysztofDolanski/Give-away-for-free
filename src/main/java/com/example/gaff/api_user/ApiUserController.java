@@ -41,6 +41,7 @@ public class ApiUserController {
     private final ImageService imageService;
     private MultipartFile multipartFile;
 
+
     @GetMapping("/login")
     public String signUp() {
         return "login";
@@ -51,8 +52,11 @@ public class ApiUserController {
         List<ApiUserDto> users = apiUserService.getAllUsers();
         model.addAttribute("users", users);
         model.addAttribute("user", new ApiUserDto());
-        model.addAttribute("file", multipartFile);
+        model.addAttribute("image", multipartFile);
         model.addAttribute("isAdd", true);
+
+        model.addAttribute("actualImage", new String(Base64.getEncoder().encode(apiUserService.getAllUsers().get(apiUserService.getAllUsers().size() -1).getImg())));
+
         return "register";
     }
 
@@ -69,12 +73,15 @@ public class ApiUserController {
     }
 
 
+
     @PostMapping("/save")
-    public String save(@ModelAttribute("user") ApiUserDto apiUserDto, RedirectAttributes redirectAttributes, Model model, @RequestParam("file") MultipartFile multipartFile) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+    public String save(@ModelAttribute("user") ApiUserDto apiUserDto, RedirectAttributes redirectAttributes, Model model, @RequestParam("image") MultipartFile multipartFile) throws MessagingException, IOException, ApiUserAlreadyExistsException {
         apiUserService.signUpUser(apiUserDto, multipartFile.getBytes());
         ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserDto.getUsername());
         if (userByUsername != null) {
+
             redirectAttributes.addFlashAttribute("successmessage", "User successful register");
+
             return "redirect:/register";
         } else {
             model.addAttribute("errormessage", "User register failed");

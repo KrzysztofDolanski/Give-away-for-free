@@ -50,6 +50,8 @@
                     <td th:text="${articles.userId}"></td>
                     <td th:text="${articles.title}"></td>
                     <td th:text="${articles.description}"></td>
+                    <td th:each="image : ${images.get((articles.id)-1)}">
+                        <img th:src="@{'data:image/png;base64,' + ${image}}" alt="notworking">
                     <td>
                         <a th:href="@{/save/booking/{id}(id=${articles.id})}"><i class="fas fa-cart-arrow-down"
                                                                                  style="font-size:21px"></i>

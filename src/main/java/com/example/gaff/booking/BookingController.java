@@ -19,7 +19,9 @@ import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,6 +37,8 @@ public class BookingController {
     @GetMapping("/bookings")
     public String showNewBookingPage(Model model) {
         List<ApiUserDto> users = apiUserService.getAllUsers();
+        List<String> collect = users.stream().map(apiUserDto1 -> new String(Base64.getEncoder().encode(apiUserDto1.getImg()))).collect(Collectors.toList());
+        model.addAttribute("images", collect);
         model.addAttribute("users", users);
         model.addAttribute("booking", new BookingDto());
         model.addAttribute("article", articleService.getAllAvailableArticles());
