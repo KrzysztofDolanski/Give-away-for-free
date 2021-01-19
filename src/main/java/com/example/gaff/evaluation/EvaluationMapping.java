@@ -18,7 +18,6 @@ public class EvaluationMapping {
                 .build();
     }
 
-
     public EvaluationDto mapToEvaluationDto(Evaluation evaluation){
         return EvaluationDto.builder()
                 .id(evaluation.getId())
@@ -37,5 +36,4 @@ public class EvaluationMapping {
     public List<EvaluationDto> mapToEvaluationDtoList(List<Evaluation> evaluations){
         return evaluations.stream().map(this::mapToEvaluationDto).collect(Collectors.toList());
     }
-
 }

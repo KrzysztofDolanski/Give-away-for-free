@@ -1,15 +1,12 @@
 package com.example.gaff.evaluation;
 
-import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.booking.Booking;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @Entity
