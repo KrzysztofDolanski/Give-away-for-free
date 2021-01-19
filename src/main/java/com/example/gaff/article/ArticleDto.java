@@ -1,21 +1,14 @@
 package com.example.gaff.article;
 
-import com.example.gaff.api_user.ApiUser;
 import com.example.gaff.booking.Booking;
-import com.example.gaff.category.Category;
-import com.example.gaff.img.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -23,31 +16,17 @@ import java.util.List;
 @Builder
 public class ArticleDto {
 
-
-    Long id;
+    private Long id;
     private String title;
     private String description;
     private ProductCondition productCondition;
     private boolean isAvailable;
     private Long noOfVisits;
     private String dateOfOffer;
-//
-//    @ManyToOne
-//    private ApiUser user;
-
-    Long userId;
-
-
+    private Long userId;
     @OneToOne
     private Booking booking;
-
-    @ManyToOne
-    private Category category;
-
     @Lob
     private byte[] img;
 
-    //
-//    private List<MultipartFile> files = new ArrayList<MultipartFile>();
-//    private List<String> removeImages = new ArrayList<>();
 }

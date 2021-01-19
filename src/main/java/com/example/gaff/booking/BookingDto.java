@@ -1,13 +1,12 @@
 package com.example.gaff.booking;
 
-import com.example.gaff.api_user.ApiUser;
-import com.example.gaff.article.Article;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.OneToOne;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @AllArgsConstructor

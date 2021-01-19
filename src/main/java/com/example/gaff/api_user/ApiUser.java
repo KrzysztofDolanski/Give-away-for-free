@@ -3,16 +3,13 @@ package com.example.gaff.api_user;
 
 import com.example.gaff.article.Article;
 import com.example.gaff.booking.Booking;
-import com.example.gaff.img.Image;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -42,16 +39,6 @@ public class ApiUser implements UserDetails, Serializable {
 
     @Lob
     private byte[] img;
-
-
-//    @OneToOne
-//    private Image image;
-//    @Transient
-//    private List<MultipartFile> files = new ArrayList<MultipartFile>();
-//
-//    @Transient
-//    private List<String> removeImages = new ArrayList<>();
-
 
     @Builder.Default
     private ApiUserRole userRole = ApiUserRole.USER;
