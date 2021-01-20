@@ -40,6 +40,7 @@ public class ArticleService {
         } catch (NullPointerException e){
             e.getMessage();
         }
+
         return collect;
     }
 
