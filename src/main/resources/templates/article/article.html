@@ -12,53 +12,54 @@
 
 
     <title>GAFF - save gift</title>
-    <style>
-        .imagecontainer {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-        }
 
-        .rightIframe {
-            float: right;
-            position: relative;
-            size: 100px;
-            margin: 1px 1px;
-            border-right: 20px;
-        }
+    <!--    <style>-->
+    <!--        .imagecontainer {-->
+    <!--            position: relative;-->
+    <!--            width: 100%;-->
+    <!--            max-width: 400px;-->
+    <!--        }-->
 
-        .overlay {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            width: 100%;
-            opacity: 0;
-            transition: .3s ease;
-            border-radius: 50%;
-        }
+    <!--        .rightIframe {-->
+    <!--            float: right;-->
+    <!--            position: relative;-->
+    <!--            size: 100px;-->
+    <!--            margin: 1px 1px;-->
+    <!--            border-right: 20px;-->
+    <!--        }-->
 
-        .imagecontainer:hover .overlay {
-            opacity: 1;
-        }
+    <!--        .overlay {-->
+    <!--            position: absolute;-->
+    <!--            top: 0;-->
+    <!--            bottom: 0;-->
+    <!--            left: 0;-->
+    <!--            right: 0;-->
+    <!--            height: 100%;-->
+    <!--            width: 100%;-->
+    <!--            opacity: 0;-->
+    <!--            transition: .3s ease;-->
+    <!--            border-radius: 50%;-->
+    <!--        }-->
 
-        .icon {
-            color: white;
-            font-size: 40px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            -ms-transform: translate(-50%, -50%);
-            text-align: center;
-        }
+    <!--        .imagecontainer:hover .overlay {-->
+    <!--            opacity: 1;-->
+    <!--        }-->
 
-        .fa-trash:hover {
-            color: red;
-        }
-    </style>
+    <!--        .icon {-->
+    <!--            color: white;-->
+    <!--            font-size: 40px;-->
+    <!--            position: absolute;-->
+    <!--            top: 50%;-->
+    <!--            left: 50%;-->
+    <!--            transform: translate(-50%, -50%);-->
+    <!--            -ms-transform: translate(-50%, -50%);-->
+    <!--            text-align: center;-->
+    <!--        }-->
+
+    <!--        .fa-trash:hover {-->
+    <!--            color: red;-->
+    <!--        }-->
+    <!--    </style>-->
 </head>
 <body>
 <div>
@@ -68,19 +69,20 @@
 </div>
 
 <div>
-    <div class="alert alert-success alert-dismissible" th:if="${successmessage}">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong th:text="${successmessage}"></strong>
-    </div>
-    <div class="alert alert-danger alert-dismissible" th:if="${errormessage}">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong th:text="${errormessage}"></strong>
-    </div>
+
 
     <div class="container-fluid">
         <div class="row">
             <hr class="col-md-12">
             <h2>Add what you wanted to give away</h2>
+        </div>
+        <div class="alert alert-success alert-dismissible" th:if="${successmessage}">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong th:text="${successmessage}"></strong>
+        </div>
+        <div class="alert alert-danger alert-dismissible" th:if="${errormessage}">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong th:text="${errormessage}"></strong>
         </div>
 
 
