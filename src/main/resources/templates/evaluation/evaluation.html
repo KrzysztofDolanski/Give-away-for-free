@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
 
-    <link th:rel="stylesheet" th:href="@{assets/bootstrap-select-1.13.9/dist/css/bootstrap-select.css}"/>
-    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <link th:href="@{./css/bootstrap.css}" rel="stylesheet"/>
-    <script type="text/javascript" th:src="@{./js/bootstrap.js}"></script>
-    <script type="text/javascript" th:src="@{./js/jquery.js}"></script>
-    <script type="text/javascript" th:src="@{./js/propper.js}"></script>
+    <!-- Custom styles for this template -->
+    <link href="css/scrolling-nav.css" rel="stylesheet">
 
 
-    <title>Save Article</title>
+    <title>GAFF - feedback</title>
     <style>
         .imagecontainer {
             position: relative;
@@ -62,6 +59,10 @@
     </style>
 </head>
 <body>
+
+<nav class="navbar navbar-expand bg-dark fixed-top" id="mainNav">
+    <div class="center-block" th:replace="fragments :: navigator"></div>
+</nav>
 
 <div>
     <div class="alert alert-success alert-dismissible" th:if="${successmessage}">
@@ -140,5 +141,14 @@
     </div>
 
 </div>
+</div>
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom JavaScript for this theme -->
+<script src="js/scrolling-nav.js"></script>
 </body>
 </html>

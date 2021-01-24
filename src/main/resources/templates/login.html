@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-<link th:href="@{./css/bootstrap.css}" rel="stylesheet"/>
-<script type="text/javascript" th:src="@{./js/bootstrap.js}"></script>
-<script type="text/javascript" th:src="@{./js/jquery.js}"></script>
-<script type="text/javascript" th:src="@{./js/propper.js}"></script>
+<!-- Custom styles for this template -->
+<link href="css/scrolling-nav.css" rel="stylesheet">
 
 <head>
-    <title>Spring Boot User Authentication</title>
+    <title>GAFF - Login</title>
 </head>
 <body>
-
+<div class="navbar navbar-dark fixed-top"></div>
 <div class="container">
     <div class="row">
         <div class="col-md-4 mt-5">
@@ -47,5 +44,15 @@
         </div>
     </div>
 </div>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom JavaScript for this theme -->
+<script src="js/scrolling-nav.js"></script>
+
 </body>
 </html>

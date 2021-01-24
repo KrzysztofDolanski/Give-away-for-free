@@ -2,15 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Article</title>
+    <title>GAFF - Article</title>
 </head>
 <body>
-
+<nav class="navbar navbar-expand bg-dark fixed-top" id="mainNav">
+    <div class="center-block" th:replace="fragments :: navigator"></div>
+</nav>
 <table>
     <th>Title</th>
     <th>Description</th>
-<!--    <th>Condition</th>-->
-<!--    <th>Is available?</th>-->
     <th>Logotyp</th>
 
 
@@ -18,19 +18,17 @@
     <tr th:action="@{/article}" th:object="${article}" th:method="get">
         <td th:text="${article.getTitle()}"></td>
         <td th:text="${article.getDescription()}"></td>
-<!--        <td th:text="${article.getCondition()}"></td>-->
-<!--        <td th:text="${article.getIsAvailable()}"></td>-->
-
-<!--        <p>-->
-<!--            <iframe-->
-<!--                    width="600"-->
-<!--                    height="450"-->
-<!--                    frameborder="0" style="border:0"-->
-<!--                    th:src= "${uriGoogle}" allowfullscreen>-->
-<!--            </iframe>-->
-<!--        </p>-->
     </tr>
 </table>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom JavaScript for this theme -->
+<script src="js/scrolling-nav.js"></script>
 
 </body>
 </html>
