@@ -32,8 +32,6 @@ public class BookingController {
         List<ArticleDto> allAvailableArticles = articleService.getAllAvailableArticles();
 
 
-
-
         List<String> collect = allAvailableArticles
                 .stream()
                 .map(articles ->
@@ -41,10 +39,10 @@ public class BookingController {
                 .collect(Collectors.toList());
 
         model.addAttribute("images", collect);
-//        model.addAttribute("users", users);
-//        model.addAttribute("booking", new BookingDto());
+        model.addAttribute("users", users);
+        model.addAttribute("booking", new BookingDto());
         model.addAttribute("article", allAvailableArticles);
-        model.addAttribute("isAdd", false);
+//        model.addAttribute("isAdd", false);
         return "booking/booking";
     }
 
