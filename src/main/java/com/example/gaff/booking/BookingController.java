@@ -30,9 +30,9 @@ public class BookingController {
     public String showNewBookingPage(Model model, HttpServletRequest httpServletRequest) {
         List<ApiUserDto> users = apiUserService.getAllUsers();
         List<ArticleDto> allAvailableArticles = articleService.getAllAvailableArticles();
-        List<String> collect = articleService.getImagesOfAllAvailableArticles();
+//        List<String> collect = articleService.getImagesOfAllAvailableArticles();
 
-        model.addAttribute("images", collect);
+//        model.addAttribute("images", collect);
         model.addAttribute("users", users);
         model.addAttribute("booking", new BookingDto());
         model.addAttribute("article", allAvailableArticles);
@@ -46,16 +46,16 @@ public class BookingController {
         List<ArticleDto> allAvailableArticlesExceptLoggedUser
                 = articleService.getAllAvailableArticlesExceptLoggedUser(request);
 
-        List<String> collect = allAvailableArticlesExceptLoggedUser
-                .stream()
-                .map(articles ->
-                        new String(Base64.getEncoder().encode(articles.getImg())))
-                .collect(Collectors.toList());
+//        List<String> collect = allAvailableArticlesExceptLoggedUser
+//                .stream()
+//                .map(articles ->
+//                        new String(Base64.getEncoder().encode(articles.getImg())))
+//                .collect(Collectors.toList());
 
 
 //        model.addAttribute("users", users);
 //        model.addAttribute("booking", new BookingDto());
-        model.addAttribute("images", collect);
+//        model.addAttribute("images", collect);
         model.addAttribute("article", allAvailableArticlesExceptLoggedUser);
         model.addAttribute("isAdd", false);
         return "booking/order";

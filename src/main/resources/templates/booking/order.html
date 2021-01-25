@@ -55,15 +55,16 @@
                     <td th:text="${articles.userId}"></td>
                     <td th:text="${articles.title}"></td>
                     <td th:text="${articles.description}"></td>
-                    <td th:each="image : ${images.get((articles.id)-1)}">
-                        <img th:src="@{'data:image/png;base64,' + ${image}}" alt="notworking">
-                    </td>
-                    <td>
-                        <a th:href="@{/save/booking/{id}(id=${articles.id})}"><i class="fas fa-cart-arrow-down"
-                                                                                 style="font-size:21px"></i>
-                        </a>
 
+                    <td >
+                        <img th:src="@{'data:image/png;base64,' + ${articles.imageToFrontend}}" alt="notworking">
+                        </a>
                     </td>
+                    <td style="width: 50%">
+                        <a th:href="@{/save/booking/{id}(id=${articles.id})}"><i class="fa fa-edit"
+                                                                                 style="font-size:21px;"></i></a>
+                    </td>
+
                 </tr>
                 </tbody>
             </table>
