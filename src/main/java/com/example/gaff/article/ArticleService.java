@@ -70,7 +70,7 @@ public class ArticleService {
         article.setUserId(userByUsername.getId());
         articleRepository.save(article);
     }
-    }
+
 
     public void availabilityOfArticle(Long articleId) {
         Article article = articleRepository.findById(articleId).orElseThrow();

@@ -17,13 +17,21 @@
         <tr>
             <td>
                 <a th:href="@{/save/article}">Add gift</a>
+            </td>
+            <td>
                 <a th:href="@{/login}">Login</a>
+            </td>
+            <td>
                 <a th:href="@{/home}">Search user</a>
+            </td>
                 <form th:action="@{/user}" th:method="get">
-                <input type="text" id="username" name="username" value="Wpisz użytkownika">
+                <input type="text" id="username" name="username" placeholder="find user by name">
                 <input type="submit">
                 </form>
+            <td>
                 <a th:href="@{/register}">Register user</a>
+            </td>
+            <td>
                 <a th:href="@{/bookings}">Book here</a>
             </td>
 
