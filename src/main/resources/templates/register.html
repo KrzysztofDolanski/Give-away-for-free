@@ -5,144 +5,151 @@
 <!-- Custom styles for this template -->
 <link href="css/scrolling-nav.css" rel="stylesheet">
 
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+
 <head>
     <meta charset="UTF-8">
     <title>GAFF - register</title>
-    <style>
-        .imagecontainer {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-        }
+    <!--    <style>-->
+    <!--        .imagecontainer {-->
+    <!--            position: relative;-->
+    <!--            width: 100%;-->
+    <!--            max-width: 400px;-->
+    <!--        }-->
 
-        .rightIframe {
-            float: right;
-            position: relative;
-            size: 100px;
-            margin: 1px 1px;
-            border-right: 20px;
-        }
+    <!--        .rightIframe {-->
+    <!--            float: right;-->
+    <!--            position: relative;-->
+    <!--            size: 100px;-->
+    <!--            margin: 1px 1px;-->
+    <!--            border-right: 20px;-->
+    <!--        }-->
 
-        .overlay {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            width: 100%;
-            opacity: 0;
-            transition: .3s ease;
-            border-radius: 50%;
-        }
+    <!--        .overlay {-->
+    <!--            position: absolute;-->
+    <!--            top: 0;-->
+    <!--            bottom: 0;-->
+    <!--            left: 0;-->
+    <!--            right: 0;-->
+    <!--            height: 100%;-->
+    <!--            width: 100%;-->
+    <!--            opacity: 0;-->
+    <!--            transition: .3s ease;-->
+    <!--            border-radius: 50%;-->
+    <!--        }-->
 
-        .imagecontainer:hover .overlay {
-            opacity: 1;
-        }
+    <!--        .imagecontainer:hover .overlay {-->
+    <!--            opacity: 1;-->
+    <!--        }-->
 
-        .icon {
-            color: white;
-            font-size: 40px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            -ms-transform: translate(-50%, -50%);
-            text-align: center;
-        }
+    <!--        .icon {-->
+    <!--            color: white;-->
+    <!--            font-size: 40px;-->
+    <!--            position: absolute;-->
+    <!--            top: 50%;-->
+    <!--            left: 50%;-->
+    <!--            transform: translate(-50%, -50%);-->
+    <!--            -ms-transform: translate(-50%, -50%);-->
+    <!--            text-align: center;-->
+    <!--        }-->
 
-        .fa-trash:hover {
-            color: red;
-        }
-    </style>
+    <!--        .fa-trash:hover {-->
+    <!--            color: red;-->
+    <!--        }-->
+    <!--    </style>-->
 </head>
 <body>
 
 
-<div class="container-fluid">
-    <div class="row">
-        <hr class="col-md-12">
-        <h2> User form</h2>
-    </div>
+<!--<div class="container-fluid">-->
+<!--    <div class="row">-->
+<!--        <hr class="col-md-12">-->
+<!--        <h2> User form</h2>-->
+<!--    </div>-->
 
 
-    <form action="#" th:action="@{${isAdd}?'/save':'update'}" th:object="${user}" method="post"
-          enctype="multipart/form-data">
-        <div class="form-group" style="display: block">
-            <label>Username</label>
-            <input type="text" id="username" name="username" th:field="*{username}" required="required">
-            <p id="error_username"></p>
+<!--    <form action="#" th:action="@{${isAdd}?'/save':'update'}" th:object="${user}" method="post"-->
+<!--          enctype="multipart/form-data">-->
+<!--        <div class="form-group" style="display: block">-->
+<!--            <label>Username</label>-->
+<!--            <input type="text" id="username" name="username" th:field="*{username}" required="required">-->
+<!--            <p id="error_username"></p>-->
 
-            <div>
-                <label>Email</label>
-                <input type="text" id="email" name="email" th:field="*{email}" required="required">
-                <p id="error_email"></p>
-            </div>
+<!--            <div>-->
+<!--                <label>Email</label>-->
+<!--                <input type="text" id="email" name="email" th:field="*{email}" required="required">-->
+<!--                <p id="error_email"></p>-->
+<!--            </div>-->
 
-            <div>
-                <label>Password</label>
-                <input type="password" id="password" name="password" th:field="*{password}" required="required">
-                <p id="error_password"></p>
-            </div>
-            <div>
-                <label>Region</label>
-                <input th:type="text" id="region" name="region" th:field="*{region}" required="required">
-                <p id="error_region"></p>
-            </div>
-            <div>
-                <label>City</label>
-                <input th:type="text" id="city" name="city" th:field="*{city}" required="required">
-                <p id="error_city"></p>
-            </div>
-            <div>
-                <label>Street</label>
-                <input th:type="text" id="street" name="street" th:field="*{street}" required="required">
-                <p id="error_street"></p>
-            </div>
-            <div>
-                <label>Street number</label>
-                <input th:type="text" id="streetNo" name="streetNo" th:field="*{streetNo}" required="required">
-                <p id="error_street_number"></p>
-            </div>
-            <div>
-                <label>Zip code</label>
-                <input th:type="text" id="zipCode" name="zipCode" th:field="*{zipCode}" required="required">
-                <p id="error_zipcode"></p>
-            </div>
+<!--            <div>-->
+<!--                <label>Password</label>-->
+<!--                <input type="password" id="password" name="password" th:field="*{password}" required="required">-->
+<!--                <p id="error_password"></p>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <label>Region</label>-->
+<!--                <input th:type="text" id="region" name="region" th:field="*{region}" required="required">-->
+<!--                <p id="error_region"></p>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <label>City</label>-->
+<!--                <input th:type="text" id="city" name="city" th:field="*{city}" required="required">-->
+<!--                <p id="error_city"></p>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <label>Street</label>-->
+<!--                <input th:type="text" id="street" name="street" th:field="*{street}" required="required">-->
+<!--                <p id="error_street"></p>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <label>Street number</label>-->
+<!--                <input th:type="text" id="streetNo" name="streetNo" th:field="*{streetNo}" required="required">-->
+<!--                <p id="error_street_number"></p>-->
+<!--            </div>-->
+<!--            <div>-->
+<!--                <label>Zip code</label>-->
+<!--                <input th:type="text" id="zipCode" name="zipCode" th:field="*{zipCode}" required="required">-->
+<!--                <p id="error_zipcode"></p>-->
+<!--            </div>-->
 
-            <div>
-                <label for="uploadimg">Logo</label>
-                <input id="uploadimg" type="file" th:name="image">
-                <p id="error_img"></p>
-            </div>
+<!--            <div>-->
+<!--                <label for="uploadimg">Logo</label>-->
+<!--                <input id="uploadimg" type="file" th:name="image">-->
+<!--                <p id="error_img"></p>-->
+<!--            </div>-->
 
-        </div>
+<!--        </div>-->
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary" th:text="${isAdd}?'Save':'Update'"></button>
-            <span> Already registered? <a href="/" th:href="@{/login}">Login here</a> </span>
-        </div>
-
-
-        <div style="size: portrait">
-            <img th:src="@{'data:image/png;base64,' + ${actualImage}}" alt="notworking">
-        </div>
-        <div class="alert alert-success alert-dismissible" th:if="${successmessage}">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong th:text="${successmessage}"></strong>
-        </div>
-        <div class="alert alert-danger alert-dismissible" th:if="${errormessage}">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong th:text="${errormessage}"></strong>
-        </div>
+<!--        <div class="form-group">-->
+<!--            <button type="submit" class="btn btn-primary" th:text="${isAdd}?'Save':'Update'"></button>-->
+<!--            <span> Already registered? <a href="/" th:href="@{/login}">Login here</a> </span>-->
+<!--        </div>-->
 
 
-        <td>
-            <a th:href="@{'/edituser/'+${user.id}}"><i class="fa fa-edit" style="font-size:21px"></i> </a>
-        </td>
-    </form>
+<!--<div style="size: portrait">-->
+<!--    <img th:src="@{'data:image/png;base64,' + ${actualImage}}" alt="notworking">-->
+<!--</div>-->
+<!--<div class="alert alert-success alert-dismissible" th:if="${successmessage}">-->
+<!--    <button type="button" class="close" data-dismiss="alert">&times;</button>-->
+<!--    <strong th:text="${successmessage}"></strong>-->
+<!--</div>-->
+<!--<div class="alert alert-danger alert-dismissible" th:if="${errormessage}">-->
+<!--    <button type="button" class="close" data-dismiss="alert">&times;</button>-->
+<!--    <strong th:text="${errormessage}"></strong>-->
+<!--</div>-->
 
-</div>
+
+<!--        <td>-->
+<!--            <a th:href="@{'/edituser/'+${user.id}}"><i class="fa fa-edit" style="font-size:21px"></i> </a>-->
+<!--&lt;!&ndash;        </td>&ndash;&gt;-->
+<!--    </form>-->
+
+<!--</div>-->
 
 <!------------------------------------------------------------------------------------->
 
@@ -171,7 +178,7 @@
 
             <form action="#" th:action="@{${isAdd}?'/save':'update'}" th:object="${user}" method="post"
                   enctype="multipart/form-data">
-                    <div class="form-group input-group">
+                <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                     </div>
@@ -186,15 +193,8 @@
                     <input type="text" id="email" name="" placeholder="Email" th:field="*{email}" required="required">
                     <p id="error_email"></p>
                 </div>
-<!--added-->
 
-                <!-- form-group// -->
-                <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
-                    </div>
-                    <input name="" class="form-control" placeholder="Email address" type="email">
-                </div> <!-- form-group// -->
+
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
@@ -207,35 +207,95 @@
                         <option value="3">+370</option>
                         <option value="3">+380</option>
                     </select>
-                    <input name="" class="form-control" placeholder="Phone number" type="text">
-                </div> <!-- form-group// -->
+                    <input th:type="text" id="phone" name="" placeholder="Your phone" th:field="*{phone}"
+                           required="required">
+                    <p id="error_phone"></p>
+                </div>
+
+
+                <!-- form-group// -->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-building"></i> </span>
                     </div>
-                    <select class="form-control">
-                        <option selected=""> Select job type</option>
-                        <option>Designer</option>
-                        <option>Manager</option>
-                        <option>Accaunting</option>
-                    </select>
-                </div> <!-- form-group end.// -->
+
+                </div>
+
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+                    </div>
+                    <input th:type="text" id="region" name="" placeholder="region" th:field="*{region}"
+                           required="required">
+                    <p id="error_region"></p>
+                </div>
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+                    </div>
+                    <input th:type="text" id="city" name="" placeholder="city" th:field="*{city}" required="required">
+                    <p id="error_city"></p>
+                </div>
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+                    </div>
+                    <input th:type="text" id="street" name="" placeholder="street" th:field="*{street}"
+                           required="required">
+                    <p id="error_street"></p>
+                </div>
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+                    </div>
+                    <input th:type="text" id="streetNo" name="" placeholder="Street number" th:field="*{streetNo}"
+                           required="required">
+                    <p id="error_street_number"></p>
+                </div>
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+                    </div>
+                    <input th:type="text" id="zipCode" name="" placeholder="zip-code" th:field="*{zipCode}"
+                           required="required">
+                    <p id="error_zipcode"></p>
+                </div>
+
+
+                <div>
+                    <label for="uploadimg">Logo</label>
+                    <input id="uploadimg" type="file" th:name="image">
+                    <p id="error_img"></p>
+                </div>
+
+
+                <!-- form-group end.// -->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <input class="form-control" placeholder="Create password" type="password">
+                    <input type="password" id="password" name="password" placeholder="password" th:field="*{password}"
+                           required="required">
+                    <p id="error_password"></p>
                 </div> <!-- form-group// -->
-                <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                    </div>
-                    <input class="form-control" placeholder="Repeat password" type="password">
-                </div> <!-- form-group// -->
+                <!--                <div class="form-group input-group">-->
+                <!--                    <div class="input-group-prepend">-->
+                <!--                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>-->
+                <!--                    </div>-->
+                <!--                    <input class="form-control" placeholder="Repeat password" type="password"-->
+                <!--                           id="Repead password" name="password" th:field="*{password}" required="required">-->
+                <!--                    <p id="error_password"></p>>-->
+                <!--                </div> &lt;!&ndash; form-group// &ndash;&gt;-->
+                <!--                <div class="form-group">-->
+                <!--                    <button type="submit" class="btn btn-primary btn-block"> Create Account</button>-->
+                <!--                </div> &lt;!&ndash; form-group// &ndash;&gt;-->
+
+
+<!--                <p class="text-center">Have an account? <a href="">Log In</a></p>-->
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block"> Create Account</button>
-                </div> <!-- form-group// -->
-                <p class="text-center">Have an account? <a href="">Log In</a></p>
+                    <button type="submit" class="btn btn-primary" th:text="${isAdd}?'Save':'Update'"></button>
+                    <span> Already registered? <a href="/" th:href="@{/login}">Login here</a> </span>
+                </div>
             </form>
         </article>
     </div> <!-- card.// -->
@@ -246,10 +306,9 @@
 <br><br>
 <article class="bg-secondary mb-3">
     <div class="card-body text-center">
-        <h3 class="text-white mt-3">Bootstrap 4 UI KIT</h3>
-        <p class="h5 text-white">Components and templates <br> for Ecommerce, marketplace, booking websites
-            and product landing pages</p>   <br>
-        <p><a class="btn btn-warning" target="_blank" href="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com
+        <h3 class="text-white mt-3">GIVE AWAY FOR FREE</h3>
+        <p class="h5 text-white">Giving in the right way is best<br>that you can do for your society </p><br>
+        <p><a class="btn btn-warning" target="_blank" href="http://bootstrap-ecommerce.com/"> See us on FB
             <i class="fa fa-window-restore "></i></a></p>
     </div>
     <br><br>
