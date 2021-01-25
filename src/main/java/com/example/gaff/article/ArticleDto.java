@@ -29,4 +29,6 @@ public class ArticleDto {
     @Lob
     private byte[] img;
 
+    private String imageToFrontend;
+
 }

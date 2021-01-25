@@ -20,6 +20,7 @@ public class ArticleMapper {
                 .userId(newArticle.getUserId())
                 .booking(newArticle.getBooking())
                 .img(newArticle.getImg())
+                .imageToFrontend(newArticle.getImageToFrontend())
                 .build();
     }
 
@@ -33,6 +34,7 @@ public class ArticleMapper {
                 .userId(articleDto.getUserId())
                 .booking(articleDto.getBooking())
                 .img(articleDto.getImg())
+                .imageToFrontend(articleDto.getImageToFrontend())
                 .build();
     }
 
