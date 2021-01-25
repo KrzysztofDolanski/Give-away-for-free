@@ -47,7 +47,11 @@ public class ArticleService {
             e.getMessage();
         }
 
+        for (ArticleDto articleDto : collect) {
+            articleDto.setImageToFrontend(new String(Base64.getEncoder().encode(articleDto.getImg())));
+        }
         return collect;
+
     }
 
     public ArticleDto findArticleByTitle(String title) {

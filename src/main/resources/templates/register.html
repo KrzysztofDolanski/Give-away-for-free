@@ -59,7 +59,6 @@
 <body>
 
 
-
 <div class="container-fluid">
     <div class="row">
         <hr class="col-md-12">
@@ -69,52 +68,54 @@
 
     <form action="#" th:action="@{${isAdd}?'/save':'update'}" th:object="${user}" method="post"
           enctype="multipart/form-data">
-        <div class="form-group">
+        <div class="form-group" style="display: block">
             <label>Username</label>
             <input type="text" id="username" name="username" th:field="*{username}" required="required">
             <p id="error_username"></p>
-        </div>
-        <div>
-            <label>Email</label>
-            <input type="text" id="email" name="email" th:field="*{email}" required="required">
-            <p id="error_email"></p>
-        </div>
 
-        <div>
-            <label>Password</label>
-            <input type="password" id="password" name="password" th:field="*{password}" required="required">
-            <p id="error_password"></p>
-        </div>
-        <div>
-            <label>Region</label>
-            <input th:type="text" id="region" name="region" th:field="*{region}" required="required">
-            <p id="error_region"></p>
-        </div>
-        <div>
-            <label>City</label>
-            <input th:type="text" id="city" name="city" th:field="*{city}" required="required">
-            <p id="error_city"></p>
-        </div>
-        <div>
-            <label>Street</label>
-            <input th:type="text" id="street" name="street" th:field="*{street}" required="required">
-            <p id="error_street"></p>
-        </div>
-        <div>
-            <label>Street number</label>
-            <input th:type="text" id="streetNo" name="streetNo" th:field="*{streetNo}" required="required">
-            <p id="error_street_number"></p>
-        </div>
-        <div>
-            <label>Zip code</label>
-            <input th:type="text" id="zipCode" name="zipCode" th:field="*{zipCode}" required="required">
-            <p id="error_zipcode"></p>
-        </div>
+            <div>
+                <label>Email</label>
+                <input type="text" id="email" name="email" th:field="*{email}" required="required">
+                <p id="error_email"></p>
+            </div>
 
-        <div>
-            <label for="uploadimg">Logo</label>
-        <input id="uploadimg" type="file" th:name="image">
-            <p id="error_img"></p>
+            <div>
+                <label>Password</label>
+                <input type="password" id="password" name="password" th:field="*{password}" required="required">
+                <p id="error_password"></p>
+            </div>
+            <div>
+                <label>Region</label>
+                <input th:type="text" id="region" name="region" th:field="*{region}" required="required">
+                <p id="error_region"></p>
+            </div>
+            <div>
+                <label>City</label>
+                <input th:type="text" id="city" name="city" th:field="*{city}" required="required">
+                <p id="error_city"></p>
+            </div>
+            <div>
+                <label>Street</label>
+                <input th:type="text" id="street" name="street" th:field="*{street}" required="required">
+                <p id="error_street"></p>
+            </div>
+            <div>
+                <label>Street number</label>
+                <input th:type="text" id="streetNo" name="streetNo" th:field="*{streetNo}" required="required">
+                <p id="error_street_number"></p>
+            </div>
+            <div>
+                <label>Zip code</label>
+                <input th:type="text" id="zipCode" name="zipCode" th:field="*{zipCode}" required="required">
+                <p id="error_zipcode"></p>
+            </div>
+
+            <div>
+                <label for="uploadimg">Logo</label>
+                <input id="uploadimg" type="file" th:name="image">
+                <p id="error_img"></p>
+            </div>
+
         </div>
 
         <div class="form-group">
@@ -123,55 +124,17 @@
         </div>
 
 
-        <img th:src="@{'data:image/png;base64,' + ${actualImage}}" alt="notworking">
-
-<!--        <div class="form-group">-->
-<!--            <input type="file" class="form-control" id="files" placeholder="Upload files" th:field="*{files}"-->
-<!--                   multiple="multiple">-->
-<!--        </div>-->
-    <div class="alert alert-success alert-dismissible" th:if="${successmessage}">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong th:text="${successmessage}"></strong>
-    </div>
-    <div class="alert alert-danger alert-dismissible" th:if="${errormessage}">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong th:text="${errormessage}"></strong>
-    </div>
-
-
-<!--        <div class="form-group">-->
-<!--            <span th:each="file, itrStat : ${userFiles}" class="imagecontainer" th:id="'imageIndex'+${itrStat.index}">-->
-<!--                <img th:src="@{'/images/'+${file.modifiedFilename}}"-->
-<!--                     style="width:80px; height:80px; border-radius: 50%; margin-left:10px;" class="image"-->
-<!--                     th:if="${file.fileExtension != 'xlsx' and file.fileExtension != 'pdf' and file.fileExtension != 'xls'}">-->
-<!--                <span class="overlay">-->
-<!--                    <a href="#" class="icon image-confirm-delete" title="image delete"-->
-<!--                       th:attr="data-id=${itrStat.index}, data-name=${file.modifiedFilename}">-->
-<!--                        <i class="fa fa-trash" style="color:deeppink;"></i>-->
-<!--                    </a>-->
-
-<!--                </span>-->
-<!--            </span>-->
-<!--        </div>-->
-
-<!--        <input type="hidden" class="form-control" th:field="*{removeImages}" id="removeImages">-->
-<!--        <input type="hidden" class="form-control" th:field="*{id}">-->
-
-<!--        <p class="">-->
-<!--            <img class="rightIframe" id="thumbnail" alt="yours logo" style="size:20%; width: 20%; height: 20%"/>-->
-<!--        </p>-->
-
-<!--        -->
-
-<!--        <tr th:each="images : ${image}">-->
-
-<!--            <td><img th:src="@{'data:image/png;base64,' + ${images}}" alt="notworking" style="width: 150px;height: 120px;">-->
-<!--        </td>-->
-
-
-
-
-
+        <div style="size: portrait">
+            <img th:src="@{'data:image/png;base64,' + ${actualImage}}" alt="notworking">
+        </div>
+        <div class="alert alert-success alert-dismissible" th:if="${successmessage}">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong th:text="${successmessage}"></strong>
+        </div>
+        <div class="alert alert-danger alert-dismissible" th:if="${errormessage}">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong th:text="${errormessage}"></strong>
+        </div>
 
 
         <td>
@@ -180,6 +143,120 @@
     </form>
 
 </div>
+
+<!------------------------------------------------------------------------------------->
+
+
+<div class="container">
+    <br>
+    <p class="text-center">More bootstrap 4 components on <a href="http://bootstrap-ecommerce.com/">
+        Bootstrap-ecommerce.com</a></p>
+    <hr>
+
+
+    <div class="card bg-light">
+        <article class="card-body mx-auto" style="max-width: 400px;">
+            <h4 class="card-title mt-3 text-center">Create Account</h4>
+            <p class="text-center">Get started with your free account</p>
+            <p>
+                <a href="" class="btn btn-block btn-twitter"> <i class="fab fa-twitter"></i>   Login via Twitter</a>
+                <a href="" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i>   Login via
+                    facebook</a>
+            </p>
+            <p class="divider-text">
+                <span class="bg-light">OR</span>
+            </p>
+
+            <!--            added-->
+
+            <form action="#" th:action="@{${isAdd}?'/save':'update'}" th:object="${user}" method="post"
+                  enctype="multipart/form-data">
+                    <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                    </div>
+                    <input type="text" id="username" name="" placeholder="Full name" th:field="*{username}"
+                           required="required">
+                    <p id="error_username"></p>
+                </div>
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                    </div>
+                    <input type="text" id="email" name="" placeholder="Email" th:field="*{email}" required="required">
+                    <p id="error_email"></p>
+                </div>
+<!--added-->
+
+                <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                    </div>
+                    <input name="" class="form-control" placeholder="Email address" type="email">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
+                    </div>
+                    <select class="custom-select" style="max-width: 120px;">
+                        <option selected="">+48</option>
+                        <option value="1">+49</option>
+                        <option value="3">+420</option>
+                        <option value="2">+7</option>
+                        <option value="3">+370</option>
+                        <option value="3">+380</option>
+                    </select>
+                    <input name="" class="form-control" placeholder="Phone number" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+                    </div>
+                    <select class="form-control">
+                        <option selected=""> Select job type</option>
+                        <option>Designer</option>
+                        <option>Manager</option>
+                        <option>Accaunting</option>
+                    </select>
+                </div> <!-- form-group end.// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                    </div>
+                    <input class="form-control" placeholder="Create password" type="password">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                    </div>
+                    <input class="form-control" placeholder="Repeat password" type="password">
+                </div> <!-- form-group// -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Create Account</button>
+                </div> <!-- form-group// -->
+                <p class="text-center">Have an account? <a href="">Log In</a></p>
+            </form>
+        </article>
+    </div> <!-- card.// -->
+
+</div>
+<!--container end.//-->
+
+<br><br>
+<article class="bg-secondary mb-3">
+    <div class="card-body text-center">
+        <h3 class="text-white mt-3">Bootstrap 4 UI KIT</h3>
+        <p class="h5 text-white">Components and templates <br> for Ecommerce, marketplace, booking websites
+            and product landing pages</p>   <br>
+        <p><a class="btn btn-warning" target="_blank" href="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com
+            <i class="fa fa-window-restore "></i></a></p>
+    </div>
+    <br><br>
+</article>
+
+
+<!----------------------------------------------------------------------------------------->
 
 
 <script src="vendor/jquery/jquery.min.js"></script>
