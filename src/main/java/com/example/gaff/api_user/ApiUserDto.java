@@ -27,6 +27,7 @@ public class ApiUserDto {
     @NotNull
     @Email (message = "Fill proper email address")
     private String email;
+    private String phone;
     private String region;
     private String city;
     private String street;
