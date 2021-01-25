@@ -32,4 +32,6 @@ public class Article {
     @Lob
     private byte[] img;
 
+    private String imageToFrontend;
+
 }
