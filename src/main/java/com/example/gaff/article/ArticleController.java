@@ -68,4 +68,21 @@ public class ArticleController {
         return "view/user";
     }
 
+    @GetMapping(value = "")
+    public String startingPage(Model model) {
+        List<ArticleDto> allArticles = articleService.getAllAvailableArticles();
+        ArticleDto articleDto = allArticles.get(allArticles.size() - 1);
+        ArticleDto articleDto1 = allArticles.get(allArticles.size() - 2);
+        ArticleDto articleDto2 = allArticles.get(allArticles.size() - 3);
+        ArticleDto articleDto3 = allArticles.get(allArticles.size() - 4);
+        ArticleDto articleDto4 = allArticles.get(allArticles.size() - 5);
+        model.addAttribute("artFresh", articleDto);
+        model.addAttribute("art2", articleDto1);
+        model.addAttribute("art3", articleDto2);
+        model.addAttribute("art4", articleDto3);
+        model.addAttribute("art5", articleDto4);
+        model.addAttribute("isAdd", true);
+        return "starting";
+    }
+
 }
