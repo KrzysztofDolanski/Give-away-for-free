@@ -119,6 +119,26 @@
 
 </div>
 </div>
+<nav class="center-block" th:replace="footer :: navigation2"></nav>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="../../js/vendor/popper.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/holderjs@2.9.4/holder.js"></script>
+<script>
+    Holder.addTheme('thumb', {
+        bg: '#55595c',
+        fg: '#eceeef',
+        text: 'Thumbnail'
+    });
+</script>
+
 
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -128,65 +148,6 @@
 
 <!-- Custom JavaScript for this theme -->
 <script src="js/scrolling-nav.js"></script>
-
-<script type="text/javascript">
-    $(function () {
-        var images = [];
-        $('.image-confirm-delete').on('click', function (e) {
-            e.preventDefault();
-            var id = $(this).data('id');
-            var name = $(this).data('name');
-            images.push(name);
-            $('#removeImages').val(images);
-            $('#imageIndex' + id).hide();
-        });
-
-        $('.confirm-delete').on('click', function (e) {
-            e.preventDefault();
-            var id = $(this).data('id');
-            var name = $(this).data('name');
-            $('#modal-name').html(name);
-            $('#idModalLink').attr('href', '/deleteuser/' + id);
-            $('#myModal').modal();
-        });
-
-
-    });
-</script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#images').change(function () {
-            showImageThumbnail(this)
-        });
-    });
-
-    function showImageThumbnail(fileInput) {
-        file = fileInput.files[0];
-        reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#thumbnail').attr('src', e.target.result);
-        };
-        // reader.readAsBinaryString(file)
-        reader.readAsDataURL(file);
-    }
-</script>
-
-
-
-<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"></div>
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-body" id="myModalBody">
-            <p>Do you want to delete this (<span id="modal-name"></span>) record? </p>
-        </div>
-        <div class="modal-footer">
-            <a id="idModalLink" href="#" class="btn btn-primary">Yes</a>
-            <button type="button" class="btn btn-default" data-dismiss=modal>No</button>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>

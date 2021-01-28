@@ -1,25 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <head>
-    <meta charset="UTF-8">
-
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="css/scrolling-nav.css" rel="stylesheet">
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
 
     <title>GAFF - save gift</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+          integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../css/editor.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="product.css" rel="stylesheet">
 </head>
 <body>
-<div>
-    <nav class="navbar navbar-expand bg-dark fixed-top" id="mainNav">
-        <div class="center-block" th:replace="fragments :: navigator"></div>
-    </nav>
-</div>
+
+
+<nav class="center-block" th:replace="fragments :: navigator"></nav>
 
 <div>
 
@@ -75,41 +83,36 @@
                 <p id="error_img"></p>
             </div>
 
-            <!--        <div>-->
-            <!--            <label>Condition</label>-->
-            <!--            <input type="productCondition" id="productCondition" name="productCondition" th:field="*{productCondition}" required="required">-->
-            <!--            <p id="error_productCondition"></p>-->
-            <!--        </div>-->
-
-            <!--            <div th:if="${myimg}">-->
-            <!--                <img th:src="@{'data:image/png;base64,' + ${myimg}}" alt="notworking">-->
-            <!--            </div>-->
-
-            <!--            <form th:object="${imageForm}" th:action="@{/upload}" method="post" enctype="multipart/form-data">-->
-
-            <!--                <label for="uploadimg">UPLOAD</label>-->
-            <!--                <input id="uploadimg" type="file" th:field="*{image}">-->
-            <!--                <button type="submit">UPLOAD</button>-->
-            <!--            </form>-->
-
-            <!--            <input type="hidden" class="form-control" th:field="*{removeImages}" id="removeImages">-->
-            <!--            <input type="hidden" class="form-control" th:field="*{id}">-->
-
-            <!--            <p class="">-->
-            <!--                <img class="rightIframe" id="thumbnail" alt="Article pictures"-->
-            <!--                     style="size: 20%; width: 20%; height: 20%"/>-->
-            <!--            </p>-->
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" th:text="${isAdd}?'Save':'Update'"></button>
             </div>
 
-            <!--        <td>-->
-            <!--            <a th:href="@{'/editarticle/'+${article.id}}"><i class="fa fa-edit" style="font-size:21px"></i> </a>-->
-            <!--        </td>-->
+
         </form>
     </div>
 </div>
+
+<nav class="center-block" th:replace="footer :: navigation2"></nav>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="../../js/vendor/popper.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/holderjs@2.9.4/holder.js"></script>
+<script>
+    Holder.addTheme('thumb', {
+        bg: '#55595c',
+        fg: '#eceeef',
+        text: 'Thumbnail'
+    });
+</script>
+
 
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -119,38 +122,6 @@
 
 <!-- Custom JavaScript for this theme -->
 <script src="js/scrolling-nav.js"></script>
-
-<script type="text/javascript">
-    $(function () {
-        var images = [];
-        $('.image-confirm-delete').on('click', function (e) {
-            e.preventDefault();
-            var id = $(this).data('id');
-            var name = $(this).data('name');
-            images.push(name);
-            $('#removeImages').val(images);
-            $('#imageIndex' + id).hide();
-        });
-    });
-</script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#files').change(function () {
-            showImageThumbnail(this)
-        });
-    });
-
-    function showImageThumbnail(fileInput) {
-        file = fileInput.files[0];
-        reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#thumbnail').attr('src', e.target.result);
-        };
-        reader.readAsDataURL(file);
-    }
-</script>
 
 </body>
 </html>

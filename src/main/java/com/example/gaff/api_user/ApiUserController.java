@@ -38,12 +38,11 @@ public class ApiUserController {
     @GetMapping(value = "/register", produces = MediaType.IMAGE_PNG_VALUE)
     public String users(Model model) {
         List<ApiUserDto> users = apiUserService.getAllUsers();
-        String acctualImage = apiUserService.getAcctualImage();
+
         model.addAttribute("users", users);
         model.addAttribute("user", new ApiUserDto());
         model.addAttribute("image", multipartFile);
         model.addAttribute("isAdd", true);
-        model.addAttribute("actualImage", acctualImage);
         return "register";
     }
 
