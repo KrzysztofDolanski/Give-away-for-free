@@ -48,9 +48,19 @@ public class GaffApplication implements CommandLineRunner {
         ConfirmationToken confirmationToken = new ConfirmationToken(save);
         confirmationTokenRepository.save(confirmationToken);
 
+        apiUserRepository.save(ApiUser.builder()
+                .username("Krzysztof")
+                .password(root)
+                .userRole(ApiUserRole.USER)
+                .city("Gdańsk")
+                .street("Pomorska")
+                .streetNo("68")
+                .enabled(true)
+                .build());
 
         articleRepository.save(Article.builder()
                 .title("Free article 1")
+                .userId(2l)
                 .description("description")
                 .img(new byte[123])
                 .isAvailable(true)
@@ -58,33 +68,33 @@ public class GaffApplication implements CommandLineRunner {
 
         articleRepository.save(Article.builder()
                 .title("Free article 2")
+                .userId(2l)
                 .description("description")
                 .img(new byte[123])
-
                 .isAvailable(true)
                 .build());
 
         articleRepository.save(Article.builder()
                 .title("Free article 3")
+                .userId(2l)
                 .description("description")
                 .img(new byte[123])
-
                 .isAvailable(true)
                 .build());
 
         articleRepository.save(Article.builder()
                 .title("Free article 4")
+                .userId(2l)
                 .description("description")
                 .img(new byte[123])
-
                 .isAvailable(true)
                 .build());
 
         articleRepository.save(Article.builder()
                 .title("Free article 5")
+                .userId(2l)
                 .description("description")
                 .img(new byte[123])
-
                 .isAvailable(true)
                 .build());
     }

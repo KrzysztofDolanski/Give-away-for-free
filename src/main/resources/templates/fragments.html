@@ -12,33 +12,59 @@
 
 <div th:fragment="navigator">
 
+    <nav class="site-header sticky-top py-1">
+        <div class="container d-flex flex-column flex-md-row justify-content-between">
+            <a class="py-2" href="#">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                     class="d-block mx-auto">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="14.31" y1="8" x2="20.05" y2="17.94"></line>
+                    <line x1="9.69" y1="8" x2="21.17" y2="8"></line>
+                    <line x1="7.38" y1="12" x2="13.12" y2="2.06"></line>
+                    <line x1="9.69" y1="16" x2="3.95" y2="6.06"></line>
+                    <line x1="14.31" y1="16" x2="2.83" y2="16"></line>
+                    <line x1="16.62" y1="12" x2="10.88" y2="21.94"></line>
+                </svg>
+            </a>
 
-    <table style="margin-left: 600px; margin-bottom: 20px">
-        <tr>
-            <td>
-                <a th:href="@{/save/article}">Add gift</a>
-            </td>
-            <td>
-                <a th:href="@{/login}">Login</a>
-            </td>
-            <td>
-                <a th:href="@{/home}">Search user</a>
-            </td>
-                <form th:action="@{/user}" th:method="get">
-                <input type="text" id="username" name="username" placeholder="find user by name">
-                <input type="submit">
-                </form>
-            <td>
-                <a th:href="@{/register}">Register user</a>
-            </td>
-            <td>
-                <a th:href="@{/bookings}">Book here</a>
-            </td>
+            <a class="py-2 d-none d-md-inline-block" th:href="@{/order}">Free</a>
+            <a class="py-2 d-none d-md-inline-block" th:href="@{/regulations}">Regulations</a>
 
-        </tr>
-    </table>
+
+            <a class="py-2 d-none d-md-inline-block" th:href="@{http://domdziecka.gda.pl/}">Donate</a>
+            <a class="py-2 d-none d-md-inline-block" th:href="@{/login}">Login</a>
+        </div>
+    </nav>
 </div>
 
-</body>
 
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="../../js/vendor/popper.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/holderjs@2.9.4/holder.js"></script>
+<script>
+    Holder.addTheme('thumb', {
+        bg: '#55595c',
+        fg: '#eceeef',
+        text: 'Thumbnail'
+    });
+</script>
+
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom JavaScript for this theme -->
+<script src="js/scrolling-nav.js"></script>
+
+</body>
 </html>

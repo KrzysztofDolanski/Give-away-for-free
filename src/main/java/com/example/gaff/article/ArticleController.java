@@ -1,5 +1,7 @@
 package com.example.gaff.article;
 
+import com.example.gaff.api_user.ApiUserDto;
+import com.example.gaff.api_user.ApiUserService;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import com.example.gaff.img.ImageForm;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.List;
 public class ArticleController {
     private final ArticleService articleService;
     private final ImageForm multipartFile;
+    private final ApiUserService apiUserService;
 
 
     @GetMapping(value = "/save/article")
@@ -76,11 +79,45 @@ public class ArticleController {
         ArticleDto articleDto2 = allArticles.get(allArticles.size() - 3);
         ArticleDto articleDto3 = allArticles.get(allArticles.size() - 4);
         ArticleDto articleDto4 = allArticles.get(allArticles.size() - 5);
+        Long userId = articleDto.getUserId();
+        Long userId1 = articleDto1.getUserId();
+        Long userId2 = articleDto2.getUserId();
+        Long userId3 = articleDto3.getUserId();
+        Long userId4 = articleDto4.getUserId();
+        ApiUserDto byId = apiUserService.findById(userId);
+        ApiUserDto byId1 = apiUserService.findById(userId1);
+        ApiUserDto byId2 = apiUserService.findById(userId2);
+        ApiUserDto byId3 = apiUserService.findById(userId3);
+        ApiUserDto byId4 = apiUserService.findById(userId4);
+
         model.addAttribute("artFresh", articleDto);
         model.addAttribute("art2", articleDto1);
         model.addAttribute("art3", articleDto2);
         model.addAttribute("art4", articleDto3);
         model.addAttribute("art5", articleDto4);
+
+        model.addAttribute("userFresh", byId);
+        model.addAttribute("user2", byId1);
+        model.addAttribute("user3", byId2);
+        model.addAttribute("user4", byId3);
+        model.addAttribute("user5", byId4);
+
+
+        String uriGoogle = apiUserService.createGoogleMapQuery(byId.getUsername());
+        model.addAttribute("uriGoogleFresh", uriGoogle);
+
+        String uriGoogle1 = apiUserService.createGoogleMapQuery(byId1.getUsername());
+        model.addAttribute("uriGoogle2", uriGoogle);
+
+        String uriGoogle2 = apiUserService.createGoogleMapQuery(byId2.getUsername());
+        model.addAttribute("uriGoogle3", uriGoogle);
+
+        String uriGoogle3 = apiUserService.createGoogleMapQuery(byId3.getUsername());
+        model.addAttribute("uriGoogle4", uriGoogle);
+
+        String uriGoogle4 = apiUserService.createGoogleMapQuery(byId4.getUsername());
+        model.addAttribute("uriGoogle5", uriGoogle);
+
         model.addAttribute("isAdd", true);
         return "starting";
     }
