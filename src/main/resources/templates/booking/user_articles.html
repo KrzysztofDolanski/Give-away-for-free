@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
 
-    <title>GAFF - available</title>
+    <title>GAFF - login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -26,9 +26,7 @@
 </head>
 <body>
 
-
 <nav class="center-block" th:replace="fragments :: navigator"></nav>
-
 
 <div>
 
@@ -42,10 +40,8 @@
     </div>
 
     <div class="col-md-12">
-        <p action="#" th:action="@{/bookings}" th:object="${article}" th:method="get">
-        <h2>All articles</h2>
-
-
+        <p action="#" th:action="@{/myart}" th:object="${article}" th:method="get">
+        <h2>Yours articles</h2>
         <div style="margin-top:20px;">
             <table class="table table-striped table-bordered" style="width:100%">
                 <thead>
@@ -53,8 +49,8 @@
                     <th>User Id</th>
                     <th>Title</th>
                     <th>Description</th>
-                    <th>Image</th>
-                    <th>Action</th>
+                    <th>Picture</th>
+                    <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -63,26 +59,26 @@
                     <td th:text="${articles.userId}"></td>
                     <td th:text="${articles.title}"></td>
                     <td th:text="${articles.description}"></td>
-<!--                    <td ><a th:each="image : ${images.get(article.get(articles.getId()-1).getId())}">-->
-<!--                        <img th:src="@{'data:image/png;base64,' + ${image}}" alt="notworking">-->
-<!--                    </a>-->
-<!--                    </td>-->
-                    <td >
-                        <img th:src="@{'data:image/png;base64,' + ${articles.imageToFrontend}}" alt="notworking">
-                    </a>
+
+                    <td>
+                        <div class="row marketing">
+                        <span class="col-lg-6" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+                        <img th:src="@{'data:image/png;base64,' + ${articles.imageToFrontend}}" alt="notworking"
+                             height="128" width="128" style="width: 200px; height: 200px;"></span>
+                        </div>
                     </td>
                     <td style="width: 50%">
-                        <a th:href="@{/save/booking/{id}(id=${articles.id})}"><i class="fa fa-edit"
-                                                                                   style="font-size:21px;"></i></a>
+                        <a th:href="@{/delete/article/{id}(id=${articles.id})}"><i class="fa fa-trash"
+                                                                                 style="font-size:21px; color: red"></i></a>
                     </td>
-
 
                 </tr>
                 </tbody>
             </table>
+
         </div>
     </div>
-
+    </span>
 </div>
 <nav class="center-block" th:replace="footer :: navigation2"></nav>
 

@@ -2,16 +2,14 @@ package com.example.gaff.article;
 
 import com.example.gaff.api_user.ApiUserDto;
 import com.example.gaff.api_user.ApiUserService;
+import com.example.gaff.booking.BookingDto;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import com.example.gaff.img.ImageForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -89,37 +87,46 @@ public class ArticleController {
         ApiUserDto byId2 = apiUserService.findById(userId2);
         ApiUserDto byId3 = apiUserService.findById(userId3);
         ApiUserDto byId4 = apiUserService.findById(userId4);
-
         model.addAttribute("artFresh", articleDto);
         model.addAttribute("art2", articleDto1);
         model.addAttribute("art3", articleDto2);
         model.addAttribute("art4", articleDto3);
         model.addAttribute("art5", articleDto4);
-
         model.addAttribute("userFresh", byId);
         model.addAttribute("user2", byId1);
         model.addAttribute("user3", byId2);
         model.addAttribute("user4", byId3);
         model.addAttribute("user5", byId4);
-
-
         String uriGoogle = apiUserService.createGoogleMapQuery(byId.getUsername());
         model.addAttribute("uriGoogleFresh", uriGoogle);
-
         String uriGoogle1 = apiUserService.createGoogleMapQuery(byId1.getUsername());
         model.addAttribute("uriGoogle2", uriGoogle);
-
         String uriGoogle2 = apiUserService.createGoogleMapQuery(byId2.getUsername());
         model.addAttribute("uriGoogle3", uriGoogle);
-
         String uriGoogle3 = apiUserService.createGoogleMapQuery(byId3.getUsername());
         model.addAttribute("uriGoogle4", uriGoogle);
-
         String uriGoogle4 = apiUserService.createGoogleMapQuery(byId4.getUsername());
         model.addAttribute("uriGoogle5", uriGoogle);
 
         model.addAttribute("isAdd", true);
         return "starting";
+    }
+
+    @GetMapping("/myart")
+    public String showBookingPage(Model model, HttpServletRequest request) {
+        List<ArticleDto> allUserArticles = articleService.getAllUserArtiles(request);
+
+        model.addAttribute("article", allUserArticles);
+        model.addAttribute("isAdd", false);
+        return "booking/user_articles";
+    }
+
+
+    @GetMapping("/delete/article/{id}")
+    public String save(@PathVariable Long id, RedirectAttributes redirectAttributes, HttpServletRequest request, Model model)
+            throws ApiUserAlreadyExistsException {
+        articleService.deleteById(id);
+        return "redirect:/myart";
     }
 
 }

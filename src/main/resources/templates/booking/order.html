@@ -41,7 +41,7 @@
 
     <div class="col-md-12">
         <p action="#" th:action="@{/order}" th:object="${article}" th:method="get">
-        <h2>All users</h2>
+        <h2>All articles</h2>
         <div style="margin-top:20px;">
             <table class="table table-striped table-bordered" style="width:100%">
                 <thead>
@@ -60,12 +60,15 @@
                     <td th:text="${articles.title}"></td>
                     <td th:text="${articles.description}"></td>
 
-                    <td >
-                        <img th:src="@{'data:image/png;base64,' + ${articles.imageToFrontend}}" alt="notworking">
-                        </a>
+                    <td>
+                        <div class="row marketing">
+                        <span class="col-lg-6" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+                        <img th:src="@{'data:image/png;base64,' + ${articles.imageToFrontend}}" alt="notworking"
+                             height="128" width="128" style="width: 200px; height: 200px;"></span>
+                        </div>
                     </td>
                     <td style="width: 50%">
-                        <a th:href="@{/save/booking/{id}(id=${articles.id})}"><i class="fa fa-edit"
+                        <a th:href="@{/save/booking/{id}(id=${articles.id})}"><i class="fas fa-gift"
                                                                                  style="font-size:21px;"></i></a>
                     </td>
 

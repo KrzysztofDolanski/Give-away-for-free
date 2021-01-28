@@ -84,4 +84,26 @@ public class ArticleService {
                         new String(Base64.getEncoder().encode(articles.getImg())))
                 .collect(Collectors.toList());
     }
+
+    public void deleteById(Long id) {
+        articleRepository.deleteById(id);
+    }
+
+    public List<ArticleDto> getAllUserArtiles(HttpServletRequest request) {
+        List<ArticleDto> collect = null;
+        try {
+            ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserService.currentUsername(request));
+            Stream<ArticleDto> articleDtoStream = articleMapper.mapToArticleDtoList(articleRepository.getAllAvailableArticles())
+                    .stream()
+                    .filter(articleDto -> articleDto.getUserId().equals(userByUsername.getId()));
+            collect = articleDtoStream.collect(Collectors.toList());
+        } catch (NullPointerException e){
+            e.getMessage();
+        }
+
+        for (ArticleDto articleDto : collect) {
+            articleDto.setImageToFrontend(new String(Base64.getEncoder().encode(articleDto.getImg())));
+        }
+        return collect;
+    }
 }
