@@ -15,7 +15,5 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("select f from Article as f where f.isAvailable = true")
     List<Article> getAllAvailableArticles();
 
-
-
-    Article findByTitle(String title);
+    List<Article> findArticlesByTitle(String title);
 }

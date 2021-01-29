@@ -4,6 +4,7 @@ import com.example.gaff.api_user.ApiUserDto;
 import com.example.gaff.api_user.ApiUserService;
 import com.example.gaff.booking.BookingDto;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
+import com.example.gaff.exceptions.ArticleNotFoundException;
 import com.example.gaff.img.ImageForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -42,17 +44,18 @@ public class ArticleController {
             , RedirectAttributes redirectAttributes, Model model
             , HttpServletRequest request
             , @RequestParam("image") MultipartFile multipartFile)
-            throws IOException, ApiUserAlreadyExistsException {
+            throws IOException, ApiUserAlreadyExistsException, SQLException {
 
         articleService.saveArticle(articleDto, request, multipartFile.getBytes());
-        ArticleDto articleByTitle = articleService.findArticleByTitle(articleDto.getTitle());
-        if (articleByTitle != null) {
+
+        List<ArticleDto> articleByTitle = articleService.findArticleByTitle(articleDto.getTitle());
+        if (!articleByTitle.isEmpty()) {
             redirectAttributes.addFlashAttribute("successmessage", "Article successful saved");
             return "redirect:/save/article";
         } else {
-            model.addAttribute("errormessage", "Article saving failed");
+            redirectAttributes.addFlashAttribute("errormessage", "Article saving failed");
             model.addAttribute("article", articleDto);
-            return "save/article";
+            return "redirect:/save/article";
         }
     }
 

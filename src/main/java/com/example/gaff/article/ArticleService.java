@@ -4,9 +4,12 @@ import com.example.gaff.api_user.ApiUserDto;
 import com.example.gaff.api_user.ApiUserService;
 import com.example.gaff.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionSystemException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,8 +57,8 @@ public class ArticleService {
 
     }
 
-    public ArticleDto findArticleByTitle(String title) {
-        return articleMapper.mapToArticleDto(articleRepository.findByTitle(title));
+    public List<ArticleDto> findArticleByTitle(String title) {
+        return articleMapper.mapToArticleDtoList(articleRepository.findArticlesByTitle(title));
     }
 
     public ArticleDto findArticleById(Long id) {
@@ -63,12 +66,24 @@ public class ArticleService {
                 orElseThrow(() -> new NotFoundException("Not found location: " + id)));
     }
 
-    public void saveArticle(ArticleDto articleDto, HttpServletRequest request, byte[] multipartFile) {
+    public void saveArticle(ArticleDto articleDto, HttpServletRequest request, byte[] multipartFile) throws SQLException {
+        boolean flag = true;
+        while (flag) {
         ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserService.currentUsername(request));
         articleDto.setImg(multipartFile);
-        Article article = articleMapper.mapToArticle(articleDto);
-        article.setUserId(userByUsername.getId());
-        articleRepository.save(article);
+            try{
+                Article article = articleMapper.mapToArticle(articleDto);
+                article.setUserId(userByUsername.getId());
+                if (articleDto.getTitle().length()<60 && articleDto.getDescription().length()<60){
+                articleRepository.save(article);
+                flag = false;
+                }else break;
+            } catch (TransactionSystemException e){
+                e.getStackTrace();
+                flag = false;
+            }
+
+        }
     }
 
 

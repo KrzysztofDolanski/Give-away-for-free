@@ -2,6 +2,7 @@ package com.example.gaff.article;
 
 import com.example.gaff.booking.Booking;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
@@ -15,9 +16,11 @@ import javax.persistence.*;
 public class Article {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 60)
     private String title;
+    @Column(length = 60)
     private String description;
     private ProductCondition productCondition;
     @Builder.Default

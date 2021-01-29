@@ -9,6 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.sql.SQLException;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -25,7 +28,7 @@ class ArticleServiceTest {
     ArticleMapper articleMapper;
 
     @Test
-    void saveArticle() {
+    void saveArticle() throws SQLException {
         //given
         Article article = new Article();
         article.setTitle("Aasdas");
@@ -38,9 +41,9 @@ class ArticleServiceTest {
         articleRepository.save(article);
         articleMapper.mapToArticle(articleDto);
         articleService.saveArticle(articleDto, request, image);
-        Article aasdas = articleRepository.findByTitle("Aasdas");
+        List<Article> aasdas = articleRepository.findArticlesByTitle("Aasdas");
         //then
-        assertEquals(aasdas.getTitle(), article.getTitle());
+        assertEquals(aasdas.get(0).getTitle(), article.getTitle());
 
     }
 }
