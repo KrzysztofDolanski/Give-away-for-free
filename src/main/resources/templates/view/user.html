@@ -55,20 +55,6 @@
                        multiple="multiple">
             </div>
 
-
-<!--            żeby pokazywało wszytskie pliki - zmienić userFiles (bez get(0))-->
-<!--            <div class="form-group">-->
-<!--                <span th:each="file, itrStat : ${images.get(0)}" class="imagecontainer" th:id="'imageindex'+${itrStat.index}">-->
-<!--                    <img th:src="@{'/images/'+${fileName}}" style="width: 150px;height: 120px;" class="image">-->
-<!--                </span>-->
-
-<!--                <span>-->
-<!--                <div th:if="${images}">-->
-<!--                    <img th:src="@{'data:image/png;base64,' + ${images}}" alt="notworking">-->
-<!--                </div>-->
-<!--                </span>-->
-<!--            </div>-->
-
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" th:text="${isAdd}?'Save':'Update'"></button>
             </div>
@@ -107,12 +93,6 @@
                     </tr>
                     </tbody>
                 </table>
-<!--                <p class="text-center">-->
-<!--                <img id="images" th:src="@{'\images\\'+ ${fileName}}" alt="photo" style="width: 150px;height: 120px;">-->
-<!--                </p>-->
-<!--                <p>-->
-<!--                    <img id="thumbnail" alt="yours logo"/>-->
-<!--                </p>-->
             </div>
         </div>
     </div>

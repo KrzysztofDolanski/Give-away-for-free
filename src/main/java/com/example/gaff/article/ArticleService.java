@@ -74,7 +74,7 @@ public class ArticleService {
             try{
                 Article article = articleMapper.mapToArticle(articleDto);
                 article.setUserId(userByUsername.getId());
-                if (articleDto.getTitle().length()<60 && articleDto.getDescription().length()<60){
+                if (articleDto.getTitle().length()<60 && articleDto.getDescription().length()<120){
                 articleRepository.save(article);
                 flag = false;
                 }else break;

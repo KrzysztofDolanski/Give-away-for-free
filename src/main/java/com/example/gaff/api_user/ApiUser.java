@@ -4,11 +4,13 @@ package com.example.gaff.api_user;
 import com.example.gaff.article.Article;
 import com.example.gaff.booking.Booking;
 import lombok.*;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,7 +30,9 @@ public class ApiUser implements UserDetails, Serializable {
     @Column(length = 512, nullable = false, unique = true)
     private String username;
     private String password;
+    @Email
     private String email;
+    @NumberFormat
     private String phone;
     private String region;
     private String city;

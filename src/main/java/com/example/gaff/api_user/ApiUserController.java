@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -61,6 +63,14 @@ public class ApiUserController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute("user") ApiUserDto apiUserDto, RedirectAttributes redirectAttributes, Model model, @RequestParam("image") MultipartFile multipartFile) throws MessagingException, IOException, ApiUserAlreadyExistsException {
+
+        if (!apiUserService.isEmailValid(apiUserDto.getEmail())) {
+            redirectAttributes.addFlashAttribute("errormessage", "Email must be valid");
+            return "redirect:/register";
+        } else if (apiUserService.getUserByUsername(apiUserDto.getUsername()) != null) {
+            redirectAttributes.addFlashAttribute("errormessage", "Username " + apiUserDto.getUsername() + " already was taken choose different");
+            return "redirect:/register";
+        }
         apiUserService.signUpUser(apiUserDto, multipartFile.getBytes());
         ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserDto.getUsername());
         if (userByUsername != null) {
@@ -72,6 +82,7 @@ public class ApiUserController {
             return "user-edit";
         }
     }
+
 
     @GetMapping("/user")
     String userPage(String username, Model model) {

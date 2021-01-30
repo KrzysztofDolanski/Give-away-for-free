@@ -26,6 +26,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +55,13 @@ public class ApiUserService implements UserDetailsService, MailService {
             throw new UsernameNotFoundException(MessageFormat.format("User with username {0} cannot be found. ", username));
         }
     }
+
+
+    public boolean isEmailValid(String email) {
+        final Pattern EMAIL_REGEX = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
+       return EMAIL_REGEX.matcher(email).matches();
+    }
+
 
     @Override
     public void sendEmail(Email email) {

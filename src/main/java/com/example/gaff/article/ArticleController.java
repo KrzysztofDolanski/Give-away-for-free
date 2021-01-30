@@ -46,10 +46,21 @@ public class ArticleController {
             , @RequestParam("image") MultipartFile multipartFile)
             throws IOException, ApiUserAlreadyExistsException, SQLException {
 
-        articleService.saveArticle(articleDto, request, multipartFile.getBytes());
+        if (articleDto.getTitle().length()>60){
+            redirectAttributes.addFlashAttribute("errormessage", "Article title max 60 characters");
+            return "redirect:/save/article";
+        }
+        if (articleDto.getDescription().length()>60){
+            redirectAttributes.addFlashAttribute("errormessage", "Article title max 60 characters");
+            return "redirect:/save/article";
+        }
 
-        List<ArticleDto> articleByTitle = articleService.findArticleByTitle(articleDto.getTitle());
-        if (!articleByTitle.isEmpty()) {
+        articleService.saveArticle(articleDto, request, multipartFile.getBytes());
+        List<ArticleDto> allArticle1 = articleService.getAllArticle();
+        ArticleDto articleDto1 = allArticle1.get(allArticle1.size() - 1);
+
+
+        if (articleDto.getTitle().equals(articleDto1.getTitle())&&articleDto.getDescription().equals(articleDto1.getDescription())) {
             redirectAttributes.addFlashAttribute("successmessage", "Article successful saved");
             return "redirect:/save/article";
         } else {
