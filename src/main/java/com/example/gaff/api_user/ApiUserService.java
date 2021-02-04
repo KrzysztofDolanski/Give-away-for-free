@@ -2,6 +2,8 @@ package com.example.gaff.api_user;
 
 import com.example.gaff.api_user.map.GoogleMapsClientProperties;
 import com.example.gaff.article.Article;
+import com.example.gaff.article.ArticleDto;
+import com.example.gaff.article.ArticleService;
 import com.example.gaff.exceptions.ApiUserAlreadyExistsException;
 import com.example.gaff.exceptions.NoUserInDataBaseFoundException;
 import com.example.gaff.exceptions.NoUsernameException;
@@ -23,10 +25,13 @@ import java.security.Principal;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +45,7 @@ public class ApiUserService implements UserDetailsService, MailService {
     private final ConfirmationTokenService confirmationTokenService;
     private final GmailService gmailService;
     private final ServletContext servletContext;
+//    private final ArticleService articleService;
 
 
     private static final String API_URL = "https://www.google.com/maps/embed/v1/place?key=";
@@ -139,6 +145,7 @@ public class ApiUserService implements UserDetailsService, MailService {
         } else throw new NoUsernameException("No username: " + username + " found");
     }
 
+
     public String currentUsername(HttpServletRequest request) {
         Principal principal = request.getUserPrincipal();
         return principal.getName();
@@ -153,5 +160,19 @@ public class ApiUserService implements UserDetailsService, MailService {
         if (getAllUsers().size()>0){
             return new String(Base64.getEncoder().encode(getAllUsers().get(getAllUsers().size() - 1).getImg()));
         }else return "";
+    }
+
+    //todo wyświetlenie dystansu pomiędzy
+
+    public String createDistanceMapQuery(Long userId, HttpServletRequest hsr){
+        String currentUsername = currentUsername(hsr);
+        ApiUser currentUser = apiUserRepository.findByUsername(currentUsername);
+        ApiUser apiUser = apiUserRepository.findById(userId).orElseThrow();
+
+        return "https://maps.googleapis.com/maps/api/directions/json?origin="
+                + currentUser.getCity() + "," + currentUser.getStreet() +","+ currentUser.getStreetNo()
+                + "&destination="
+                + apiUser.getCity() + "," + apiUser.getStreet() + "," + apiUser.getStreetNo()
+                + "&key=" + googleMapsClientProperties.getToken();
     }
 }

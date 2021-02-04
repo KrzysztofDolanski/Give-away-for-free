@@ -60,7 +60,10 @@ public class ArticleController {
         ArticleDto articleDto1 = allArticle1.get(allArticle1.size() - 1);
 
 
-        if (articleDto.getTitle().equals(articleDto1.getTitle())&&articleDto.getDescription().equals(articleDto1.getDescription())) {
+        if (articleDto.getTitle()
+                .equals(articleDto1.getTitle())
+                &&articleDto.getDescription()
+                .equals(articleDto1.getDescription())) {
             redirectAttributes.addFlashAttribute("successmessage", "Article successful saved");
             return "redirect:/save/article";
         } else {
@@ -70,9 +73,11 @@ public class ArticleController {
         }
     }
 
-    @GetMapping("/article")
-    String articlePage(Long id, Model model) {
+    @GetMapping("/article/{id}")
+    String articlePage(@PathVariable("id") Long id, Model model, HttpServletRequest hsr) {
         ArticleDto articleById = articleService.findArticleById(id);
+        String distanceMapQuery = apiUserService.createDistanceMapQuery(articleById.getUserId(), hsr);
+        model.addAttribute("distance", distanceMapQuery);
         model.addAttribute("article", articleById);
         return "article/article-edit";
     }

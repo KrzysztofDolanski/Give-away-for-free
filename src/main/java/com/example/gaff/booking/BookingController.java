@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,11 @@ public class BookingController {
                 = articleService.getAllAvailableArticlesExceptLoggedUser(request);
 
         model.addAttribute("article", allAvailableArticlesExceptLoggedUser);
+
+//        List<String> distanceMapQuery = apiUserService.createDistanceMapQuery(allAvailableArticlesExceptLoggedUser, request);
+
+//        model.addAttribute("distance", distanceMapQuery);
+
         model.addAttribute("isAdd", false);
         return "booking/order";
     }

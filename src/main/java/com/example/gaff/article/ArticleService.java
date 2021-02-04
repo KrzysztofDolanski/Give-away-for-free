@@ -38,15 +38,14 @@ public class ArticleService {
     }
 
     public List<ArticleDto> getAllAvailableArticlesExceptLoggedUser(HttpServletRequest request) {
-        
         List<ArticleDto> collect = null;
         try {
-        ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserService.currentUsername(request));
-        Stream<ArticleDto> articleDtoStream = articleMapper.mapToArticleDtoList(articleRepository.getAllAvailableArticles())
-                .stream()
-                .filter(articleDto -> !articleDto.getUserId().equals(userByUsername.getId()));
-        collect = articleDtoStream.collect(Collectors.toList());
-        } catch (NullPointerException e){
+            ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserService.currentUsername(request));
+            Stream<ArticleDto> articleDtoStream = articleMapper.mapToArticleDtoList(articleRepository.getAllAvailableArticles())
+                    .stream()
+                    .filter(articleDto -> !articleDto.getUserId().equals(userByUsername.getId()));
+            collect = articleDtoStream.collect(Collectors.toList());
+        } catch (NullPointerException e) {
             e.getMessage();
         }
 
@@ -54,8 +53,15 @@ public class ArticleService {
             articleDto.setImageToFrontend(new String(Base64.getEncoder().encode(articleDto.getImg())));
         }
         return collect;
-
     }
+
+
+    public List<Long> getUsersIdOfAllAvailableArticlesExceptLoggedUser(HttpServletRequest request) {
+        List<ArticleDto> allAvailableArticlesExceptLoggedUser = getAllAvailableArticlesExceptLoggedUser(request);
+
+        return allAvailableArticlesExceptLoggedUser.stream().map(ArticleDto::getUserId).collect(Collectors.toList());
+    }
+
 
     public List<ArticleDto> findArticleByTitle(String title) {
         return articleMapper.mapToArticleDtoList(articleRepository.findArticlesByTitle(title));
@@ -69,16 +75,16 @@ public class ArticleService {
     public void saveArticle(ArticleDto articleDto, HttpServletRequest request, byte[] multipartFile) throws SQLException {
         boolean flag = true;
         while (flag) {
-        ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserService.currentUsername(request));
-        articleDto.setImg(multipartFile);
-            try{
+            ApiUserDto userByUsername = apiUserService.getUserByUsername(apiUserService.currentUsername(request));
+            articleDto.setImg(multipartFile);
+            try {
                 Article article = articleMapper.mapToArticle(articleDto);
                 article.setUserId(userByUsername.getId());
-                if (articleDto.getTitle().length()<60 && articleDto.getDescription().length()<120){
-                articleRepository.save(article);
-                flag = false;
-                }else break;
-            } catch (TransactionSystemException e){
+                if (articleDto.getTitle().length() < 60 && articleDto.getDescription().length() < 120) {
+                    articleRepository.save(article);
+                    flag = false;
+                } else break;
+            } catch (TransactionSystemException e) {
                 e.getStackTrace();
                 flag = false;
             }
@@ -112,7 +118,7 @@ public class ArticleService {
                     .stream()
                     .filter(articleDto -> articleDto.getUserId().equals(userByUsername.getId()));
             collect = articleDtoStream.collect(Collectors.toList());
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.getMessage();
         }
 
@@ -121,4 +127,7 @@ public class ArticleService {
         }
         return collect;
     }
+
+
+
 }

@@ -36,11 +36,49 @@
 
 
 
-    <tr th:action="@{/article}" th:object="${article}" th:method="get">
+    <tr th:action="@{/article/{id}(id = ${article.id})}" th:object="${article}" th:method="get">
         <td th:text="${article.getTitle()}"></td>
         <td th:text="${article.getDescription()}"></td>
     </tr>
 </table>
+
+
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light" th:action="@{/article/{id}(id = ${article.id})}" th:object="${article}" th:method="get">
+    <h1 class="display-4 font-weight-normal">Fresh articles</h1>
+    <p class="lead font-weight-normal" th:text="${article.getTitle()}"></p>
+    <p class="lead font-weight-normal" th:text="${article.getDescription()}"></p>
+    <div class="row marketing">
+        <span class="col-lg-6" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;">
+        <iframe height="300" width="300" style="width: 400px; height: 400px;"
+                th:src="${distance}" allowfullscreen>
+        </iframe>
+      </span>
+    </div>
+    <a class="btn btn-outline-secondary" href="#">Details</a>
+    <div class="product-device box-shadow d-none d-md-block"></div>
+    <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
+</div>
+
+<nav class="center-block" th:replace="footer :: navigation2"></nav>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="../../js/vendor/popper.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/holderjs@2.9.4/holder.js"></script>
+<script>
+    Holder.addTheme('thumb', {
+        bg: '#55595c',
+        fg: '#eceeef',
+        text: 'Thumbnail'
+    });
+</script>
+
 
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

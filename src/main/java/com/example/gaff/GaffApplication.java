@@ -42,6 +42,9 @@ public class GaffApplication implements CommandLineRunner {
         ApiUser save = apiUserRepository.save(ApiUser.builder()
                 .username("root")
                 .password(root)
+                .city("Gdansk")
+                .street("Wieckowskiego")
+                .streetNo("7")
                 .enabled(true)
                 .userRole(ApiUserRole.USER)
                 .build());
@@ -52,7 +55,7 @@ public class GaffApplication implements CommandLineRunner {
                 .username("Krzysztof")
                 .password(root)
                 .userRole(ApiUserRole.USER)
-                .city("Gdańsk")
+                .city("Gdansk")
                 .street("Pomorska")
                 .streetNo("68")
                 .enabled(true)
